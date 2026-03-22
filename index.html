@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이주배경한말연구소 — HANMALLAB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            ink:    '#0A0A0A',
+            muted:  '#666666',
+            border: '#E5E5E5',
+            surface:'#F7F7F7',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
+
+    /* 네비게이션 */
+    #navbar { transition: background 0.3s, border-color 0.3s; }
+    #navbar.scrolled {
+      background: rgba(255,255,255,0.97);
+      border-bottom: 1px solid #E5E5E5;
+      backdrop-filter: blur(8px);
+    }
+    .nav-link {
+      position: relative;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #666;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: #0A0A0A;
+      transition: width 0.25s ease;
+    }
+    .nav-link:hover { color: #0A0A0A; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* 버튼 */
+    .btn-primary {
+      display: inline-block;
+      background: #0A0A0A;
+      color: #fff;
+      padding: 0.75rem 2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      border-radius: 0.375rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover  { background: #222; transform: scale(1.02); }
+    .btn-primary:focus  { outline: none; box-shadow: 0 0 0 3px rgba(10,10,10,0.2); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-outline {
+      display: inline-block;
+      border: 1.5px solid #0A0A0A;
+      color: #0A0A0A;
+      padding: 0.7rem 1.9rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      border-radius: 0.375rem;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover  { background: #0A0A0A; color: #fff; transform: scale(1.02); }
+    .btn-outline:focus  { outline: none; box-shadow: 0 0 0 3px rgba(10,10,10,0.15); }
+    .btn-outline:active { transform: scale(0.98); }
+
+    /* 카드 호버 */
+    .card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+    }
+
+    /* 페이드인 */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* 히어로 타이포 */
+    .hero-title {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    /* 섹션 레이블 */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #999;
+    }
+
+    /* 파트너 로고 박스 */
+    .partner-box {
+      border: 1px solid #E5E5E5;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-height: 120px;
+    }
+    .partner-box:hover {
+      border-color: #999;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    /* 구분선 */
+    hr.section-rule { border: none; border-top: 1px solid #E5E5E5; }
+  </style>
+</head>
+<body class="bg-white text-ink antialiased">
+
+  <!-- ========== 네비게이션 ========== -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent">
+    <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+
+      <!-- 로고 -->
+      <a href="#home" class="flex items-center gap-2.5 group">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="#0A0A0A"/>
+          <!-- 말풍선 -->
+          <rect x="6" y="7" width="18" height="12" rx="2.5" fill="white"/>
+          <polygon points="8,19 6,25 13,19" fill="white"/>
+          <!-- 줄 -->
+          <rect x="9" y="11" width="12" height="1.5" rx="0.75" fill="#0A0A0A"/>
+          <rect x="9" y="14" width="8" height="1.5" rx="0.75" fill="#0A0A0A" opacity="0.4"/>
+        </svg>
+        <div class="leading-tight">
+          <div id="logo-ko" class="font-bold text-base tracking-tight text-white transition-colors">이주배경한말연구소</div>
+          <div id="logo-en" class="text-[10px] font-semibold tracking-[0.12em] text-white/50 transition-colors">HANMALLAB</div>
+        </div>
+      </a>
+
+      <!-- PC 메뉴 -->
+      <ul class="hidden md:flex items-center gap-8">
+        <li><a href="#about"    class="nav-link" id="nl1">소개</a></li>
+        <li><a href="#vision"   class="nav-link" id="nl2">비전 & 미션</a></li>
+        <li><a href="#book"     class="nav-link" id="nl3">교재</a></li>
+        <li><a href="#partners" class="nav-link" id="nl4">파트너</a></li>
+        <li><a href="#contact"  class="nav-link" id="nl5">연락처</a></li>
+      </ul>
+
+      <!-- 모바일 햄버거 -->
+      <button id="menu-btn" class="md:hidden text-white p-1 focus:outline-none" aria-label="메뉴">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path id="icon-open"  stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          <path id="icon-close" stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" class="hidden"/>
+        </svg>
+      </button>
+    </nav>
+
+    <!-- 모바일 메뉴 드롭다운 -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-border px-6 py-4 space-y-1">
+      <a href="#about"    class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">소개</a>
+      <a href="#vision"   class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">비전 & 미션</a>
+      <a href="#book"     class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">교재</a>
+      <a href="#partners" class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">파트너</a>
+      <a href="#contact"  class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">연락처</a>
+    </div>
+  </header>
+
+
+  <!-- ========== 히어로 ========== -->
+  <section id="home" class="bg-ink min-h-screen flex flex-col justify-center relative overflow-hidden">
+    <!-- 미묘한 배경 그리드 -->
+    <div class="absolute inset-0 pointer-events-none opacity-[0.04]"
+         style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+    <div class="max-w-6xl mx-auto px-6 py-36 relative z-10">
+      <div class="max-w-3xl">
+        <p class="section-label text-white/40 mb-8 fade-in">HANMALLAB · 이주배경한말연구소</p>
+
+        <h1 class="hero-title text-white mb-8 fade-in">
+          변화로 미래를 잇는,<br>
+          이주배경한말연구소입니다.
+        </h1>
+
+
+        <div class="flex flex-wrap gap-3 fade-in" style="transition-delay:0.2s">
+          <a href="#book"    class="btn-primary" style="background:#fff;color:#0A0A0A;">교재 살펴보기</a>
+          <a href="#about"   class="btn-outline" style="border-color:rgba(255,255,255,0.3);color:#fff;">연구소 소개</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 스크롤 힌트 -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/25">
+      <span class="text-[10px] tracking-widest font-semibold">SCROLL</span>
+      <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+  </section>
+
+
+  <!-- ========== 소개 ========== -->
+  <section id="about" class="py-28 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid md:grid-cols-[1fr_2fr] gap-16 items-start">
+
+        <div class="fade-in">
+          <p class="section-label mb-4">About</p>
+          <h2 class="text-2xl font-bold tracking-tight leading-snug">연구소 소개</h2>
+        </div>
+
+        <div class="fade-in space-y-6 text-[1.05rem] leading-relaxed text-gray-700">
+          <p>
+            변화로 미래를 잇는, 이주배경한말연구소입니다.
+          </p>
+          <p>
+            사회 문제를 경험하는 당사자와 함께 고민하고 실천할 때,
+            그리고 그 경험을 세상과 나눌 때 진정한 변화가 시작된다고 믿습니다.
+          </p>
+          <p>
+            이주배경한말연구소는 이주배경학생들이 교육 현장에서 겪는 어려움에 주목하고,
+            그들의 곁에서 실질적인 변화를 만들어가고 있습니다.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule max-w-6xl mx-auto">
+
+
+  <!-- ========== 비전 & 미션 ========== -->
+  <section id="vision" class="py-28 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="mb-16 fade-in">
+        <p class="section-label mb-4">Vision & Mission</p>
+        <h2 class="text-2xl font-bold tracking-tight">우리가 지향하는 것</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- 비전 -->
+        <div class="card-hover fade-in bg-ink rounded-2xl p-10 text-white">
+          <p class="section-label text-white/30 mb-6">Vision</p>
+          <p class="text-xs font-semibold tracking-widest text-white/40 mb-4 uppercase">비전</p>
+          <p class="text-2xl font-bold leading-snug tracking-tight">
+            변화를 통해<br>함께 만들어가는<br>지속 가능한 미래
+          </p>
+        </div>
+
+        <!-- 미션 -->
+        <div class="card-hover fade-in bg-surface rounded-2xl p-10" style="transition-delay:0.1s">
+          <p class="section-label mb-6">Mission</p>
+          <p class="text-xs font-semibold tracking-widest text-muted mb-4 uppercase">미션</p>
+          <p class="text-2xl font-bold leading-snug tracking-tight text-ink">
+            언어의 장벽이<br>이주배경학생들의<br>새로운 시작을<br>가로막지 않는<br>교육 환경 조성
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-rule max-w-6xl mx-auto">
+
+
+  <!-- ========== 교재 ========== -->
+  <section id="book" class="py-28 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="mb-16 fade-in">
+        <p class="section-label mb-4">Publication</p>
+        <h2 class="text-2xl font-bold tracking-tight">교재</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <!-- 교재 커버 이미지 -->
+        <div class="fade-in">
+          <div class="aspect-[4/5] bg-surface rounded-2xl overflow-hidden flex items-center justify-center border border-border">
+            <img src="https://placehold.co/480x600/F7F7F7/999999?text=한말톡+한국어" alt="한말톡 한국어 교재" class="w-full h-full object-cover">
+          </div>
+        </div>
+
+        <!-- 교재 설명 -->
+        <div class="fade-in space-y-6" style="transition-delay:0.1s">
+          <div>
+            <p class="section-label mb-3">대표 교재</p>
+            <h3 class="text-3xl font-bold tracking-tight mb-4">한말톡 한국어</h3>
+            <p class="text-muted leading-relaxed text-[1.05rem]">
+              이주배경학생의 언어 환경과 학교생활을 깊이 이해하여 집필한 한국어 교재입니다.
+              언어 습득을 넘어 학교 적응 전반을 지원하도록 설계되었으며,
+              교사가 현장에서 바로 활용할 수 있습니다.
+            </p>
+          </div>
+
+          <hr class="section-rule">
+
+          <div class="space-y-4">
+            <div class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-full bg-ink flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-ink">현장 중심 설계</p>
+                <p class="text-muted text-sm mt-0.5">이주배경학생의 실제 학교생활 맥락을 반영</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-full bg-ink flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-ink">단계별 구성</p>
+                <p class="text-muted text-sm mt-0.5">학생의 수준과 상황에 맞춘 체계적 학습 과정</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-full bg-ink flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-ink">교사용 지도 자료 포함</p>
+                <p class="text-muted text-sm mt-0.5">수업 준비 부담을 줄이는 상세한 가이드 제공</p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="section-rule">
+
+          <a href="#contact" class="btn-primary">교재 문의하기</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-rule max-w-6xl mx-auto">
+
+
+  <!-- ========== 파트너 ========== -->
+  <section id="partners" class="py-28 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="mb-16 fade-in">
+        <p class="section-label mb-4">Partners</p>
+        <h2 class="text-2xl font-bold tracking-tight">함께하는 파트너</h2>
+        <p class="text-muted mt-3 text-sm">이주배경학생 교육 현장의 변화를 함께 만들어가고 있습니다</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 fade-in">
+
+        <!-- 서울특별시교육청 -->
+        <div class="partner-box card-hover">
+          <img src="./partner_logo/서울특별시교육청.jpg" alt="서울특별시교육청" class="max-h-16 max-w-[180px] object-contain">
+        </div>
+
+        <!-- 남부교육지원청 -->
+        <div class="partner-box card-hover" style="transition-delay:0.08s">
+          <img src="./partner_logo/서울특별시남부교육지원청.jpg" alt="서울특별시남부교육지원청" class="max-h-16 max-w-[180px] object-contain">
+        </div>
+
+        <!-- 행복나눔재단 -->
+        <div class="partner-box card-hover" style="transition-delay:0.16s">
+          <img src="./partner_logo/행복나눔재단.png" alt="행복나눔재단" class="max-h-16 max-w-[180px] object-contain">
+        </div>
+
+      </div>
+
+
+    </div>
+  </section>
+
+  <hr class="section-rule max-w-6xl mx-auto">
+
+
+  <!-- ========== 연락처 ========== -->
+  <section id="contact" class="py-28 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="grid md:grid-cols-[1fr_2fr] gap-16 items-start">
+
+        <div class="fade-in">
+          <p class="section-label mb-4">Contact</p>
+          <h2 class="text-2xl font-bold tracking-tight leading-snug">함께 만들어가요</h2>
+          <p class="text-muted mt-4 text-sm leading-relaxed">
+            교재 문의, 강연 요청,<br>연구 협력 등 편하게 연락주세요.
+          </p>
+        </div>
+
+        <div class="fade-in space-y-6">
+          <!-- 이메일 -->
+          <div class="flex items-center gap-5 p-6 rounded-xl border border-border hover:border-ink transition-colors group">
+            <div class="w-10 h-10 rounded-full bg-ink flex items-center justify-center flex-shrink-0">
+              <svg class="w-4.5 h-4.5 text-white w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs text-muted font-semibold uppercase tracking-wide mb-0.5">이메일</p>
+              <a href="mailto:hanmallab@gmail.com" class="font-semibold text-ink hover:underline">hanmallab@gmail.com</a>
+            </div>
+          </div>
+
+          <!-- 추가 연락처 안내 -->
+          <div class="p-6 rounded-xl bg-surface text-muted text-sm leading-relaxed">
+            교재 활용 문의, 강연·워크숍 요청, 연구 협력 제안 모두 환영합니다.<br>
+            이메일로 연락 주시면 빠르게 답변드리겠습니다.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== 푸터 ========== -->
+  <footer class="border-t border-border py-10">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+
+      <div class="flex items-center gap-2.5">
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#0A0A0A"/>
+          <rect x="6" y="7" width="18" height="12" rx="2.5" fill="white"/>
+          <polygon points="8,19 6,25 13,19" fill="white"/>
+          <rect x="9" y="11" width="12" height="1.5" rx="0.75" fill="#0A0A0A"/>
+          <rect x="9" y="14" width="8" height="1.5" rx="0.75" fill="#0A0A0A" opacity="0.4"/>
+        </svg>
+        <div>
+          <div class="font-bold text-sm tracking-tight">이주배경한말연구소</div>
+          <div class="text-[10px] font-semibold tracking-[0.1em] text-muted">HANMALLAB</div>
+        </div>
+      </div>
+
+      <nav class="flex gap-6 text-sm text-muted">
+        <a href="#about"    class="hover:text-ink transition-colors">소개</a>
+        <a href="#vision"   class="hover:text-ink transition-colors">비전 & 미션</a>
+        <a href="#book"     class="hover:text-ink transition-colors">교재</a>
+        <a href="#partners" class="hover:text-ink transition-colors">파트너</a>
+        <a href="#contact"  class="hover:text-ink transition-colors">연락처</a>
+      </nav>
+
+      <p class="text-muted text-xs">© 2026 이주배경한말연구소</p>
+
+    </div>
+  </footer>
+
+
+  <!-- ========== 스크립트 ========== -->
+  <script>
+    // 스크롤 → 네비게이션 색상 전환
+    const navbar  = document.getElementById('navbar');
+    const logoKo  = document.getElementById('logo-ko');
+    const logoEn  = document.getElementById('logo-en');
+    const navLinks = document.querySelectorAll('#navbar .nav-link');
+    const menuBtn  = document.getElementById('menu-btn');
+
+    function updateNav() {
+      const scrolled = window.scrollY > 50;
+      navbar.classList.toggle('scrolled', scrolled);
+
+      logoKo.style.color = scrolled ? '#0A0A0A' : '#fff';
+      logoEn.style.color = scrolled ? '#999'    : 'rgba(255,255,255,0.4)';
+      navLinks.forEach(l => l.style.color = scrolled ? '#666' : 'rgba(255,255,255,0.7)');
+      menuBtn.style.color = scrolled ? '#0A0A0A' : '#fff';
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    // 모바일 메뉴
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen   = document.getElementById('icon-open');
+    const iconClose  = document.getElementById('icon-close');
+    let menuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('hidden', !menuOpen);
+      iconOpen.classList.toggle('hidden', menuOpen);
+      iconClose.classList.toggle('hidden', !menuOpen);
+    });
+
+    function closeMobileMenu() {
+      menuOpen = false;
+      mobileMenu.classList.add('hidden');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+    }
+
+    // 페이드인 (Intersection Observer)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
