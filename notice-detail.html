@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>공지사항 — 이주배경한말연구소</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'] },
+          colors: { ink: '#0A0A0A', muted: '#666666', border: '#E5E5E5', surface: '#F7F7F7' },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Pretendard', -apple-system, sans-serif; }
+    #navbar { background: rgba(255,255,255,0.97); border-bottom: 1px solid #E5E5E5; }
+    .nav-link {
+      position: relative; font-size: 0.875rem; font-weight: 500; color: #666; transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: #0A0A0A; transition: width 0.25s ease;
+    }
+    .nav-link:hover { color: #0A0A0A; }
+    .nav-link:hover::after { width: 100%; }
+    hr.section-rule { border: none; border-top: 1px solid #E5E5E5; }
+    .body-text p { margin-bottom: 1.2rem; line-height: 1.9; color: #333; }
+    .body-text p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body class="bg-white text-ink antialiased">
+
+  <!-- ========== 네비게이션 ========== -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50">
+    <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#0A0A0A"/>
+          <rect x="6" y="7" width="18" height="12" rx="2.5" fill="white"/>
+          <polygon points="8,19 6,25 13,19" fill="white"/>
+          <rect x="9" y="11" width="12" height="1.5" rx="0.75" fill="#0A0A0A"/>
+          <rect x="9" y="14" width="8" height="1.5" rx="0.75" fill="#0A0A0A" opacity="0.4"/>
+        </svg>
+        <div class="leading-tight">
+          <div class="font-bold text-base tracking-tight text-ink">이주배경한말연구소</div>
+          <div class="text-[10px] font-semibold tracking-[0.12em] text-muted">HANMALLAB</div>
+        </div>
+      </a>
+      <ul class="hidden md:flex items-center gap-7">
+        <li><a href="index.html#about"    class="nav-link">소개</a></li>
+        <li><a href="index.html#vision"   class="nav-link">비전 & 미션</a></li>
+        <li><a href="index.html#book"     class="nav-link">교재</a></li>
+        <li><a href="index.html#partners" class="nav-link">파트너</a></li>
+        <li><a href="notice.html" class="nav-link" style="color:#0A0A0A; border-bottom:1px solid #0A0A0A; padding-bottom:2px;">공지사항/언론보도</a></li>
+        <li><a href="index.html#contact"  class="nav-link">연락처</a></li>
+      </ul>
+      <button id="menu-btn" class="md:hidden text-ink p-1 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path id="icon-open"  stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          <path id="icon-close" stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" class="hidden"/>
+        </svg>
+      </button>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-border px-6 py-4 space-y-1">
+      <a href="index.html#about"    class="block py-2.5 text-sm font-medium text-ink hover:text-muted" onclick="closeMobileMenu()">소개</a>
+      <a href="index.html#vision"   class="block py-2.5 text-sm font-medium text-ink hover:text-muted" onclick="closeMobileMenu()">비전 & 미션</a>
+      <a href="index.html#book"     class="block py-2.5 text-sm font-medium text-ink hover:text-muted" onclick="closeMobileMenu()">교재</a>
+      <a href="index.html#partners" class="block py-2.5 text-sm font-medium text-ink hover:text-muted" onclick="closeMobileMenu()">파트너</a>
+      <a href="notice.html"         class="block py-2.5 text-sm font-medium text-ink hover:text-muted" onclick="closeMobileMenu()">공지사항/언론보도</a>
+      <a href="index.html#contact"  class="block py-2.5 text-sm font-medium text-ink hover:text-muted" onclick="closeMobileMenu()">연락처</a>
+    </div>
+  </header>
+
+
+  <!-- ========== 본문 ========== -->
+  <main class="pt-16 min-h-screen">
+
+    <!-- 브레드크럼 + 뒤로가기 -->
+    <div class="max-w-3xl mx-auto px-6 pt-10 pb-4">
+      <a href="notice.html" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+        공지사항 목록으로
+      </a>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-6 pb-24">
+
+      <!-- 게시글 헤더 -->
+      <div class="py-8 border-b border-border">
+        <p id="post-source" class="text-[10px] font-bold tracking-[0.15em] uppercase text-muted mb-3">공지사항</p>
+        <h1 id="post-title" class="text-2xl md:text-3xl font-bold tracking-tight leading-snug mb-4"></h1>
+        <p id="post-date"   class="text-sm text-muted"></p>
+      </div>
+
+      <!-- 게시글 본문 -->
+      <div id="post-body" class="body-text py-10 text-[1.05rem]"></div>
+
+      <hr class="section-rule">
+
+      <!-- 하단 이동 버튼 -->
+      <div class="pt-8 flex justify-between items-center gap-4">
+        <a id="btn-prev" href="#" class="hidden items-center gap-2 text-sm font-semibold text-ink border border-border rounded-lg px-4 py-2.5 hover:border-ink hover:bg-surface transition-all">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+          이전 글
+        </a>
+        <span class="flex-1"></span>
+        <a id="btn-next" href="#" class="hidden items-center gap-2 text-sm font-semibold text-ink border border-border rounded-lg px-4 py-2.5 hover:border-ink hover:bg-surface transition-all">
+          다음 글
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- ========== 플로팅 SNS ========== -->
+  <div class="fixed bottom-5 right-5 flex flex-col gap-2 z-40">
+    <a href="https://blog.naver.com/hanmallab" target="_blank" rel="noopener noreferrer" title="네이버 블로그"
+       class="w-9 h-9 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all hover:scale-110 active:scale-95"
+       style="background:#03C75A;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M13.03 11.07L9.22 5H5v14h5.97V12.9l3.86 6.1H19V5h-5.97v6.07z" fill="white"/>
+      </svg>
+    </a>
+    <a href="https://www.instagram.com/hanmal_lab?igsh=MXhsZzQ5NDRuaHl6Zw==" target="_blank" rel="noopener noreferrer" title="인스타그램"
+       class="w-9 h-9 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all hover:scale-110 active:scale-95"
+       style="background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="2"/>
+        <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="2"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="white"/>
+      </svg>
+    </a>
+  </div>
+
+
+  <!-- ========== 푸터 ========== -->
+  <footer class="border-t border-border py-10">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2.5">
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#0A0A0A"/>
+          <rect x="6" y="7" width="18" height="12" rx="2.5" fill="white"/>
+          <polygon points="8,19 6,25 13,19" fill="white"/>
+          <rect x="9" y="11" width="12" height="1.5" rx="0.75" fill="#0A0A0A"/>
+          <rect x="9" y="14" width="8" height="1.5" rx="0.75" fill="#0A0A0A" opacity="0.4"/>
+        </svg>
+        <div>
+          <div class="font-bold text-sm tracking-tight">이주배경한말연구소</div>
+          <div class="text-[10px] font-semibold tracking-[0.1em] text-muted">HANMALLAB</div>
+        </div>
+      </div>
+      <nav class="flex flex-wrap justify-center gap-5 text-sm text-muted">
+        <a href="index.html#about"    class="hover:text-ink transition-colors">소개</a>
+        <a href="index.html#vision"   class="hover:text-ink transition-colors">비전 & 미션</a>
+        <a href="index.html#book"     class="hover:text-ink transition-colors">교재</a>
+        <a href="index.html#partners" class="hover:text-ink transition-colors">파트너</a>
+        <a href="notice.html"         class="hover:text-ink transition-colors font-semibold text-ink">공지사항/언론보도</a>
+        <a href="index.html#contact"  class="hover:text-ink transition-colors">연락처</a>
+      </nav>
+      <p class="text-muted text-xs">© 2026 이주배경한말연구소</p>
+    </div>
+  </footer>
+
+
+  <script>
+    // ── 게시글 데이터 ──────────────────────────────────────────────
+    // 새 게시글 추가 시: 아래 객체에 번호 키로 추가하세요
+    // notice.html 의 목록에도 동일하게 추가해야 합니다
+    const posts = {
+      1: {
+        title: '연구소 설립 및 활동 시작 안내',
+        date:  '2024.06.01',
+        body:  '이주배경한말연구소가 설립되어 활동을 시작하였습니다.'
+      },
+      2: {
+        title: '한말톡 한국어(2025) 출간 안내',
+        date:  '2025.03.02',
+        body:  '이주배경학생을 위한 한국어 교재 한말톡 한국어 2025년판 출간을 알립니다.\n\n교재 문의는 hanmallab@gmail.com 으로 연락 주세요.'
+      },
+      3: {
+        title: '다문화 상생 포럼 개최 결과 보고',
+        date:  '2025.09.20',
+        body:  '2025년 다문화 상생 포럼이 성황리에 마무리되었습니다.\n\n함께 해주신 모든 분들께 감사드립니다.'
+      },
+      4: {
+        title: '서울특별시교육청 협업 사업 참여 안내',
+        date:  '2025.11.10',
+        body:  '서울특별시교육청과 함께하는 협업 사업에 대해 안내드립니다.\n\n자세한 내용은 추후 업데이트 예정입니다.'
+      },
+      5: {
+        title: '한말톡 한국어 개정판(2026) 출간 안내',
+        date:  '2026.03.01',
+        body:  '한말톡 한국어 2026년 개정판 출간 일정 및 배포 안내입니다.\n\n자세한 내용은 추후 업데이트 예정입니다.'
+      },
+      6: {
+        title: '이주배경한말연구소 홈페이지를 오픈하였습니다',
+        date:  '2026.03.25',
+        body:  '이주배경학생 교육 지원을 위한 이주배경한말연구소 공식 홈페이지가 개설되었습니다.\n\n앞으로 연구소의 활동, 교재 정보, 공지사항 등을 이 곳에서 안내드리겠습니다.\n\n많은 관심과 응원 부탁드립니다.'
+      },
+    };
+
+    // ── URL에서 id 읽기 ────────────────────────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const id     = parseInt(params.get('id'));
+    const post   = posts[id];
+    const ids    = Object.keys(posts).map(Number).sort((a, b) => a - b);
+
+    if (!post) {
+      document.getElementById('post-title').textContent = '게시글을 찾을 수 없습니다.';
+    } else {
+      document.title = post.title + ' — 이주배경한말연구소';
+      document.getElementById('post-title').textContent = post.title;
+      document.getElementById('post-date').textContent  = post.date;
+      document.getElementById('post-body').innerHTML =
+        post.body.split('\n\n').map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+
+      // 이전/다음 버튼
+      const idx  = ids.indexOf(id);
+      const prev = ids[idx - 1];
+      const next = ids[idx + 1];
+
+      if (prev) {
+        const btnPrev = document.getElementById('btn-prev');
+        btnPrev.href = `notice-detail.html?id=${prev}`;
+        btnPrev.classList.remove('hidden');
+        btnPrev.classList.add('inline-flex');
+      }
+      if (next) {
+        const btnNext = document.getElementById('btn-next');
+        btnNext.href = `notice-detail.html?id=${next}`;
+        btnNext.classList.remove('hidden');
+        btnNext.classList.add('inline-flex');
+      }
+    }
+
+    // ── 모바일 메뉴 ────────────────────────────────────────────────
+    const menuBtn    = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen   = document.getElementById('icon-open');
+    const iconClose  = document.getElementById('icon-close');
+    let menuOpen = false;
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('hidden', !menuOpen);
+      iconOpen.classList.toggle('hidden', menuOpen);
+      iconClose.classList.toggle('hidden', !menuOpen);
+    });
+    function closeMobileMenu() {
+      menuOpen = false;
+      mobileMenu.classList.add('hidden');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+    }
+  </script>
+
+</body>
+</html>
