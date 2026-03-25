@@ -160,12 +160,13 @@
       </a>
 
       <!-- PC 메뉴 -->
-      <ul class="hidden md:flex items-center gap-8">
+      <ul class="hidden md:flex items-center gap-7">
         <li><a href="#about"    class="nav-link" id="nl1">소개</a></li>
         <li><a href="#vision"   class="nav-link" id="nl2">비전 & 미션</a></li>
         <li><a href="#book"     class="nav-link" id="nl3">교재</a></li>
         <li><a href="#partners" class="nav-link" id="nl4">파트너</a></li>
-        <li><a href="#contact"  class="nav-link" id="nl5">연락처</a></li>
+        <li><a href="notice.html" class="nav-link" id="nl5">공지사항/언론보도</a></li>
+        <li><a href="#contact"  class="nav-link" id="nl6">연락처</a></li>
       </ul>
 
       <!-- 모바일 햄버거 -->
@@ -179,11 +180,12 @@
 
     <!-- 모바일 메뉴 드롭다운 -->
     <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-border px-6 py-4 space-y-1">
-      <a href="#about"    class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">소개</a>
-      <a href="#vision"   class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">비전 & 미션</a>
-      <a href="#book"     class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">교재</a>
-      <a href="#partners" class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">파트너</a>
-      <a href="#contact"  class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">연락처</a>
+      <a href="#about"      class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">소개</a>
+      <a href="#vision"     class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">비전 & 미션</a>
+      <a href="#book"       class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">교재</a>
+      <a href="#partners"   class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">파트너</a>
+      <a href="notice.html" class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">공지사항/언론보도</a>
+      <a href="#contact"    class="block py-2.5 text-sm font-medium text-ink hover:text-muted transition-colors" onclick="closeMobileMenu()">연락처</a>
     </div>
   </header>
 
@@ -366,6 +368,96 @@
   <hr class="section-rule max-w-6xl mx-auto">
 
 
+  <!-- ========== 주요 활동 슬라이더 ========== -->
+  <section id="highlights" class="py-28 bg-surface">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="mb-12 fade-in">
+        <p class="section-label mb-4">Highlights</p>
+        <h2 class="text-2xl font-bold tracking-tight">주요 활동</h2>
+      </div>
+
+      <div class="relative fade-in">
+        <!-- 슬라이더 뷰포트 -->
+        <div class="overflow-hidden rounded-2xl border border-border">
+          <div id="slider-track" class="flex" style="transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);">
+
+            <!-- Slide 1: 다문화 상생 포럼 -->
+            <div class="slide min-w-full relative" style="aspect-ratio:16/9;">
+              <img src="https://placehold.co/1200x675/EBEBEB/AAAAAA?text=이미지+준비중" alt="다문화 상생 포럼 포스터" class="w-full h-full object-cover">
+              <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
+                <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2025</p>
+                <p class="font-bold text-ink text-sm leading-snug">다문화 상생 포럼</p>
+                <p class="text-muted text-xs mt-1 leading-relaxed">함께 고민하고 나누는<br>다문화 학생 이야기</p>
+              </div>
+            </div>
+
+            <!-- Slide 2: 한말톡 한국어(2025) -->
+            <div class="slide min-w-full relative" style="aspect-ratio:16/9;">
+              <img src="https://placehold.co/1200x675/EBEBEB/AAAAAA?text=이미지+준비중" alt="한말톡 한국어 2025 목업" class="w-full h-full object-cover">
+              <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
+                <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2025</p>
+                <p class="font-bold text-ink text-sm leading-snug">한말톡 한국어(2025)</p>
+                <p class="text-muted text-xs mt-1 leading-relaxed">집필 및 배포</p>
+              </div>
+            </div>
+
+            <!-- Slide 3: 서울특별시교육청 협업 -->
+            <div class="slide min-w-full relative" style="aspect-ratio:16/9;">
+              <img src="https://placehold.co/1200x675/EBEBEB/AAAAAA?text=이미지+준비중" alt="서울특별시교육청 협업" class="w-full h-full object-cover">
+              <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
+                <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">협업</p>
+                <p class="font-bold text-ink text-sm leading-snug">서울특별시교육청 협업</p>
+                <p class="text-muted text-xs mt-1 leading-relaxed">교재 책자 제작 및 현장 배포</p>
+              </div>
+            </div>
+
+            <!-- Slide 4: 한말톡 한국어 개정판(2026) -->
+            <div class="slide min-w-full relative" style="aspect-ratio:16/9;">
+              <img src="https://placehold.co/1200x675/EBEBEB/AAAAAA?text=이미지+준비중" alt="한말톡 한국어 개정판 2026" class="w-full h-full object-cover">
+              <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
+                <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2026</p>
+                <p class="font-bold text-ink text-sm leading-snug">한말톡 한국어 개정판(2026)</p>
+                <p class="text-muted text-xs mt-1 leading-relaxed">집필 및 배포</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 이전 버튼 -->
+        <button id="slide-prev"
+          class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border border-border shadow-sm flex items-center justify-center hover:bg-white hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-ink/20 active:scale-95"
+          aria-label="이전">
+          <svg class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <!-- 다음 버튼 -->
+        <button id="slide-next"
+          class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border border-border shadow-sm flex items-center justify-center hover:bg-white hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-ink/20 active:scale-95"
+          aria-label="다음">
+          <svg class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <!-- 닷 인디케이터 -->
+        <div class="flex justify-center gap-2 mt-5" id="slider-dots">
+          <button class="dot w-2 h-2 rounded-full bg-ink transition-all" data-index="0" aria-label="슬라이드 1"></button>
+          <button class="dot w-2 h-2 rounded-full bg-border transition-all" data-index="1" aria-label="슬라이드 2"></button>
+          <button class="dot w-2 h-2 rounded-full bg-border transition-all" data-index="2" aria-label="슬라이드 3"></button>
+          <button class="dot w-2 h-2 rounded-full bg-border transition-all" data-index="3" aria-label="슬라이드 4"></button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-rule max-w-6xl mx-auto">
+
+
   <!-- ========== 파트너 ========== -->
   <section id="partners" class="py-28 bg-white">
     <div class="max-w-6xl mx-auto px-6">
@@ -442,6 +534,31 @@
   </section>
 
 
+  <!-- ========== 플로팅 SNS 버튼 ========== -->
+  <div class="fixed bottom-5 right-5 flex flex-col gap-2 z-40">
+    <!-- 네이버 블로그 -->
+    <a href="https://blog.naver.com/hanmallab" target="_blank" rel="noopener noreferrer"
+       title="네이버 블로그"
+       class="w-9 h-9 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-1"
+       style="background:#03C75A;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.03 11.07L9.22 5H5v14h5.97V12.9l3.86 6.1H19V5h-5.97v6.07z" fill="white"/>
+      </svg>
+    </a>
+    <!-- 인스타그램 -->
+    <a href="https://www.instagram.com/hanmal_lab?igsh=MXhsZzQ5NDRuaHl6Zw==" target="_blank" rel="noopener noreferrer"
+       title="인스타그램"
+       class="w-9 h-9 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-1"
+       style="background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="2"/>
+        <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="2"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="white"/>
+      </svg>
+    </a>
+  </div>
+
+
   <!-- ========== 푸터 ========== -->
   <footer class="border-t border-border py-10">
     <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -460,12 +577,13 @@
         </div>
       </div>
 
-      <nav class="flex gap-6 text-sm text-muted">
-        <a href="#about"    class="hover:text-ink transition-colors">소개</a>
-        <a href="#vision"   class="hover:text-ink transition-colors">비전 & 미션</a>
-        <a href="#book"     class="hover:text-ink transition-colors">교재</a>
-        <a href="#partners" class="hover:text-ink transition-colors">파트너</a>
-        <a href="#contact"  class="hover:text-ink transition-colors">연락처</a>
+      <nav class="flex flex-wrap justify-center gap-5 text-sm text-muted">
+        <a href="#about"      class="hover:text-ink transition-colors">소개</a>
+        <a href="#vision"     class="hover:text-ink transition-colors">비전 & 미션</a>
+        <a href="#book"       class="hover:text-ink transition-colors">교재</a>
+        <a href="#partners"   class="hover:text-ink transition-colors">파트너</a>
+        <a href="notice.html" class="hover:text-ink transition-colors">공지사항/언론보도</a>
+        <a href="#contact"    class="hover:text-ink transition-colors">연락처</a>
       </nav>
 
       <p class="text-muted text-xs">© 2026 이주배경한말연구소</p>
@@ -515,7 +633,40 @@
       iconClose.classList.add('hidden');
     }
 
-    // 페이드인 (Intersection Observer)
+    // ── 슬라이더 ──
+    const track  = document.getElementById('slider-track');
+    const dots   = document.querySelectorAll('#slider-dots .dot');
+    const total  = document.querySelectorAll('#slider-track .slide').length;
+    let current  = 0;
+    let autoTimer;
+
+    function goTo(idx) {
+      current = (idx + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, i) => {
+        d.style.background = i === current ? '#0A0A0A' : '#E5E5E5';
+        d.style.width = i === current ? '20px' : '8px';
+        d.style.borderRadius = '4px';
+      });
+    }
+
+    document.getElementById('slide-prev').addEventListener('click', () => { goTo(current - 1); resetAuto(); });
+    document.getElementById('slide-next').addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+    dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.index); resetAuto(); }));
+
+    function resetAuto() { clearInterval(autoTimer); autoTimer = setInterval(() => goTo(current + 1), 4500); }
+    resetAuto();
+    goTo(0);
+
+    // 터치 스와이프
+    let touchStartX = 0;
+    track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) { goTo(current + (diff > 0 ? 1 : -1)); resetAuto(); }
+    });
+
+    // ── 페이드인 (Intersection Observer) ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
