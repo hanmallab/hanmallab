@@ -90,13 +90,22 @@
       box-shadow: 0 16px 40px rgba(0,0,0,0.08);
     }
 
-    /* 페이드인 */
+    /* 스크롤 리빌 */
     .fade-in {
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(48px);
+      transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* 슬라이더 피크 */
+    .slide {
+      flex-shrink: 0;
+      transition: filter 0.45s ease, opacity 0.45s ease;
+      filter: blur(5px);
+      opacity: 0.45;
+    }
+    .slide.active { filter: blur(0); opacity: 1; }
 
     /* 히어로 타이포 */
     .hero-title {
@@ -272,7 +281,7 @@
           </div>
           <div class="border-l-2 border-ink pl-10 pt-1">
             <p class="text-xl font-bold leading-relaxed tracking-tight text-ink">
-              변화를 통해 함께 만들어가는<br>지속 가능한 미래
+              변화를 통해 함께 만들어가는 지속 가능한 미래
             </p>
           </div>
         </div>
@@ -285,7 +294,7 @@
           </div>
           <div class="border-l-2 border-ink pl-10 pt-1">
             <p class="text-xl font-bold leading-relaxed tracking-tight text-ink">
-              언어의 장벽이<br>이주배경학생의 새로운 시작을 가로막지 않는<br>교육 환경 조성
+              언어의 장벽이 이주배경학생의 새로운 시작을 가로막지 않는 교육 환경 조성
             </p>
           </div>
         </div>
@@ -386,12 +395,12 @@
       </div>
 
       <div class="relative fade-in">
-        <!-- 슬라이더 뷰포트 -->
-        <div class="overflow-hidden rounded-2xl border border-border">
-          <div id="slider-track" class="flex" style="transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);">
+        <!-- 슬라이더 뷰포트: 양옆 피크 허용 -->
+        <div id="slider-viewport" class="overflow-hidden" style="padding: 0 8%;">
+          <div id="slider-track" class="flex gap-4" style="transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);">
 
             <!-- Slide 1: 다문화 상생 포럼 -->
-            <div class="slide min-w-full relative" style="aspect-ratio:16/9;">
+            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; min-width:84%;">
               <img src="https://placehold.co/1200x675/EBEBEB/AAAAAA?text=이미지+준비중" alt="다문화 상생 포럼 포스터" class="w-full h-full object-cover">
               <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
                 <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2025</p>
@@ -401,7 +410,7 @@
             </div>
 
             <!-- Slide 2: 한말톡 한국어(2025) -->
-            <div class="slide min-w-full relative" style="aspect-ratio:16/9;">
+            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; min-width:84%;">
               <img src="https://placehold.co/1200x675/EBEBEB/AAAAAA?text=이미지+준비중" alt="한말톡 한국어 2025 목업" class="w-full h-full object-cover">
               <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
                 <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2025</p>
@@ -411,7 +420,7 @@
             </div>
 
             <!-- Slide 3: 서울특별시교육청 협업 -->
-            <div class="slide min-w-full relative" style="aspect-ratio:16/9;">
+            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; min-width:84%;">
               <img src="https://placehold.co/1200x675/EBEBEB/AAAAAA?text=이미지+준비중" alt="서울특별시교육청 협업" class="w-full h-full object-cover">
               <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
                 <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">협업</p>
@@ -421,7 +430,7 @@
             </div>
 
             <!-- Slide 4: 한말톡 한국어 개정판(2026) -->
-            <div class="slide min-w-full relative" style="aspect-ratio:16/9;">
+            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; min-width:84%;">
               <img src="https://placehold.co/1200x675/EBEBEB/AAAAAA?text=이미지+준비중" alt="한말톡 한국어 개정판 2026" class="w-full h-full object-cover">
               <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
                 <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2026</p>
@@ -641,20 +650,35 @@
       iconClose.classList.add('hidden');
     }
 
-    // ── 슬라이더 ──
-    const track  = document.getElementById('slider-track');
-    const dots   = document.querySelectorAll('#slider-dots .dot');
-    const total  = document.querySelectorAll('#slider-track .slide').length;
-    let current  = 0;
+    // ── 슬라이더 (피크 + 블러) ──
+    const track    = document.getElementById('slider-track');
+    const viewport = document.getElementById('slider-viewport');
+    const slides   = document.querySelectorAll('#slider-track .slide');
+    const dots     = document.querySelectorAll('#slider-dots .dot');
+    const total    = slides.length;
+    const GAP      = 16; // gap-4 = 16px
+    let current    = 0;
     let autoTimer;
 
     function goTo(idx) {
       current = (idx + total) % total;
-      track.style.transform = `translateX(-${current * 100}%)`;
+
+      // 슬라이드 너비 계산 (패딩 8% × 2 = 16% 제외한 84%)
+      const vw        = viewport.offsetWidth;
+      const slideW    = vw * 0.84;
+      const offset    = current * (slideW + GAP);
+      track.style.transform = `translateX(-${offset}px)`;
+
+      // 블러/선명 전환
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === current);
+      });
+
+      // 닷 업데이트
       dots.forEach((d, i) => {
-        d.style.background = i === current ? '#0A0A0A' : '#E5E5E5';
-        d.style.width = i === current ? '20px' : '8px';
-        d.style.borderRadius = '4px';
+        d.style.background    = i === current ? '#0A0A0A' : '#E5E5E5';
+        d.style.width         = i === current ? '20px' : '8px';
+        d.style.borderRadius  = '4px';
       });
     }
 
@@ -663,18 +687,23 @@
     dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.index); resetAuto(); }));
 
     function resetAuto() { clearInterval(autoTimer); autoTimer = setInterval(() => goTo(current + 1), 4500); }
+
+    // 창 크기 바뀌면 위치 재계산
+    window.addEventListener('resize', () => goTo(current), { passive: true });
+
     resetAuto();
     goTo(0);
 
     // 터치 스와이프
     let touchStartX = 0;
     track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend', e => {
+    track.addEventListener('touchend',   e => {
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (Math.abs(diff) > 40) { goTo(current + (diff > 0 ? 1 : -1)); resetAuto(); }
     });
 
-    // ── 페이드인 (Intersection Observer) ──
+    // ── 스크롤 리빌 (Intersection Observer) ──
+    // rootMargin: 하단을 -12% 당겨서 뷰포트 안쪽 깊이 들어와야 발동
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -682,7 +711,7 @@
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
   </script>
