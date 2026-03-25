@@ -20,18 +20,9 @@
     * { font-family: 'Pretendard', -apple-system, sans-serif; }
     html { scroll-behavior: smooth; }
 
-    #navbar { transition: background 0.3s, border-color 0.3s; }
-    #navbar.scrolled {
-      background: rgba(255,255,255,0.97);
-      border-bottom: 1px solid #E5E5E5;
-      backdrop-filter: blur(8px);
-    }
+    #navbar { background: rgba(255,255,255,0.97); border-bottom: 1px solid #E5E5E5; }
     .nav-link {
-      position: relative;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: #666;
-      transition: color 0.2s;
+      position: relative; font-size: 0.875rem; font-weight: 500; color: #666; transition: color 0.2s;
     }
     .nav-link::after {
       content: ''; position: absolute; bottom: -4px; left: 0;
@@ -44,14 +35,11 @@
 
     /* 탭 */
     .tab-btn {
-      padding: 0.6rem 1.5rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      border-bottom: 2px solid transparent;
-      color: #999;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.9rem; font-weight: 600;
+      border-bottom: 2px solid transparent; color: #999;
       transition: color 0.2s, border-color 0.2s;
-      cursor: pointer;
-      background: none;
+      cursor: pointer; background: none;
       border-top: none; border-left: none; border-right: none;
     }
     .tab-btn.active { color: #0A0A0A; border-bottom-color: #0A0A0A; }
@@ -59,40 +47,46 @@
 
     /* 게시글 행 */
     .post-row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.25rem 0;
-      border-bottom: 1px solid #E5E5E5;
-      cursor: pointer;
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.1rem 0.75rem; border-bottom: 1px solid #E5E5E5;
+      cursor: pointer; border-radius: 0.5rem;
       transition: background 0.15s;
     }
-    .post-row:hover { background: #F7F7F7; margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; border-radius: 0.5rem; }
+    .post-row:hover { background: #F7F7F7; }
     .post-row:first-child { border-top: 1px solid #E5E5E5; }
+
+    /* 원형 번호 */
+    .num-circle {
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 1.5px solid #0A0A0A;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 11px; font-weight: 700; color: #0A0A0A;
+      line-height: 1;
+    }
 
     /* 더보기 버튼 */
     .btn-more {
-      display: inline-block;
-      border: 1.5px solid #E5E5E5;
-      color: #666;
-      padding: 0.65rem 2rem;
-      font-size: 0.875rem;
-      font-weight: 600;
-      border-radius: 0.375rem;
-      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      display: inline-block; border: 1.5px solid #E5E5E5; color: #666;
+      padding: 0.65rem 2rem; font-size: 0.875rem; font-weight: 600;
+      border-radius: 0.375rem; transition: border-color 0.2s, color 0.2s, transform 0.15s;
     }
     .btn-more:hover  { border-color: #0A0A0A; color: #0A0A0A; transform: scale(1.02); }
     .btn-more:active { transform: scale(0.98); }
     .btn-more:focus  { outline: none; box-shadow: 0 0 0 3px rgba(10,10,10,0.1); }
 
-    /* 숨김 */
     .post-hidden { display: none; }
+
+    /* 모달 */
+    #post-modal { background: rgba(0,0,0,0.55); }
+    .modal-body-text p { margin-bottom: 1rem; line-height: 1.8; }
+    .modal-body-text p:last-child { margin-bottom: 0; }
   </style>
 </head>
 <body class="bg-white text-ink antialiased">
 
   <!-- ========== 네비게이션 ========== -->
-  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-border">
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50">
     <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2.5">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -113,7 +107,7 @@
         <li><a href="index.html#vision"   class="nav-link">비전 & 미션</a></li>
         <li><a href="index.html#book"     class="nav-link">교재</a></li>
         <li><a href="index.html#partners" class="nav-link">파트너</a></li>
-        <li><a href="notice.html"         class="nav-link" style="color:#0A0A0A; border-bottom: 1px solid #0A0A0A; padding-bottom:2px;">공지사항/언론보도</a></li>
+        <li><a href="notice.html" class="nav-link" style="color:#0A0A0A; border-bottom:1px solid #0A0A0A; padding-bottom:2px;">공지사항/언론보도</a></li>
         <li><a href="index.html#contact"  class="nav-link">연락처</a></li>
       </ul>
 
@@ -145,7 +139,7 @@
   </div>
 
 
-  <!-- ========== 메인 컨텐츠 ========== -->
+  <!-- ========== 메인 ========== -->
   <main class="max-w-6xl mx-auto px-6 py-12 min-h-[60vh]">
 
     <!-- 탭 -->
@@ -157,154 +151,180 @@
 
     <!-- ===== 공지사항 패널 ===== -->
     <div id="panel-notice">
-
       <div id="notice-list">
         <!--
-        ============================================================
-        📌 게시글 추가 방법 (Claude Code 없이 직접 수정)
-        ============================================================
-        아래 블록을 복사해서 맨 위에 붙여넣으세요.
-        data-index 번호는 1씩 올려주세요 (현재 마지막이 5이면 6, 7...)
-        5개 초과분은 자동으로 "더보기" 클릭 시 보입니다.
+        ╔══════════════════════════════════════════════════════════╗
+        ║  📌 공지사항 추가 방법 (직접 수정 시)                    ║
+        ║                                                          ║
+        ║  1. 아래 블록을 복사해 맨 위에 붙여넣기                  ║
+        ║  2. data-index 와 원형번호 숫자를 1씩 올리기             ║
+        ║  3. 제목, 요약, 날짜 수정                                ║
+        ║  4. JS posts.notice 객체에도 같은 번호로 본문 추가       ║
+        ╚══════════════════════════════════════════════════════════╝
 
         <div class="post-row" data-index="N" onclick="openPost('notice', N)">
+          <div class="num-circle">N</div>
           <div class="flex-1 min-w-0">
-            <p class="font-semibold text-sm text-ink truncate">제목을 여기에 쓰세요</p>
-            <p class="text-muted text-xs mt-0.5">내용 요약을 여기에 쓰세요</p>
+            <p class="font-semibold text-sm text-ink truncate">제목</p>
+            <p class="text-muted text-xs mt-0.5">요약</p>
           </div>
-          <span class="text-xs text-muted whitespace-nowrap flex-shrink-0">2026.03.25</span>
+          <span class="text-xs text-muted whitespace-nowrap flex-shrink-0">YYYY.MM.DD</span>
         </div>
-        ============================================================
         -->
 
-        <!-- 공지 1 -->
         <div class="post-row" data-index="1" onclick="openPost('notice', 1)">
-          <span class="text-[10px] font-bold bg-ink text-white px-2 py-0.5 rounded flex-shrink-0">공지</span>
+          <div class="num-circle">1</div>
           <div class="flex-1 min-w-0">
             <p class="font-semibold text-sm text-ink truncate">이주배경한말연구소 홈페이지를 오픈하였습니다</p>
-            <p class="text-muted text-xs mt-0.5">이주배경학생 교육 지원을 위한 공식 홈페이지가 개설되었습니다.</p>
+            <p class="text-muted text-xs mt-0.5">공식 홈페이지 개설 안내</p>
           </div>
           <span class="text-xs text-muted whitespace-nowrap flex-shrink-0">2026.03.25</span>
         </div>
 
-        <!-- 공지 2 -->
         <div class="post-row" data-index="2" onclick="openPost('notice', 2)">
+          <div class="num-circle">2</div>
           <div class="flex-1 min-w-0">
             <p class="font-semibold text-sm text-ink truncate">한말톡 한국어 개정판(2026) 출간 안내</p>
-            <p class="text-muted text-xs mt-0.5">2026년 개정판 출간 일정 및 배포 안내입니다.</p>
+            <p class="text-muted text-xs mt-0.5">2026년 개정판 출간 일정 및 배포 안내</p>
           </div>
           <span class="text-xs text-muted whitespace-nowrap flex-shrink-0">2026.03.01</span>
         </div>
 
-        <!-- 공지 3 -->
         <div class="post-row" data-index="3" onclick="openPost('notice', 3)">
+          <div class="num-circle">3</div>
           <div class="flex-1 min-w-0">
             <p class="font-semibold text-sm text-ink truncate">서울특별시교육청 협업 사업 참여 안내</p>
-            <p class="text-muted text-xs mt-0.5">서울특별시교육청과 함께하는 협업 사업에 대해 안내드립니다.</p>
+            <p class="text-muted text-xs mt-0.5">협업 사업 안내</p>
           </div>
           <span class="text-xs text-muted whitespace-nowrap flex-shrink-0">2025.11.10</span>
         </div>
 
-        <!-- 공지 4 -->
         <div class="post-row" data-index="4" onclick="openPost('notice', 4)">
+          <div class="num-circle">4</div>
           <div class="flex-1 min-w-0">
             <p class="font-semibold text-sm text-ink truncate">다문화 상생 포럼 개최 결과 보고</p>
-            <p class="text-muted text-xs mt-0.5">2025년 다문화 상생 포럼 개최 결과를 공유드립니다.</p>
+            <p class="text-muted text-xs mt-0.5">2025년 다문화 상생 포럼 결과 공유</p>
           </div>
           <span class="text-xs text-muted whitespace-nowrap flex-shrink-0">2025.09.20</span>
         </div>
 
-        <!-- 공지 5 -->
         <div class="post-row" data-index="5" onclick="openPost('notice', 5)">
+          <div class="num-circle">5</div>
           <div class="flex-1 min-w-0">
             <p class="font-semibold text-sm text-ink truncate">한말톡 한국어(2025) 출간 안내</p>
-            <p class="text-muted text-xs mt-0.5">이주배경학생을 위한 한국어 교재 한말톡 한국어 2025년판 출간을 알립니다.</p>
+            <p class="text-muted text-xs mt-0.5">2025년판 출간 안내</p>
           </div>
           <span class="text-xs text-muted whitespace-nowrap flex-shrink-0">2025.03.02</span>
         </div>
 
-        <!-- 공지 6~ (더보기 후 표시) -->
         <div class="post-row post-hidden" data-index="6" onclick="openPost('notice', 6)">
+          <div class="num-circle">6</div>
           <div class="flex-1 min-w-0">
             <p class="font-semibold text-sm text-ink truncate">연구소 설립 및 활동 시작 안내</p>
-            <p class="text-muted text-xs mt-0.5">이주배경한말연구소의 설립과 첫 활동을 알려드립니다.</p>
+            <p class="text-muted text-xs mt-0.5">이주배경한말연구소 설립 알림</p>
           </div>
           <span class="text-xs text-muted whitespace-nowrap flex-shrink-0">2024.06.01</span>
         </div>
+      </div>
 
-      </div><!-- /notice-list -->
-
-      <!-- 더보기 버튼 -->
       <div class="text-center mt-8" id="notice-more-wrap">
         <button class="btn-more" onclick="loadMore('notice')">더보기</button>
       </div>
-
-    </div><!-- /panel-notice -->
+    </div>
 
 
     <!-- ===== 언론보도 패널 ===== -->
     <div id="panel-press" class="hidden">
-
       <div id="press-list">
         <!--
-        ============================================================
-        📌 언론보도 게시글 추가 방법
-        ============================================================
-        아래 블록을 복사해서 맨 위에 붙여넣으세요.
+        ╔══════════════════════════════════════════════════════════╗
+        ║  📌 언론보도 추가 방법 (직접 수정 시)                    ║
+        ║                                                          ║
+        ║  1. 아래 블록을 복사해 맨 위에 붙여넣기                  ║
+        ║  2. data-index 와 원형번호 숫자를 1씩 올리기             ║
+        ║  3. 매체명, 제목, 날짜, 원문 URL 수정                    ║
+        ║  4. JS posts.press 객체에도 같은 번호로 본문 추가        ║
+        ╚══════════════════════════════════════════════════════════╝
 
         <div class="post-row" data-index="N" onclick="openPost('press', N)">
-          <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-surface border border-border flex items-center justify-center text-xs font-bold text-muted">
-            매체명 약자
-          </div>
+          <div class="num-circle">N</div>
           <div class="flex-1 min-w-0">
-            <p class="font-semibold text-sm text-ink truncate">기사 제목</p>
-            <p class="text-muted text-xs mt-0.5">매체명 · 날짜</p>
+            <span class="text-[10px] font-bold text-muted mr-1">[매체명]</span>
+            <span class="font-semibold text-sm text-ink">제목</span>
           </div>
-          <a href="기사URL" target="_blank" onclick="event.stopPropagation()"
-             class="text-xs text-muted border border-border rounded px-2 py-1 hover:border-ink hover:text-ink transition-colors flex-shrink-0">
-            원문 보기
-          </a>
+          <span class="text-xs text-muted whitespace-nowrap flex-shrink-0">YYYY.MM.DD</span>
         </div>
-        ============================================================
         -->
 
-        <!-- 언론 1 -->
-        <div class="post-row" data-index="1">
-          <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-surface border border-border flex items-center justify-center text-xs font-bold text-muted">
-            보도
+        <div class="post-row" data-index="1" onclick="openPost('press', 1)">
+          <div class="num-circle">1</div>
+          <div class="flex-1 min-w-0 flex items-baseline gap-1.5 flex-wrap">
+            <span class="text-[10px] font-bold text-muted whitespace-nowrap">[이코노믹포스트]</span>
+            <span class="font-semibold text-sm text-ink leading-snug">서울시교육청, 이주배경학생 '학교 적응 골든타임' 서울형 통합 지원체계 구축</span>
           </div>
-          <div class="flex-1 min-w-0">
-            <p class="font-semibold text-sm text-ink truncate">언론보도 내용이 등록되면 이곳에 표시됩니다</p>
-            <p class="text-muted text-xs mt-0.5">매체명 · 날짜</p>
-          </div>
+          <span class="text-xs text-muted whitespace-nowrap flex-shrink-0 ml-3">2026.03.20</span>
         </div>
 
-      </div><!-- /press-list -->
+        <div class="post-row" data-index="2" onclick="openPost('press', 2)">
+          <div class="num-circle">2</div>
+          <div class="flex-1 min-w-0 flex items-baseline gap-1.5 flex-wrap">
+            <span class="text-[10px] font-bold text-muted whitespace-nowrap">[핀포인트뉴스]</span>
+            <span class="font-semibold text-sm text-ink leading-snug">서울시교육청, 이주배경학생 '적응 골든타임' 지원체계 구축</span>
+          </div>
+          <span class="text-xs text-muted whitespace-nowrap flex-shrink-0 ml-3">2026.03.20</span>
+        </div>
+
+      </div>
 
       <div class="text-center mt-8 hidden" id="press-more-wrap">
         <button class="btn-more" onclick="loadMore('press')">더보기</button>
       </div>
-
-    </div><!-- /panel-press -->
+    </div>
 
   </main>
 
 
   <!-- ========== 게시글 모달 ========== -->
   <div id="post-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"
-       style="background: rgba(0,0,0,0.5);" onclick="closeModal(event)">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[80vh] overflow-y-auto" onclick="event.stopPropagation()">
-      <div class="flex items-start justify-between p-6 border-b border-border">
-        <h3 id="modal-title" class="font-bold text-lg text-ink pr-4 leading-snug"></h3>
+       onclick="closeModal(event)">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
+
+      <!-- 모달 헤더 -->
+      <div class="flex items-start justify-between p-6 border-b border-border flex-shrink-0">
+        <div class="pr-4 flex-1">
+          <p id="modal-source" class="text-[10px] font-bold tracking-widest uppercase text-muted mb-1.5"></p>
+          <h3 id="modal-title" class="font-bold text-base text-ink leading-snug"></h3>
+          <p id="modal-date"   class="text-xs text-muted mt-1.5"></p>
+        </div>
         <button onclick="closeModal()" class="flex-shrink-0 w-8 h-8 rounded-full hover:bg-surface flex items-center justify-center transition-colors">
           <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
       </div>
-      <div class="p-6">
-        <p id="modal-date" class="text-xs text-muted mb-4"></p>
-        <div id="modal-body" class="text-sm text-gray-700 leading-relaxed"></div>
+
+      <!-- 모달 본문 (스크롤) -->
+      <div class="overflow-y-auto flex-1 p-6 space-y-5">
+
+        <!-- 기사 바로가기 링크 (있을 때만 표시) -->
+        <div id="modal-link-wrap" class="hidden">
+          <a id="modal-link" href="#" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 text-sm font-semibold text-ink border border-border rounded-lg px-4 py-2.5 hover:border-ink hover:bg-surface transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+            기사 원문 바로가기
+          </a>
+        </div>
+
+        <!-- 기사 이미지 (있을 때만 표시) -->
+        <div id="modal-img-wrap" class="hidden">
+          <img id="modal-img" src="" alt="기사 이미지" class="w-full rounded-xl object-cover border border-border">
+        </div>
+
+        <!-- 본문 텍스트 -->
+        <div id="modal-body" class="modal-body-text text-sm text-gray-700 leading-relaxed"></div>
+
       </div>
     </div>
   </div>
@@ -362,7 +382,115 @@
 
   <!-- ========== 스크립트 ========== -->
   <script>
-    // ── 탭 전환 ──
+    // ── 게시글 데이터 ──────────────────────────────────────────────
+    const posts = {
+      notice: {
+        1: {
+          source: 'HANMALLAB 공지',
+          title:  '이주배경한말연구소 홈페이지를 오픈하였습니다',
+          date:   '2026.03.25',
+          body:   '이주배경학생 교육 지원을 위한 이주배경한말연구소 공식 홈페이지가 개설되었습니다.\n\n앞으로 연구소의 활동, 교재 정보, 공지사항 등을 이 곳에서 안내드리겠습니다.\n\n많은 관심과 응원 부탁드립니다.'
+        },
+        2: {
+          source: 'HANMALLAB 공지',
+          title:  '한말톡 한국어 개정판(2026) 출간 안내',
+          date:   '2026.03.01',
+          body:   '한말톡 한국어 2026년 개정판 출간 일정 및 배포 안내입니다.\n\n자세한 내용은 추후 업데이트 예정입니다.'
+        },
+        3: {
+          source: 'HANMALLAB 공지',
+          title:  '서울특별시교육청 협업 사업 참여 안내',
+          date:   '2025.11.10',
+          body:   '서울특별시교육청과 함께하는 협업 사업에 대해 안내드립니다.\n\n자세한 내용은 추후 업데이트 예정입니다.'
+        },
+        4: {
+          source: 'HANMALLAB 공지',
+          title:  '다문화 상생 포럼 개최 결과 보고',
+          date:   '2025.09.20',
+          body:   '2025년 다문화 상생 포럼이 성황리에 마무리되었습니다.\n\n함께 해주신 모든 분들께 감사드립니다.'
+        },
+        5: {
+          source: 'HANMALLAB 공지',
+          title:  '한말톡 한국어(2025) 출간 안내',
+          date:   '2025.03.02',
+          body:   '이주배경학생을 위한 한국어 교재 한말톡 한국어 2025년판 출간을 알립니다.\n\n교재 문의는 hanmallab@gmail.com 으로 연락 주세요.'
+        },
+        6: {
+          source: 'HANMALLAB 공지',
+          title:  '연구소 설립 및 활동 시작 안내',
+          date:   '2024.06.01',
+          body:   '이주배경한말연구소가 설립되어 활동을 시작하였습니다.'
+        },
+      },
+
+      press: {
+        1: {
+          source: '이코노믹포스트',
+          title:  "서울시교육청, 이주배경학생 '학교 적응 골든타임' 서울형 통합 지원체계 구축",
+          date:   '2026.03.20',
+          url:    'https://www.economicpost.co.kr/162677',
+          image:  'https://newsx.ecn.cdn.infralab.net/www.economicpost.co.kr/imgdata/economicpost_co_kr/202603/2026032026383545.jpg',
+          body:   '서울특별시교육청(교육감 정근식)은 2025년 4월 1일 기준 22,002명(전체 학생의 2.95%)에 이르는 이주배경학생 증가 추세에 대응하여, 입국 초기 한 달을 \'학교 적응 골든타임\'으로 설정하고 이를 집중 지원하는 서울형 통합 지원체계를 구축한다고 밝혔다.\n\n최근 5년간 이주배경학생 수는 지속 증가하고 있으며, 언어 장벽과 문화 차이로 인해 입학 초기 교실에서 어려움을 겪는 사례가 확대되고 있다. 특히 입국 후 첫 한 달은 학습 격차와 정서적 위축을 예방하는 결정적 시기로, 교실 현장에서는 즉시 활용 가능한 실질적 지원 자료에 대한 요구가 높아져 왔다.\n\n이에 서울시교육청은 단순 한국어 교재 보급을 넘어 학교 적응 전 과정을 포괄하는 \'골든타임 통합 지원체계\'를 마련하고, 현장에서 바로 활용 가능한 도움자료 2종을 개발·보급한다.\n\n「앗! 다문화학생이 우리 반에 왔어요」는 학교생활 적응, 한국어교육, 보호자 소통, 심리·정서 지원, 진로·진학 지도 등 7개 영역을 체계화한 실무형 매뉴얼이다. 입국 초기 한 달 집중 지원 로드맵을 구체화한 현장 실행 중심 자료로, 담임교사가 입급 첫날부터 활용할 수 있는 초기 대응 체크리스트와 교과별 지도 방안, 실제 사례 기반 대응 전략을 담았다.\n\n「그림:톡 한국어」는 \'선생님\', \'아파요\', \'도와주세요\' 등 교실 필수 표현을 그림 중심으로 구성한 생존 한국어 교재이다. 언어 표현이 어려운 학생도 즉시 의사를 전달할 수 있도록 설계했으며, 그림과 상징을 활용해 말로 표현하기 어려운 상황에서도 기본적인 의사소통이 가능하도록 구성했다.\n\n이번 지원체계는 기존 교육지원청과 학교 현장의 한국어 지원 성과를 토대로, 서울 전역에서 공통 적용 가능한 표준형 모델로 설계되었다는 점에서 의미를 갖는다. 언어 지원에 그치지 않고 정서 안정, 학습 참여, 보호자 소통까지 통합적으로 지원함으로써 초기 적응의 구조적 공백을 최소화하는 데 중점을 두었다.\n\n아울러 서울시교육청은 학생 적응 지원과 연계하여 4월부터 \'이주배경학생 보호자 학교 이해 아카데미\'를 정례 운영한다. 입국 초기 보호자가 한국 교육제도, 학사 운영, 생활지도, 진로·진학 체계를 이해할 수 있도록 매월 둘째 주 토요일에 맞춤형 교육을 제공하고, 다국어 통·번역 지원을 병행한다.\n\n정근식 교육감은 "입국 초기 보호자가 한국 교육제도를 이해할 수 있도록 맞춤형 교육을 제공한다"고 밝혔다.\n\n서울시교육청은 앞으로도 증가하는 이주배경학생의 학교 적응과 학습 지원을 위해 선제적으로 대응하고, 학생 개별 특성에 맞춘 맞춤형 교육이 현장에서 안정적으로 이루어질 수 있도록 지원을 강화해 나갈 계획이다.'
+        },
+        2: {
+          source: '핀포인트뉴스',
+          title:  "서울시교육청, 이주배경학생 '적응 골든타임' 지원체계 구축",
+          date:   '2026.03.20',
+          url:    'https://www.pinpointnews.co.kr/news/articleViewAmp.html?idxno=438495',
+          body:   "서울시교육청이 이주배경학생의 학교 적응을 위한 '골든타임' 지원체계를 구축했습니다.\n\n입국 초기 한 달을 '학교 적응 골든타임'으로 설정하고, 교실 현장에서 즉시 활용할 수 있는 지원 자료를 개발·보급합니다.\n\n자세한 내용은 아래 기사 원문에서 확인하실 수 있습니다."
+        },
+      }
+    };
+
+    // ── 모달 열기 ──────────────────────────────────────────────────
+    function openPost(type, idx) {
+      const p = (posts[type] || {})[idx];
+      if (!p) return;
+
+      document.getElementById('modal-source').textContent = p.source || '';
+      document.getElementById('modal-title').textContent  = p.title  || '';
+      document.getElementById('modal-date').textContent   = p.date   || '';
+
+      // 기사 원문 링크
+      const linkWrap = document.getElementById('modal-link-wrap');
+      const linkEl   = document.getElementById('modal-link');
+      if (p.url) {
+        linkEl.href = p.url;
+        linkWrap.classList.remove('hidden');
+      } else {
+        linkWrap.classList.add('hidden');
+      }
+
+      // 이미지
+      const imgWrap = document.getElementById('modal-img-wrap');
+      const imgEl   = document.getElementById('modal-img');
+      if (p.image) {
+        imgEl.src = p.image;
+        imgEl.alt = p.title;
+        imgWrap.classList.remove('hidden');
+      } else {
+        imgWrap.classList.add('hidden');
+      }
+
+      // 본문 텍스트
+      document.getElementById('modal-body').innerHTML =
+        (p.body || '').split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).join('');
+
+      const modal = document.getElementById('post-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(e) {
+      if (e && e.target !== document.getElementById('post-modal') && e.type !== 'click') return;
+      document.getElementById('post-modal').classList.add('hidden');
+      document.getElementById('post-modal').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── 탭 전환 ────────────────────────────────────────────────────
     function switchTab(tab) {
       document.getElementById('panel-notice').classList.toggle('hidden', tab !== 'notice');
       document.getElementById('panel-press').classList.toggle('hidden',  tab !== 'press');
@@ -370,14 +498,12 @@
       document.getElementById('tab-press').classList.toggle('active',  tab === 'press');
     }
 
-    // ── 더보기 (5개 초과분 표시) ──
+    // ── 더보기 ─────────────────────────────────────────────────────
     const PAGE_SIZE = 5;
 
     function initVisibility(panelId) {
       const rows = document.querySelectorAll(`#${panelId}-list .post-row`);
-      rows.forEach((r, i) => {
-        if (i >= PAGE_SIZE) r.classList.add('post-hidden');
-      });
+      rows.forEach((r, i) => { if (i >= PAGE_SIZE) r.classList.add('post-hidden'); });
       const wrap = document.getElementById(`${panelId}-more-wrap`);
       if (rows.length <= PAGE_SIZE) wrap.classList.add('hidden');
       else wrap.classList.remove('hidden');
@@ -387,58 +513,18 @@
       const hidden = document.querySelectorAll(`#${panelId}-list .post-row.post-hidden`);
       let shown = 0;
       hidden.forEach(r => { if (shown < PAGE_SIZE) { r.classList.remove('post-hidden'); shown++; } });
-      const stillHidden = document.querySelectorAll(`#${panelId}-list .post-row.post-hidden`);
-      if (stillHidden.length === 0) document.getElementById(`${panelId}-more-wrap`).classList.add('hidden');
+      if (!document.querySelectorAll(`#${panelId}-list .post-row.post-hidden`).length)
+        document.getElementById(`${panelId}-more-wrap`).classList.add('hidden');
     }
 
     initVisibility('notice');
     initVisibility('press');
 
-    // ── 게시글 모달 (간단 미리보기) ──
-    // 실제 게시글 본문은 아래 posts 객체에 직접 입력하세요
-    const posts = {
-      notice: {
-        1: { title: '이주배경한말연구소 홈페이지를 오픈하였습니다', date: '2026.03.25',
-             body: '이주배경학생 교육 지원을 위한 이주배경한말연구소 공식 홈페이지가 개설되었습니다.\n\n앞으로 연구소의 활동, 교재 정보, 공지사항 등을 이 곳에서 안내드리겠습니다.\n\n많은 관심과 응원 부탁드립니다.' },
-        2: { title: '한말톡 한국어 개정판(2026) 출간 안내', date: '2026.03.01',
-             body: '한말톡 한국어 2026년 개정판 출간 일정 및 배포 안내입니다.\n\n자세한 내용은 추후 업데이트 예정입니다.' },
-        3: { title: '서울특별시교육청 협업 사업 참여 안내', date: '2025.11.10',
-             body: '서울특별시교육청과 함께하는 협업 사업에 대해 안내드립니다.\n\n자세한 내용은 추후 업데이트 예정입니다.' },
-        4: { title: '다문화 상생 포럼 개최 결과 보고', date: '2025.09.20',
-             body: '2025년 다문화 상생 포럼이 성황리에 마무리되었습니다.\n\n함께 해주신 모든 분들께 감사드립니다.' },
-        5: { title: '한말톡 한국어(2025) 출간 안내', date: '2025.03.02',
-             body: '이주배경학생을 위한 한국어 교재 한말톡 한국어 2025년판 출간을 알립니다.\n\n교재 문의는 hanmallab@gmail.com 으로 연락 주세요.' },
-        6: { title: '연구소 설립 및 활동 시작 안내', date: '2024.06.01',
-             body: '이주배경한말연구소가 설립되어 활동을 시작하였습니다.' },
-      },
-      press: {}
-    };
-
-    function openPost(type, idx) {
-      const p = (posts[type] || {})[idx];
-      if (!p) return;
-      document.getElementById('modal-title').textContent = p.title;
-      document.getElementById('modal-date').textContent  = p.date;
-      document.getElementById('modal-body').innerHTML    = p.body.replace(/\n/g, '<br>');
-      const modal = document.getElementById('post-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closeModal(e) {
-      if (e && e.target !== document.getElementById('post-modal') && e.type !== 'click') return;
-      const modal = document.getElementById('post-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-    // ── 모바일 메뉴 ──
-    const menuBtn   = document.getElementById('menu-btn');
-    const mobileMenu= document.getElementById('mobile-menu');
-    const iconOpen  = document.getElementById('icon-open');
-    const iconClose = document.getElementById('icon-close');
+    // ── 모바일 메뉴 ────────────────────────────────────────────────
+    const menuBtn    = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen   = document.getElementById('icon-open');
+    const iconClose  = document.getElementById('icon-close');
     let menuOpen = false;
 
     menuBtn.addEventListener('click', () => {
