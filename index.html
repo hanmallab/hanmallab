@@ -395,8 +395,8 @@
           <div id="slider-track" class="flex" style="width:100%; transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);">
 
             <!-- Slide 1: 다문화 상생 포럼 -->
-            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0;">
-              <img src="./주요%20활동/다문화상생포럼.jpg" alt="다문화 상생 포럼" class="w-full h-full object-cover">
+            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0; background:#F0EEE8;">
+              <img src="./주요%20활동/다문화상생포럼.jpg" alt="다문화 상생 포럼" class="w-full h-full object-contain">
               <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
                 <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2025</p>
                 <p class="font-bold text-ink text-sm leading-snug">다문화 상생 포럼</p>
@@ -414,31 +414,27 @@
               </div>
             </div>
 
-            <!-- Slide 3: 서울시교육청 협업 — 4장 그리드 (메인 1장 + 우측 3장) -->
-            <div class="slide rounded-2xl overflow-hidden border border-border bg-ink" style="aspect-ratio:16/9; flex-shrink:0;">
-              <div class="flex h-full">
-                <!-- 메인 사진 (좌측 65%) -->
-                <div class="relative" style="flex:0 0 65%;">
-                  <img id="edu-main" src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163.jpg"
-                       alt="서울시교육청 협업 메인" class="w-full h-full object-cover">
-                  <div class="absolute bottom-0 right-0 bg-white/96 p-4 text-right" style="border-top-left-radius:1rem; max-width:260px;">
-                    <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">협업</p>
-                    <p class="font-bold text-ink text-sm leading-snug">서울시교육청 협업</p>
-                    <p class="text-muted text-xs mt-1 leading-relaxed">교재 책자 제작 및 현장 배포</p>
-                  </div>
+            <!-- Slide 3: 서울시교육청 협업 — 4장 아코디언 (1장 확대 + 3장 미리보기) -->
+            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0; background:#111;">
+              <div id="edu-strip" class="flex h-full gap-1 p-1">
+                <div class="edu-panel relative cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-in-out" data-idx="0" style="flex:4 1 0;">
+                  <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163.jpg" alt="협업 1" class="w-full h-full object-contain transition-opacity duration-500">
                 </div>
-                <!-- 썸네일 3장 (우측 35%) -->
-                <div class="flex flex-col" style="flex:0 0 35%; gap:2px; padding-left:2px;">
-                  <div class="edu-thumb flex-1 cursor-pointer overflow-hidden" data-src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_01.jpg" style="outline:2px solid transparent;">
-                    <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_01.jpg" alt="협업 사진 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                  </div>
-                  <div class="edu-thumb flex-1 cursor-pointer overflow-hidden" data-src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_02.jpg" style="outline:2px solid transparent;">
-                    <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_02.jpg" alt="협업 사진 3" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                  </div>
-                  <div class="edu-thumb flex-1 cursor-pointer overflow-hidden" data-src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_03.jpg" style="outline:2px solid transparent;">
-                    <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_03.jpg" alt="협업 사진 4" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                  </div>
+                <div class="edu-panel relative cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-in-out" data-idx="1" style="flex:1 1 0;">
+                  <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_01.jpg" alt="협업 2" class="w-full h-full object-contain transition-opacity duration-500" style="opacity:0.5;">
                 </div>
+                <div class="edu-panel relative cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-in-out" data-idx="2" style="flex:1 1 0;">
+                  <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_02.jpg" alt="협업 3" class="w-full h-full object-contain transition-opacity duration-500" style="opacity:0.5;">
+                </div>
+                <div class="edu-panel relative cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-in-out" data-idx="3" style="flex:1 1 0;">
+                  <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_03.jpg" alt="협업 4" class="w-full h-full object-contain transition-opacity duration-500" style="opacity:0.5;">
+                </div>
+              </div>
+              <!-- 캡션 -->
+              <div class="absolute bottom-0 right-0 bg-white/96 p-4 text-right" style="border-top-left-radius:1rem; max-width:260px;">
+                <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">협업</p>
+                <p class="font-bold text-ink text-sm leading-snug">서울시교육청 협업</p>
+                <p class="text-muted text-xs mt-1 leading-relaxed">교재 책자 제작 및 현장 배포</p>
               </div>
             </div>
 
@@ -677,19 +673,46 @@
         d.style.width        = i === current ? '20px' : '8px';
         d.style.borderRadius = '4px';
       });
+
+      // 슬라이드 3 아코디언 타이머 제어
+      if (current === 2) { setEduActive(0); startEduTimer(); }
+      else stopEduTimer();
     }
 
     document.getElementById('slide-prev').addEventListener('click', () => { goTo(current - 1); resetAuto(); });
     document.getElementById('slide-next').addEventListener('click', () => { goTo(current + 1); resetAuto(); });
     dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.index); resetAuto(); }));
 
-    // 슬라이드 3: 썸네일 클릭 → 메인 이미지 교체
-    const eduMain = document.getElementById('edu-main');
-    document.querySelectorAll('.edu-thumb').forEach(thumb => {
-      thumb.addEventListener('click', () => {
-        if (eduMain) eduMain.src = thumb.dataset.src;
+    // 슬라이드 3: 아코디언 — 클릭한 패널 확대, 나머지 축소
+    const eduPanels = document.querySelectorAll('.edu-panel');
+    let eduActive = 0;
+    let eduTimer;
+
+    function setEduActive(idx) {
+      eduActive = idx;
+      eduPanels.forEach((p, i) => {
+        const img = p.querySelector('img');
+        if (i === idx) {
+          p.style.flex = '4 1 0';
+          img.style.opacity = '1';
+        } else {
+          p.style.flex = '1 1 0';
+          img.style.opacity = '0.45';
+        }
       });
-    });
+    }
+
+    eduPanels.forEach((p, i) => p.addEventListener('click', () => {
+      setEduActive(i);
+      clearInterval(eduTimer);
+      eduTimer = setInterval(() => setEduActive((eduActive + 1) % 4), 2800);
+    }));
+
+    function startEduTimer() {
+      clearInterval(eduTimer);
+      eduTimer = setInterval(() => setEduActive((eduActive + 1) % 4), 2800);
+    }
+    function stopEduTimer() { clearInterval(eduTimer); }
 
     function resetAuto() { clearInterval(autoTimer); autoTimer = setInterval(() => goTo(current + 1), 4500); }
     window.addEventListener('resize', () => { setSlideWidths(); goTo(current); }, { passive: true });
