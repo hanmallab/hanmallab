@@ -853,7 +853,10 @@
 
     function resetAuto() {
       clearInterval(autoTimer);
-      if (!isPaused) autoTimer = setInterval(() => goTo(current + 1), 4500);
+      // 슬라이드 3에서는 edu 타이머가 직접 넘기므로 autoTimer 불필요
+      if (!isPaused && current !== 2) {
+        autoTimer = setInterval(() => goTo(current + 1), 4500);
+      }
     }
     window.addEventListener('resize', () => { setSlideWidths(); goTo(current); }, { passive: true });
     setSlideWidths();
