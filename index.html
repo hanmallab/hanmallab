@@ -460,34 +460,32 @@
               </div>
             </div>
 
-            <!-- Slide 3: 서울시교육청 협업 — 왼쪽 썸네일 3개 + 오른쪽 확대 이미지 -->
+            <!-- Slide 3: 서울시교육청 협업 — 왼쪽 2×2 그리드 + 오른쪽 캡션 -->
             <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0; background:#F0EEE8;">
-              <div class="flex h-full gap-1.5 p-1.5">
-                <!-- 왼쪽: 썸네일 3개 세로 배치 -->
-                <div class="flex flex-col gap-1.5" style="flex: 0 0 28%; min-width:0;">
-                  <div class="edu-thumb cursor-pointer rounded-xl overflow-hidden relative" style="flex:1 1 0; min-height:0;">
-                    <img class="w-full h-full object-cover" style="opacity:0.6; transition:opacity 0.3s;">
-                    <div class="absolute inset-0 rounded-xl" style="transition:background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'"></div>
+              <div class="flex h-full">
+                <!-- 왼쪽: 2×2 이미지 그리드 -->
+                <div class="grid grid-cols-2 gap-1.5 p-1.5" style="flex: 0 0 68%; min-width:0;">
+                  <div class="rounded-xl overflow-hidden" style="min-height:0;">
+                    <img id="edu-grid-0" class="w-full h-full object-cover">
                   </div>
-                  <div class="edu-thumb cursor-pointer rounded-xl overflow-hidden relative" style="flex:1 1 0; min-height:0;">
-                    <img class="w-full h-full object-cover" style="opacity:0.6; transition:opacity 0.3s;">
-                    <div class="absolute inset-0 rounded-xl" style="transition:background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'"></div>
+                  <div class="rounded-xl overflow-hidden" style="min-height:0;">
+                    <img id="edu-grid-1" class="w-full h-full object-cover">
                   </div>
-                  <div class="edu-thumb cursor-pointer rounded-xl overflow-hidden relative" style="flex:1 1 0; min-height:0;">
-                    <img class="w-full h-full object-cover" style="opacity:0.6; transition:opacity 0.3s;">
-                    <div class="absolute inset-0 rounded-xl" style="transition:background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'"></div>
+                  <div class="rounded-xl overflow-hidden" style="min-height:0;">
+                    <img id="edu-grid-2" class="w-full h-full object-cover">
+                  </div>
+                  <div class="rounded-xl overflow-hidden" style="min-height:0;">
+                    <img id="edu-grid-3" class="w-full h-full object-cover">
                   </div>
                 </div>
-                <!-- 오른쪽: 확대 이미지 -->
-                <div class="relative rounded-xl overflow-hidden flex items-center justify-center" style="flex:1 1 0; background:#E8E4DC;">
-                  <img id="edu-featured-img" class="w-full h-full" style="object-fit:contain; transition:opacity 0.35s;">
+                <!-- 오른쪽: 캡션 -->
+                <div class="flex items-center justify-center" style="flex:1 1 0;">
+                  <div class="text-left px-4">
+                    <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-2">2026</p>
+                    <p class="font-bold text-ink text-base leading-snug">서울시교육청 협업</p>
+                    <p class="text-muted text-sm mt-2 leading-relaxed">교재 책자 제작 및<br>현장 배포</p>
+                  </div>
                 </div>
-              </div>
-              <!-- 캡션 -->
-              <div class="absolute bottom-0 right-0 p-4 text-right" style="max-width:260px; z-index:2;">
-                <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2026</p>
-                <p class="font-bold text-ink text-sm leading-snug">서울시교육청 협업</p>
-                <p class="text-muted text-xs mt-1 leading-relaxed">교재 책자 제작 및 현장 배포</p>
               </div>
             </div>
 
@@ -738,9 +736,8 @@
         d.style.borderRadius = '4px';
       });
 
-      // 슬라이드 3: autoTimer 즉시 중단 후 edu 타이머가 직접 넘김
-      if (current === 2) { clearInterval(autoTimer); startEduTimer(); }
-      else stopEduTimer();
+      // 슬라이드 3: 4장을 한 번에 표시하므로 별도 타이머 불필요
+      if (current !== 2) stopEduTimer();
     }
 
     document.getElementById('slide-prev').addEventListener('click', () => { goTo(current - 1); if (!isPaused) resetAuto(); });
@@ -756,83 +753,32 @@
         clearInterval(autoTimer);
         stopEduTimer();
       } else {
-        if (current === 2) startEduTimer();
-        else resetAuto();
+        resetAuto();
       }
     });
 
-    // 슬라이드 3: 4장 순서대로 보여주고, 다 끝나면 다음 슬라이드로
+    // 슬라이드 3: 4장 이미지를 2×2 그리드에 한 번에 표시
     const eduImages = [
       './주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163.jpg',
       './주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_01.jpg',
       './주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_02.jpg',
       './주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_03.jpg',
     ];
-    const eduThumbs = document.querySelectorAll('.edu-thumb');
-    const eduFeaturedImg = document.getElementById('edu-featured-img');
-    let eduActive = 0;
     let eduTimer;
 
-    function setEduActive(idx) {
-      eduActive = idx;
-      eduFeaturedImg.style.opacity = '0';
-      setTimeout(() => {
-        eduFeaturedImg.src = eduImages[idx];
-        eduFeaturedImg.style.opacity = '1';
-      }, 180);
-      let slotIdx = 0;
+    (function initEduGrid() {
       for (let i = 0; i < 4; i++) {
-        if (i !== idx) {
-          const thumb = eduThumbs[slotIdx];
-          thumb.querySelector('img').src = eduImages[i];
-          thumb.dataset.imgIdx = i;
-          slotIdx++;
-        }
+        const el = document.getElementById('edu-grid-' + i);
+        if (el) el.src = eduImages[i];
       }
-    }
+    })();
 
-    eduThumbs.forEach(thumb => {
-      thumb.addEventListener('click', () => {
-        setEduActive(parseInt(thumb.dataset.imgIdx));
-        if (!isPaused) {
-          clearInterval(eduTimer);
-          let remaining = 4 - eduActive;
-          let shown = 0;
-          eduTimer = setInterval(() => {
-            shown++;
-            if (shown >= remaining) {
-              clearInterval(eduTimer);
-              goTo(current + 1);
-              resetAuto();
-            } else {
-              setEduActive((eduActive + 1) % 4);
-            }
-          }, 2800);
-        }
-      });
-    });
-
-    function startEduTimer() {
-      clearInterval(eduTimer);
-      setEduActive(0);
-      let shown = 0;
-      eduTimer = setInterval(() => {
-        shown++;
-        if (shown >= 4) {
-          // 4장 다 보여줬으면 다음 슬라이드로
-          clearInterval(eduTimer);
-          if (!isPaused) { goTo(current + 1); resetAuto(); }
-        } else {
-          setEduActive(shown);
-        }
-      }, 2800);
-    }
+    function startEduTimer() {}
     function stopEduTimer() { clearInterval(eduTimer); }
 
     function resetAuto() {
       clearInterval(autoTimer);
-      // 슬라이드 3에서는 edu 타이머가 직접 넘기므로 autoTimer 불필요
-      if (!isPaused && current !== 2) {
+      if (!isPaused) {
         autoTimer = setInterval(() => goTo(current + 1), 4500);
       }
     }
