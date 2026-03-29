@@ -1,0 +1,9 @@
+# 환경변수 파일 (API 키 등 비밀정보) - 절대 GitHub에 올리지 않음
+.env
+.env.local
+.env.production
+.env.*
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
