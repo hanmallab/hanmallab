@@ -311,29 +311,78 @@
         <h2 class="text-2xl font-bold tracking-tight">교재</h2>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <!-- 교재 커버 이미지 -->
+      <div class="grid md:grid-cols-2 gap-16 items-start">
+
+        <!-- 왼쪽: 메인 표지 + 4권 선택 탭 -->
         <div class="fade-in">
-          <div class="aspect-[4/5] bg-surface rounded-2xl overflow-hidden flex items-center justify-center border border-border">
-            <img src="https://placehold.co/480x600/F7F7F7/999999?text=한말톡+한국어" alt="한말톡 한국어 교재" class="w-full h-full object-cover">
+
+          <!-- 메인 책 표지 -->
+          <div class="flex items-center justify-center py-8 px-4 rounded-2xl bg-surface" style="min-height:340px;">
+            <img id="book-main-img"
+              src="./주요%20교재/%5B개정판%5D학생용-%20기본편.png"
+              alt="학생용 기본편"
+              style="max-height:320px; max-width:100%; width:auto; height:auto; object-fit:contain; display:block;
+                     filter: drop-shadow(0 8px 24px rgba(0,0,0,0.22)) drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+                     transition: opacity 0.25s ease;">
+          </div>
+
+          <!-- 4권 탭 -->
+          <div class="grid grid-cols-4 gap-2.5 mt-5">
+
+            <button class="book-tab group flex flex-col items-center rounded-xl overflow-hidden border-2 pb-2 transition-all duration-200 focus:outline-none"
+              data-idx="0" style="border-color:#0A0A0A; background:#fff;">
+              <div class="w-full overflow-hidden rounded-t-lg" style="aspect-ratio:3/4;">
+                <img src="./주요%20교재/%5B개정판%5D학생용-%20기본편.png" alt="학생용 기본편"
+                  class="w-full h-full object-contain transition-opacity duration-200" style="opacity:1;">
+              </div>
+              <p class="text-[10px] font-bold mt-1.5 leading-tight text-center px-1" style="color:#0A0A0A;">학생용<br>기본편</p>
+            </button>
+
+            <button class="book-tab group flex flex-col items-center rounded-xl overflow-hidden border-2 pb-2 transition-all duration-200 focus:outline-none"
+              data-idx="1" style="border-color:transparent; background:#fff;">
+              <div class="w-full overflow-hidden rounded-t-lg" style="aspect-ratio:3/4;">
+                <img src="./주요%20교재/%5B개정판%5D학생용-%20심화편.png" alt="학생용 심화편"
+                  class="w-full h-full object-contain transition-opacity duration-200" style="opacity:0.5;">
+              </div>
+              <p class="text-[10px] font-bold mt-1.5 leading-tight text-center px-1 text-muted">학생용<br>심화편</p>
+            </button>
+
+            <button class="book-tab group flex flex-col items-center rounded-xl overflow-hidden border-2 pb-2 transition-all duration-200 focus:outline-none"
+              data-idx="2" style="border-color:transparent; background:#fff;">
+              <div class="w-full overflow-hidden rounded-t-lg" style="aspect-ratio:3/4;">
+                <img src="./주요%20교재/%5B개정판%5D교사용-%20기본편.png" alt="교사용 기본편"
+                  class="w-full h-full object-contain transition-opacity duration-200" style="opacity:0.5;">
+              </div>
+              <p class="text-[10px] font-bold mt-1.5 leading-tight text-center px-1 text-muted">교사용<br>기본편</p>
+            </button>
+
+            <button class="book-tab group flex flex-col items-center rounded-xl overflow-hidden border-2 pb-2 transition-all duration-200 focus:outline-none"
+              data-idx="3" style="border-color:transparent; background:#fff;">
+              <div class="w-full overflow-hidden rounded-t-lg" style="aspect-ratio:3/4;">
+                <img src="./주요%20교재/%5B개정판%5D교사용-%20심화편.png" alt="교사용 심화편"
+                  class="w-full h-full object-contain transition-opacity duration-200" style="opacity:0.5;">
+              </div>
+              <p class="text-[10px] font-bold mt-1.5 leading-tight text-center px-1 text-muted">교사용<br>심화편</p>
+            </button>
+
           </div>
         </div>
 
-        <!-- 교재 설명 -->
-        <div class="fade-in space-y-6" style="transition-delay:0.1s">
+        <!-- 오른쪽: 교재 설명 -->
+        <div class="fade-in space-y-6 pt-2" style="transition-delay:0.1s">
           <div>
-            <p class="section-label mb-3">대표 교재</p>
-            <h3 class="text-3xl font-bold tracking-tight mb-4">한말톡 한국어</h3>
-            <p class="text-muted leading-relaxed text-[1.05rem]">
-              이주배경학생의 언어 환경과 학교생활을 깊이 이해하여 집필한 한국어 교재입니다.
-              언어 습득을 넘어 학교 적응 전반을 지원하도록 설계되었으며,
-              교사가 현장에서 바로 활용할 수 있습니다.
+            <p id="book-label" class="section-label mb-3">학생용</p>
+            <h3 id="book-title" class="text-3xl font-bold tracking-tight mb-1">한말톡 한국어</h3>
+            <p id="book-subtitle" class="text-lg font-semibold text-muted mb-4">학생용 기본편</p>
+            <p id="book-desc" class="text-muted leading-relaxed text-[1.05rem]">
+              이주배경학생의 언어 환경과 학교생활을 깊이 이해하여 집필한 기초 한국어 교재입니다.
+              일상생활과 학교생활에 필요한 기본 언어 능력을 단계적으로 기릅니다.
             </p>
           </div>
 
           <hr class="section-rule">
 
-          <div class="space-y-4">
+          <div id="book-features" class="space-y-4">
             <div class="flex items-start gap-4">
               <div class="w-8 h-8 rounded-full bg-ink flex items-center justify-center flex-shrink-0 mt-0.5">
                 <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -353,7 +402,7 @@
               </div>
               <div>
                 <p class="font-semibold text-sm text-ink">단계별 구성</p>
-                <p class="text-muted text-sm mt-0.5">학생의 수준과 상황에 맞춘 체계적 학습 과정</p>
+                <p class="text-muted text-sm mt-0.5">학생의 수준에 맞춘 체계적 학습 과정</p>
               </div>
             </div>
             <div class="flex items-start gap-4">
@@ -363,8 +412,8 @@
                 </svg>
               </div>
               <div>
-                <p class="font-semibold text-sm text-ink">교사용 지도 자료 포함</p>
-                <p class="text-muted text-sm mt-0.5">수업 준비 부담을 줄이는 상세한 가이드 제공</p>
+                <p class="font-semibold text-sm text-ink">다양한 활동 수록</p>
+                <p class="text-muted text-sm mt-0.5">말하기·듣기·읽기·쓰기를 균형 있게 학습</p>
               </div>
             </div>
           </div>
@@ -373,8 +422,8 @@
 
           <a href="#contact" class="btn-primary">교재 문의하기</a>
         </div>
-      </div>
 
+      </div>
     </div>
   </section>
 
@@ -395,8 +444,8 @@
           <div id="slider-track" class="flex" style="width:100%; transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);">
 
             <!-- Slide 1: 다문화 상생 포럼 -->
-            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0; background:#F0EEE8;">
-              <img src="./주요%20활동/다문화상생포럼.jpg" alt="다문화 상생 포럼" class="w-full h-full object-contain">
+            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0; background:#F0EEE8; display:flex; align-items:center; justify-content:center;">
+              <img src="./주요%20활동/다문화상생포럼.jpg" alt="다문화 상생 포럼" style="max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; display:block;">
               <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
                 <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2025</p>
                 <p class="font-bold text-ink text-sm leading-snug">다문화 상생 포럼</p>
@@ -414,24 +463,31 @@
               </div>
             </div>
 
-            <!-- Slide 3: 서울시교육청 협업 — 4장 아코디언 (1장 확대 + 3장 미리보기) -->
+            <!-- Slide 3: 서울시교육청 협업 — 왼쪽 썸네일 3개 + 오른쪽 확대 이미지 -->
             <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0; background:#111;">
-              <div id="edu-strip" class="flex h-full gap-1 p-1">
-                <div class="edu-panel relative cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-in-out" data-idx="0" style="flex:4 1 0;">
-                  <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163.jpg" alt="협업 1" class="w-full h-full object-contain transition-opacity duration-500">
+              <div class="flex h-full gap-1.5 p-1.5">
+                <!-- 왼쪽: 썸네일 3개 세로 배치 -->
+                <div class="flex flex-col gap-1.5" style="flex: 0 0 28%; min-width:0;">
+                  <div class="edu-thumb cursor-pointer rounded-xl overflow-hidden relative" style="flex:1 1 0; min-height:0;">
+                    <img class="w-full h-full object-cover" style="opacity:0.6; transition:opacity 0.3s;">
+                    <div class="absolute inset-0 rounded-xl" style="transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='transparent'"></div>
+                  </div>
+                  <div class="edu-thumb cursor-pointer rounded-xl overflow-hidden relative" style="flex:1 1 0; min-height:0;">
+                    <img class="w-full h-full object-cover" style="opacity:0.6; transition:opacity 0.3s;">
+                    <div class="absolute inset-0 rounded-xl" style="transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='transparent'"></div>
+                  </div>
+                  <div class="edu-thumb cursor-pointer rounded-xl overflow-hidden relative" style="flex:1 1 0; min-height:0;">
+                    <img class="w-full h-full object-cover" style="opacity:0.6; transition:opacity 0.3s;">
+                    <div class="absolute inset-0 rounded-xl" style="transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='transparent'"></div>
+                  </div>
                 </div>
-                <div class="edu-panel relative cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-in-out" data-idx="1" style="flex:1 1 0;">
-                  <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_01.jpg" alt="협업 2" class="w-full h-full object-contain transition-opacity duration-500" style="opacity:0.5;">
-                </div>
-                <div class="edu-panel relative cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-in-out" data-idx="2" style="flex:1 1 0;">
-                  <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_02.jpg" alt="협업 3" class="w-full h-full object-contain transition-opacity duration-500" style="opacity:0.5;">
-                </div>
-                <div class="edu-panel relative cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-in-out" data-idx="3" style="flex:1 1 0;">
-                  <img src="./주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_03.jpg" alt="협업 4" class="w-full h-full object-contain transition-opacity duration-500" style="opacity:0.5;">
+                <!-- 오른쪽: 확대 이미지 -->
+                <div class="relative rounded-xl overflow-hidden flex items-center justify-center" style="flex:1 1 0; background:#1c1c1c;">
+                  <img id="edu-featured-img" class="w-full h-full" style="object-fit:contain; transition:opacity 0.35s;">
                 </div>
               </div>
               <!-- 캡션 -->
-              <div class="absolute bottom-0 right-0 bg-white/96 p-4 text-right" style="border-top-left-radius:1rem; max-width:260px;">
+              <div class="absolute bottom-0 right-0 bg-white/96 p-4 text-right" style="border-top-left-radius:1rem; max-width:260px; z-index:2;">
                 <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">협업</p>
                 <p class="font-bold text-ink text-sm leading-snug">서울시교육청 협업</p>
                 <p class="text-muted text-xs mt-1 leading-relaxed">교재 책자 제작 및 현장 배포</p>
@@ -683,33 +739,50 @@
     document.getElementById('slide-next').addEventListener('click', () => { goTo(current + 1); resetAuto(); });
     dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.index); resetAuto(); }));
 
-    // 슬라이드 3: 아코디언 — 클릭한 패널 확대, 나머지 축소
-    const eduPanels = document.querySelectorAll('.edu-panel');
+    // 슬라이드 3: 왼쪽 썸네일 3개 + 오른쪽 확대 이미지 자동 순환
+    const eduImages = [
+      './주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163.jpg',
+      './주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_01.jpg',
+      './주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_02.jpg',
+      './주요%20활동/서울시교육청%20협업/KakaoTalk_20260329_172258163_03.jpg',
+    ];
+    const eduThumbs = document.querySelectorAll('.edu-thumb');
+    const eduFeaturedImg = document.getElementById('edu-featured-img');
     let eduActive = 0;
     let eduTimer;
 
     function setEduActive(idx) {
       eduActive = idx;
-      eduPanels.forEach((p, i) => {
-        const img = p.querySelector('img');
-        if (i === idx) {
-          p.style.flex = '4 1 0';
-          img.style.opacity = '1';
-        } else {
-          p.style.flex = '1 1 0';
-          img.style.opacity = '0.45';
+      // 오른쪽 확대 이미지 업데이트
+      eduFeaturedImg.style.opacity = '0';
+      setTimeout(() => {
+        eduFeaturedImg.src = eduImages[idx];
+        eduFeaturedImg.style.opacity = '1';
+      }, 180);
+      // 왼쪽 썸네일 3개: 나머지 이미지들로 채우기
+      let slotIdx = 0;
+      for (let i = 0; i < 4; i++) {
+        if (i !== idx) {
+          const thumb = eduThumbs[slotIdx];
+          const img = thumb.querySelector('img');
+          img.src = eduImages[i];
+          thumb.dataset.imgIdx = i;
+          slotIdx++;
         }
-      });
+      }
     }
 
-    eduPanels.forEach((p, i) => p.addEventListener('click', () => {
-      setEduActive(i);
-      clearInterval(eduTimer);
-      eduTimer = setInterval(() => setEduActive((eduActive + 1) % 4), 2800);
-    }));
+    eduThumbs.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        setEduActive(parseInt(thumb.dataset.imgIdx));
+        clearInterval(eduTimer);
+        eduTimer = setInterval(() => setEduActive((eduActive + 1) % 4), 2800);
+      });
+    });
 
     function startEduTimer() {
       clearInterval(eduTimer);
+      setEduActive(0);
       eduTimer = setInterval(() => setEduActive((eduActive + 1) % 4), 2800);
     }
     function stopEduTimer() { clearInterval(eduTimer); }
@@ -727,6 +800,113 @@
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (Math.abs(diff) > 40) { goTo(current + (diff > 0 ? 1 : -1)); resetAuto(); }
     });
+
+    // ── 교재 선택 ──
+    const bookData = [
+      {
+        label: '학생용',
+        title: '한말톡 한국어',
+        subtitle: '학생용 기본편',
+        src: './주요%20교재/%5B개정판%5D학생용-%20기본편.png',
+        desc: '이주배경학생의 언어 환경과 학교생활을 깊이 이해하여 집필한 기초 한국어 교재입니다. 일상생활과 학교생활에 필요한 기본 언어 능력을 단계적으로 기릅니다.',
+        features: [
+          { title: '현장 중심 설계',    desc: '이주배경학생의 실제 학교생활 맥락을 반영' },
+          { title: '단계별 구성',       desc: '학생의 수준에 맞춘 체계적 학습 과정' },
+          { title: '다양한 활동 수록',  desc: '말하기·듣기·읽기·쓰기를 균형 있게 학습' },
+        ],
+      },
+      {
+        label: '학생용',
+        title: '한말톡 한국어',
+        subtitle: '학생용 심화편',
+        src: './주요%20교재/%5B개정판%5D학생용-%20심화편.png',
+        desc: '기본편을 마친 학생을 위한 심화 과정입니다. 교과 학습과 또래 관계에 필요한 심화 언어 능력과 어휘를 체계적으로 키웁니다.',
+        features: [
+          { title: '심화 어휘·문법',      desc: '교과 학습에 필요한 학문적 언어 능력 강화' },
+          { title: '통합적 언어 활동',    desc: '읽기와 쓰기 중심의 깊이 있는 학습 제공' },
+          { title: '자기 주도 학습 지원', desc: '스스로 복습하고 확인할 수 있는 구성' },
+        ],
+      },
+      {
+        label: '교사용',
+        title: '한말톡 한국어',
+        subtitle: '교사용 기본편',
+        src: './주요%20교재/%5B개정판%5D교사용-%20기본편.png',
+        desc: '기본편 수업을 위한 상세한 교사 지도서입니다. 단원별 학습 목표, 수업 흐름, 활동 자료를 제공하여 수업 준비 부담을 줄입니다.',
+        features: [
+          { title: '단원별 수업 지도안', desc: '수업 흐름과 핵심 활동을 상세히 안내' },
+          { title: '활동 자료 포함',     desc: '즉시 활용 가능한 워크시트 및 자료 수록' },
+          { title: '학생 지원 가이드',   desc: '다양한 수준의 학생 지도 전략 제시' },
+        ],
+      },
+      {
+        label: '교사용',
+        title: '한말톡 한국어',
+        subtitle: '교사용 심화편',
+        src: './주요%20교재/%5B개정판%5D교사용-%20심화편.png',
+        desc: '심화편 수업을 위한 교사 지도서입니다. 심화 학습 전략과 다양한 수업 활동 예시를 통해 효과적인 한국어 교육을 지원합니다.',
+        features: [
+          { title: '심화 수업 전략',        desc: '고급 언어 학습을 위한 교수법 안내' },
+          { title: '다양한 수업 활동 예시', desc: '토론, 발표, 협동 학습 등 활용 사례 제공' },
+          { title: '기본편과 연계 구성',    desc: '기본→심화로 이어지는 일관된 교육 체계' },
+        ],
+      },
+    ];
+
+    const bookTabs    = document.querySelectorAll('.book-tab');
+    const bookMainImg = document.getElementById('book-main-img');
+    const bookLabel   = document.getElementById('book-label');
+    const bookTitle   = document.getElementById('book-title');
+    const bookSubtitle= document.getElementById('book-subtitle');
+    const bookDesc    = document.getElementById('book-desc');
+    const bookFeatures= document.getElementById('book-features');
+
+    function featureHTML(features) {
+      return features.map(f => `
+        <div class="flex items-start gap-4">
+          <div class="w-8 h-8 rounded-full bg-ink flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold text-sm text-ink">${f.title}</p>
+            <p class="text-muted text-sm mt-0.5">${f.desc}</p>
+          </div>
+        </div>`).join('');
+    }
+
+    function setActiveBook(idx) {
+      const b = bookData[idx];
+
+      // 메인 이미지 fade 전환
+      bookMainImg.style.opacity = '0';
+      setTimeout(() => {
+        bookMainImg.src = b.src;
+        bookMainImg.alt = b.subtitle;
+        bookMainImg.style.opacity = '1';
+      }, 200);
+
+      // 텍스트 업데이트
+      bookLabel.textContent    = b.label;
+      bookTitle.textContent    = b.title;
+      bookSubtitle.textContent = b.subtitle;
+      bookDesc.textContent     = b.desc;
+      bookFeatures.innerHTML   = featureHTML(b.features);
+
+      // 탭 스타일 업데이트
+      bookTabs.forEach((tab, i) => {
+        const img   = tab.querySelector('img');
+        const label = tab.querySelector('p');
+        const active = i === idx;
+        tab.style.borderColor = active ? '#0A0A0A' : 'transparent';
+        img.style.opacity     = active ? '1' : '0.45';
+        label.style.color     = active ? '#0A0A0A' : '#666';
+      });
+    }
+
+    bookTabs.forEach((tab, i) => tab.addEventListener('click', () => setActiveBook(i)));
+    setActiveBook(0);
 
     // ── 스크롤 리빌 (Intersection Observer) ──
     // rootMargin: 하단을 -12% 당겨서 뷰포트 안쪽 깊이 들어와야 발동
