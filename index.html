@@ -371,7 +371,7 @@
             <p id="book-label" class="section-label mb-3">학생용</p>
             <h3 id="book-title" class="text-3xl font-bold tracking-tight mb-1">한말톡 한국어</h3>
             <p id="book-subtitle" class="text-lg font-semibold text-muted mb-4">학생용 기본편</p>
-            <p id="book-desc" class="text-muted leading-relaxed text-[1.05rem]">
+            <p id="book-desc" class="text-muted leading-relaxed text-[1.05rem]" style="min-height:4.5rem;">
               이주배경 초등학생의 학교 적응을 위해 만든 생존 한국어 학습 교재입니다. 학교생활에 꼭 필요한 필수표현 24개를 학습합니다. 그림을 통해 학습하는 하루 15분, 한 달 완성 과정입니다.
             </p>
           </div>
@@ -877,8 +877,16 @@
     const bookFeatures= document.getElementById('book-features');
 
     function featureHTML(features) {
-      return features.map(f => `
-        <div class="flex items-start gap-4">
+      const MAX = 3;
+      const padded = features.slice(0, MAX).concat(
+        Array(Math.max(0, MAX - features.length)).fill(null)
+      );
+      return padded.map(f => {
+        if (!f) return `<div class="flex items-start gap-4 invisible" aria-hidden="true">
+          <div class="w-8 h-8 rounded-full bg-ink flex-shrink-0 mt-0.5"></div>
+          <div><p class="font-semibold text-sm">&nbsp;</p><p class="text-sm mt-0.5">&nbsp;</p></div>
+        </div>`;
+        return `<div class="flex items-start gap-4">
           <div class="w-8 h-8 rounded-full bg-ink flex items-center justify-center flex-shrink-0 mt-0.5">
             <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
@@ -888,7 +896,8 @@
             <p class="font-semibold text-sm text-ink">${f.title}</p>
             <p class="text-muted text-sm mt-0.5">${f.desc}</p>
           </div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
     }
 
     function setActiveBook(idx) {
