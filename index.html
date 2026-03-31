@@ -236,16 +236,19 @@
   <!-- ========== 소개 ========== -->
   <section id="about" class="py-28 bg-white">
     <div class="max-w-6xl mx-auto px-6">
-      <div class="grid md:grid-cols-[140px_1fr] gap-8 items-start fade-in">
-        <div>
+      <div class="grid md:grid-cols-[160px_1fr] gap-12 items-start">
+
+        <div class="fade-in">
           <p class="section-label mb-4">About</p>
           <h2 class="text-2xl font-bold tracking-tight leading-snug">연구소 소개</h2>
         </div>
-        <div class="space-y-4 text-[1.05rem] leading-relaxed text-gray-700">
-          <p>변화로 미래를 잇는, 이주배경한말연구소입니다.</p>
-          <p>사회 문제를 경험하는 당사자와 함께 고민하고 실천할 때, 그리고 그 경험을 세상과 나눌 때 진정한 변화가 시작된다고 믿습니다.</p>
-          <p>이주배경한말연구소는 이주배경학생들이 교육 현장에서 겪는 어려움에 주목하고, 그들의 곁에서 실질적인 변화를 만들어가고 있습니다.</p>
+
+        <div class="fade-in space-y-4 text-[0.9rem] leading-relaxed text-gray-700">
+          <p class="whitespace-nowrap">변화로 미래를 잇는, 이주배경한말연구소입니다.</p>
+          <p class="whitespace-nowrap">사회 문제를 경험하는 당사자와 함께 고민하고 실천할 때, 그리고 그 경험을 세상과 나눌 때 진정한 변화가 시작된다고 믿습니다.</p>
+          <p class="whitespace-nowrap">이주배경한말연구소는 이주배경학생들이 교육 현장에서 겪는 어려움에 주목하고, 그들의 곁에서 실질적인 변화를 만들어가고 있습니다.</p>
         </div>
+
       </div>
     </div>
   </section>
@@ -369,8 +372,7 @@
             <h3 id="book-title" class="text-3xl font-bold tracking-tight mb-1">한말톡 한국어</h3>
             <p id="book-subtitle" class="text-lg font-semibold text-muted mb-4">학생용 기본편</p>
             <p id="book-desc" class="text-muted leading-relaxed text-[1.05rem]">
-              이주배경학생의 언어 환경과 학교생활을 깊이 이해하여 집필한 기초 한국어 교재입니다.
-              일상생활과 학교생활에 필요한 기본 언어 능력을 단계적으로 기릅니다.
+              이주배경 초등학생의 학교 적응을 위해 만든 생존 한국어 학습 교재입니다. 학교생활에 꼭 필요한 필수표현 24개를 그림과 함께 배우는 하루 15분, 한 달 완성 과정입니다.
             </p>
           </div>
 
@@ -384,8 +386,8 @@
                 </svg>
               </div>
               <div>
-                <p class="font-semibold text-sm text-ink">현장 중심 설계</p>
-                <p class="text-muted text-sm mt-0.5">이주배경학생의 실제 학교생활 맥락을 반영</p>
+                <p class="font-semibold text-sm text-ink">필수표현 24개 수록</p>
+                <p class="text-muted text-sm mt-0.5">학교생활에 꼭 필요한 안전·생리·교실·의사 표현 24개</p>
               </div>
             </div>
             <div class="flex items-start gap-4">
@@ -395,8 +397,8 @@
                 </svg>
               </div>
               <div>
-                <p class="font-semibold text-sm text-ink">단계별 구성</p>
-                <p class="text-muted text-sm mt-0.5">학생의 수준에 맞춘 체계적 학습 과정</p>
+                <p class="font-semibold text-sm text-ink">그림 기반 발화 학습</p>
+                <p class="text-muted text-sm mt-0.5">그림과 함께 표현을 익히고 말하기를 연습하는 AAC 방식</p>
               </div>
             </div>
             <div class="flex items-start gap-4">
@@ -406,8 +408,8 @@
                 </svg>
               </div>
               <div>
-                <p class="font-semibold text-sm text-ink">다양한 활동 수록</p>
-                <p class="text-muted text-sm mt-0.5">말하기·듣기·읽기·쓰기를 균형 있게 학습</p>
+                <p class="font-semibold text-sm text-ink">하루 15분, 한 달 완성</p>
+                <p class="text-muted text-sm mt-0.5">주 3일, 4주차(12일) 구성으로 부담 없이 학습 가능</p>
               </div>
             </div>
           </div>
@@ -457,10 +459,11 @@
               </div>
             </div>
 
-            <!-- Slide 3: 서울시교육청 협업 — 왼쪽 2×2 썸네일(전체높이) + 오른쪽 이미지+캡션 -->
+            <!-- Slide 3: 서울시교육청 협업 — 왼쪽 2×2 썸네일 + 오른쪽 메인 이미지 -->
             <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0; background:#F0EEE8;">
-              <div class="flex h-full gap-1.5 p-1.5">
-                <!-- 왼쪽: 2×2 썸네일 그리드 (전체 높이 사용) -->
+              <!-- 캡션 높이만큼 아래쪽 여백 확보 -->
+              <div class="flex gap-1.5 p-1.5" style="position:absolute; inset:0; padding-bottom:82px;">
+                <!-- 왼쪽: 2×2 썸네일 그리드 -->
                 <div class="grid grid-cols-2 gap-1.5" style="flex: 0 0 38%; min-width:0;">
                   <div class="edu-thumb cursor-pointer rounded-lg overflow-hidden">
                     <img id="edu-grid-0" class="w-full h-full object-cover" style="transition:opacity 0.2s;">
@@ -475,17 +478,16 @@
                     <img id="edu-grid-3" class="w-full h-full object-cover" style="transition:opacity 0.2s;">
                   </div>
                 </div>
-                <!-- 오른쪽: 메인 이미지(위) + 캡션(아래) — 세로 배치로 겹침 없음 -->
-                <div class="flex flex-col" style="flex:1 1 0; min-width:0; gap:0;">
-                  <div class="relative rounded-xl overflow-hidden flex items-center justify-center" style="flex:1; min-height:0; background:#E8E4DC;">
-                    <img id="edu-featured-img" class="w-full h-full" style="object-fit:contain; transition:opacity 0.3s;">
-                  </div>
-                  <div class="bg-white/96 px-5 py-4 text-right" style="border-top-left-radius:0.75rem; flex-shrink:0;">
-                    <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2026</p>
-                    <p class="font-bold text-ink text-sm leading-snug">서울시교육청 협업</p>
-                    <p class="text-muted text-xs mt-1 leading-relaxed">교재 책자 제작 및 현장 배포</p>
-                  </div>
+                <!-- 오른쪽: 메인 이미지 (object-contain, 잘림 없음) -->
+                <div class="relative rounded-xl overflow-hidden flex items-center justify-center" style="flex:1 1 0; background:#E8E4DC;">
+                  <img id="edu-featured-img" class="w-full h-full" style="object-fit:contain; transition:opacity 0.3s;">
                 </div>
+              </div>
+              <!-- 캡션: 슬라이드 1,2와 동일한 위치 -->
+              <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
+                <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2026</p>
+                <p class="font-bold text-ink text-sm leading-snug">서울시교육청 협업</p>
+                <p class="text-muted text-xs mt-1 leading-relaxed">교재 책자 제작 및 현장 배포</p>
               </div>
             </div>
 
@@ -736,8 +738,8 @@
         d.style.borderRadius = '4px';
       });
 
-      if (current === 2) { clearInterval(autoTimer); startEduTimer(0); }
-      else stopEduTimer();
+      // 슬라이드 3: 4장을 한 번에 표시하므로 별도 타이머 불필요
+      if (current !== 2) stopEduTimer();
     }
 
     document.getElementById('slide-prev').addEventListener('click', () => { goTo(current - 1); if (!isPaused) resetAuto(); });
@@ -786,34 +788,20 @@
       });
     }
 
-    // 썸네일 클릭 → 해당 이미지로 전환 후 이어서 순환
+    // 썸네일 클릭 → 메인 이미지 전환
     eduThumbs.forEach((thumb, i) => {
-      thumb.addEventListener('click', () => {
-        if (!isPaused) startEduTimer(i);
-        else setEduActive(i);
-      });
+      thumb.addEventListener('click', () => setEduActive(i));
     });
 
-    // startIdx부터 순서대로 보여주고 (2.8s 간격), 4장 완료 후 다음 슬라이드로
-    function startEduTimer(startIdx) {
+    function startEduTimer() {
       clearInterval(eduTimer);
-      setEduActive(startIdx);
-      let cur = startIdx;
-      eduTimer = setInterval(() => {
-        cur++;
-        if (cur >= 4) {
-          clearInterval(eduTimer);
-          if (!isPaused) { goTo(current + 1); resetAuto(); }
-        } else {
-          setEduActive(cur);
-        }
-      }, 2800);
+      setEduActive(0);
     }
     function stopEduTimer() { clearInterval(eduTimer); }
 
     function resetAuto() {
       clearInterval(autoTimer);
-      if (!isPaused && current !== 2) {
+      if (!isPaused) {
         autoTimer = setInterval(() => goTo(current + 1), 4500);
       }
     }
@@ -837,11 +825,11 @@
         title: '한말톡 한국어',
         subtitle: '학생용 기본편',
         src: './주요%20교재/%5B개정판%5D학생용-%20기본편.png',
-        desc: '이주배경학생의 언어 환경과 학교생활을 깊이 이해하여 집필한 기초 한국어 교재입니다. 일상생활과 학교생활에 필요한 기본 언어 능력을 단계적으로 기릅니다.',
+        desc: '이주배경 초등학생의 학교 적응을 위해 만든 생존 한국어 학습 교재입니다. 학교생활에 꼭 필요한 필수표현 24개를 그림과 함께 배우는 하루 15분, 한 달 완성 과정입니다.',
         features: [
-          { title: '현장 중심 설계',    desc: '이주배경학생의 실제 학교생활 맥락을 반영' },
-          { title: '단계별 구성',       desc: '학생의 수준에 맞춘 체계적 학습 과정' },
-          { title: '다양한 활동 수록',  desc: '말하기·듣기·읽기·쓰기를 균형 있게 학습' },
+          { title: '필수표현 24개 수록',    desc: '학교생활에 꼭 필요한 안전·생리·교실·의사 표현 24개' },
+          { title: '그림 기반 발화 학습',   desc: '그림과 함께 표현을 익히고 말하기를 연습하는 AAC 방식' },
+          { title: '하루 15분, 한 달 완성', desc: '주 3일, 4주차(12일) 구성으로 부담 없이 학습 가능' },
         ],
       },
       {
@@ -849,11 +837,11 @@
         title: '한말톡 한국어',
         subtitle: '학생용 심화편',
         src: './주요%20교재/%5B개정판%5D학생용-%20심화편.png',
-        desc: '기본편을 마친 학생을 위한 심화 과정입니다. 교과 학습과 또래 관계에 필요한 심화 언어 능력과 어휘를 체계적으로 키웁니다.',
+        desc: '기본편 필수표현 24개를 마친 학생을 위한 심화 과정입니다. 기본 표현에서 파생된 92개의 심화 표현을 하루 15분, 한 달 안에 익힐 수 있습니다.',
         features: [
-          { title: '심화 어휘·문법',      desc: '교과 학습에 필요한 학문적 언어 능력 강화' },
-          { title: '통합적 언어 활동',    desc: '읽기와 쓰기 중심의 깊이 있는 학습 제공' },
-          { title: '자기 주도 학습 지원', desc: '스스로 복습하고 확인할 수 있는 구성' },
+          { title: '심화 표현 92개',         desc: '기본편 24개 표현에서 맥락·문장 확장된 심화 표현' },
+          { title: '발화·대화·응용 학습',    desc: '다양한 학습 활동으로 표현 범위를 넓혀가는 과정' },
+          { title: '하루 15분, 주 4일',      desc: '기본편 이후 이어지는 4주차 구성의 심화 학습' },
         ],
       },
       {
@@ -861,11 +849,11 @@
         title: '한말톡 한국어',
         subtitle: '교사용 기본편',
         src: './주요%20교재/%5B개정판%5D교사용-%20기본편.png',
-        desc: '기본편 수업을 위한 상세한 교사 지도서입니다. 단원별 학습 목표, 수업 흐름, 활동 자료를 제공하여 수업 준비 부담을 줄입니다.',
+        desc: '기본편 수업을 위한 교사 지도서입니다. 각 표현의 발음·품사·사전 의미와 그림 안내, 교수법, TIP, 예시 정답이 포함되어 있습니다.',
         features: [
-          { title: '단원별 수업 지도안', desc: '수업 흐름과 핵심 활동을 상세히 안내' },
-          { title: '활동 자료 포함',     desc: '즉시 활용 가능한 워크시트 및 자료 수록' },
-          { title: '학생 지원 가이드',   desc: '다양한 수준의 학생 지도 전략 제시' },
+          { title: '표현별 지도 안내',         desc: '발음·품사·사전 의미와 그림 설명, 교수법 TIP 수록' },
+          { title: '대화·응용 학습 예시 답안', desc: '학생 발화 예시와 수업 진행 가이드 제공' },
+          { title: '소통판 + 숫자판 포함',     desc: '수업 즉시 활용 가능한 그림:톡 소통판·숫자판 제공' },
         ],
       },
       {
@@ -873,10 +861,10 @@
         title: '한말톡 한국어',
         subtitle: '교사용 심화편',
         src: './주요%20교재/%5B개정판%5D교사용-%20심화편.png',
-        desc: '심화편 수업을 위한 교사 지도서입니다. 심화 학습 전략과 다양한 수업 활동 예시를 통해 효과적인 한국어 교육을 지원합니다.',
+        desc: '심화편 수업을 위한 교사 지도서입니다. 기본편 표현에서 파생된 심화 표현의 그림 안내, 교수법, TIP과 대화·응용 학습 예시 답안이 수록되어 있습니다.',
         features: [
-          { title: '심화 수업 전략',        desc: '고급 언어 학습을 위한 교수법 안내' },
-          { title: '다양한 수업 활동 예시', desc: '토론, 발표, 협동 학습 등 활용 사례 제공' },
+          { title: '심화 표현 지도 안내',   desc: '기본편 표현과의 연계 및 맥락·문장 확장 표현 설명' },
+          { title: '한국 동요 활용 수업',   desc: '심화편에서 배우는 한국 동요로 표현을 자연스럽게 반복' },
           { title: '기본편과 연계 구성',    desc: '기본→심화로 이어지는 일관된 교육 체계' },
         ],
       },
