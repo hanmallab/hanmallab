@@ -731,6 +731,8 @@
     }
 
     function goTo(idx) {
+      clearInterval(autoTimer);
+      stopEduTimer();
       current = (idx + total) % total;
       const slideW = viewport.clientWidth;
       track.style.transform = `translateX(-${current * slideW}px)`;
@@ -741,13 +743,18 @@
         d.style.borderRadius = '4px';
       });
 
-      // 슬라이드 3: 4장을 한 번에 표시하므로 별도 타이머 불필요
-      if (current !== 2) stopEduTimer();
+      if (!isPaused) {
+        if (current === 2) {
+          startEduTimer(); // 슬라이드 3: 이미지 순환 후 다음 슬라이드로
+        } else {
+          autoTimer = setInterval(() => goTo(current + 1), 4500);
+        }
+      }
     }
 
-    document.getElementById('slide-prev').addEventListener('click', () => { goTo(current - 1); if (!isPaused) resetAuto(); });
-    document.getElementById('slide-next').addEventListener('click', () => { goTo(current + 1); if (!isPaused) resetAuto(); });
-    dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.index); if (!isPaused) resetAuto(); }));
+    document.getElementById('slide-prev').addEventListener('click', () => { goTo(current - 1); });
+    document.getElementById('slide-next').addEventListener('click', () => { goTo(current + 1); });
+    dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.index); }));
 
     // 정지/재생 버튼
     pauseBtn.addEventListener('click', () => {
@@ -758,7 +765,8 @@
         clearInterval(autoTimer);
         stopEduTimer();
       } else {
-        resetAuto();
+        if (current === 2) startEduTimer();
+        else autoTimer = setInterval(() => goTo(current + 1), 4500);
       }
     });
 
@@ -798,19 +806,22 @@
 
     function startEduTimer() {
       clearInterval(eduTimer);
-      setEduActive(0);
+      setEduActive(0); // 이미지 1 즉시 표시
+      let step = 0;
+      eduTimer = setInterval(() => {
+        step++;
+        if (step < 4) {
+          setEduActive(step); // 이미지 2→3→4 순차 표시
+        } else {
+          clearInterval(eduTimer);
+          goTo(current + 1); // 4장 완료 → 다음 슬라이드
+        }
+      }, 2000);
     }
     function stopEduTimer() { clearInterval(eduTimer); }
 
-    function resetAuto() {
-      clearInterval(autoTimer);
-      if (!isPaused) {
-        autoTimer = setInterval(() => goTo(current + 1), 4500);
-      }
-    }
     window.addEventListener('resize', () => { setSlideWidths(); goTo(current); }, { passive: true });
     setSlideWidths();
-    resetAuto();
     goTo(0);
 
     // 터치 스와이프
