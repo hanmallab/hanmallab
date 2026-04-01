@@ -122,6 +122,9 @@
       letter-spacing: -0.03em;
       line-height: 1.15;
     }
+    @media (max-width: 640px) {
+      .hero-title { font-size: 1.65rem; }
+    }
 
     /* 섹션 레이블 */
     .section-label {
@@ -267,26 +270,26 @@
 
       <div class="flex flex-col">
         <!-- 비전 -->
-        <div class="fade-in grid grid-cols-[140px_1fr] gap-0 py-10 border-t border-border items-start">
+        <div class="fade-in grid grid-cols-[80px_1fr] md:grid-cols-[140px_1fr] gap-0 py-10 border-t border-border items-start">
           <div class="flex-shrink-0">
-            <p class="text-4xl font-bold tracking-tight text-ink">비전</p>
+            <p class="text-2xl md:text-4xl font-bold tracking-tight text-ink">비전</p>
             <p class="text-xs font-semibold tracking-widest text-muted mt-1">Vision</p>
           </div>
-          <div class="border-l-2 border-ink pl-10 pt-1">
-            <p class="text-xl font-bold leading-relaxed tracking-tight text-ink">
+          <div class="border-l-2 border-ink pl-4 md:pl-10 pt-1">
+            <p class="text-base md:text-xl font-bold leading-relaxed tracking-tight text-ink">
               변화를 통해 함께 만들어가는 지속 가능한 미래
             </p>
           </div>
         </div>
 
         <!-- 미션 -->
-        <div class="fade-in grid grid-cols-[140px_1fr] gap-0 py-10 border-t border-b border-border items-start" style="transition-delay:0.1s">
+        <div class="fade-in grid grid-cols-[80px_1fr] md:grid-cols-[140px_1fr] gap-0 py-10 border-t border-b border-border items-start" style="transition-delay:0.1s">
           <div class="flex-shrink-0">
-            <p class="text-4xl font-bold tracking-tight text-ink">미션</p>
+            <p class="text-2xl md:text-4xl font-bold tracking-tight text-ink">미션</p>
             <p class="text-xs font-semibold tracking-widest text-muted mt-1">Mission</p>
           </div>
-          <div class="border-l-2 border-ink pl-10 pt-1">
-            <p class="text-xl font-bold leading-relaxed tracking-tight text-ink">
+          <div class="border-l-2 border-ink pl-4 md:pl-10 pt-1">
+            <p class="text-base md:text-xl font-bold leading-relaxed tracking-tight text-ink">
               언어의 장벽이 이주배경학생의 새로운 시작을 가로막지 않는 교육 환경 조성
             </p>
           </div>
@@ -551,21 +554,21 @@
         <p class="text-muted mt-3 text-sm">이주배경학생 교육 현장의 변화를 함께 만들어가고 있습니다</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 fade-in">
+      <div class="grid grid-cols-3 gap-3 sm:gap-5 fade-in">
 
         <!-- 서울특별시교육청 -->
         <div class="partner-box card-hover">
-          <img src="./partner_logo/서울특별시교육청.jpg" alt="서울특별시교육청" class="max-h-16 max-w-[180px] object-contain">
+          <img src="./partner_logo/서울특별시교육청.jpg" alt="서울특별시교육청" class="max-h-10 sm:max-h-16 w-full max-w-full object-contain">
         </div>
 
         <!-- 남부교육지원청 -->
         <div class="partner-box card-hover" style="transition-delay:0.08s">
-          <img src="./partner_logo/서울특별시남부교육지원청.jpg" alt="서울특별시남부교육지원청" class="max-h-16 max-w-[180px] object-contain">
+          <img src="./partner_logo/서울특별시남부교육지원청.jpg" alt="서울특별시남부교육지원청" class="max-h-10 sm:max-h-16 w-full max-w-full object-contain">
         </div>
 
         <!-- 행복나눔재단 -->
         <div class="partner-box card-hover" style="transition-delay:0.16s">
-          <img src="./partner_logo/행복나눔재단.png" alt="행복나눔재단" class="max-h-16 max-w-[180px] object-contain">
+          <img src="./partner_logo/행복나눔재단.png" alt="행복나눔재단" class="max-h-10 sm:max-h-16 w-full max-w-full object-contain">
         </div>
 
       </div>
