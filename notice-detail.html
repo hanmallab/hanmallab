@@ -206,7 +206,7 @@
     const ids    = Object.keys(posts).map(Number).sort((a, b) => a - b);
 
     if (!post) {
-      document.getElementById('post-title').textContent = '게시글을 찾을 수 없습니다.';
+      window.location.replace('notice.html');
     } else {
       document.title = post.title + ' — 이주배경한말연구소';
       document.getElementById('post-title').textContent = post.title;
