@@ -463,7 +463,22 @@
               </div>
             </div>
 
-            <!-- Slide 3: 서울시교육청 협업 — 왼쪽 2×2 썸네일 + 오른쪽 메인 이미지 -->
+            <!-- Slide 3: 굿즈 제작 -->
+            <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0; background:#F0EEE8; display:flex; align-items:center; justify-content:center; gap:1.5rem; padding:1.5rem;">
+              <div style="flex:1; height:100%; display:flex; align-items:center; justify-content:center;">
+                <img src="./주요%20활동/그림톡%20티셔츠.png" alt="그림톡 티셔츠" style="max-width:100%; max-height:100%; object-fit:contain;">
+              </div>
+              <div style="flex:1; height:100%; display:flex; align-items:center; justify-content:center;">
+                <img src="./주요%20활동/그림톡%20L자%20화일.png" alt="그림톡 L자 화일" style="max-width:100%; max-height:100%; object-fit:contain;">
+              </div>
+              <div class="absolute bottom-0 right-0 bg-white/96 p-5 text-right" style="border-top-left-radius:1rem; max-width:280px;">
+                <p class="text-[10px] font-bold tracking-widest text-muted uppercase mb-1">2026</p>
+                <p class="font-bold text-ink text-sm leading-snug">굿즈 제작</p>
+                <p class="text-muted text-xs mt-1 leading-relaxed">티셔츠, L자 화일 등 굿즈 제작</p>
+              </div>
+            </div>
+
+            <!-- Slide 4: 서울시교육청 협업 — 왼쪽 2×2 썸네일 + 오른쪽 메인 이미지 -->
             <div class="slide relative rounded-2xl overflow-hidden border border-border" style="aspect-ratio:16/9; flex-shrink:0; background:#F0EEE8;">
               <!-- 캡션 높이만큼 아래쪽 여백 확보 -->
               <div class="flex gap-1.5 p-1.5" style="position:absolute; inset:0; padding-bottom:82px;">
@@ -533,6 +548,7 @@
             <button class="dot w-2 h-2 rounded-full bg-border transition-all" data-index="1" aria-label="슬라이드 2"></button>
             <button class="dot w-2 h-2 rounded-full bg-border transition-all" data-index="2" aria-label="슬라이드 3"></button>
             <button class="dot w-2 h-2 rounded-full bg-border transition-all" data-index="3" aria-label="슬라이드 4"></button>
+            <button class="dot w-2 h-2 rounded-full bg-border transition-all" data-index="4" aria-label="슬라이드 5"></button>
           </div>
           <button id="slide-pause"
             class="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:border-ink transition-all focus:outline-none active:scale-95"
@@ -756,8 +772,8 @@
       });
 
       if (!isPaused) {
-        if (current === 2) {
-          startEduTimer(); // 슬라이드 3: 이미지 순환 후 다음 슬라이드로
+        if (current === 3) {
+          startEduTimer(); // 슬라이드 4: 이미지 순환 후 다음 슬라이드로
         } else {
           autoTimer = setInterval(() => goTo(current + 1), 4500);
         }
@@ -777,7 +793,7 @@
         clearInterval(autoTimer);
         stopEduTimer();
       } else {
-        if (current === 2) startEduTimer();
+        if (current === 3) startEduTimer();
         else autoTimer = setInterval(() => goTo(current + 1), 4500);
       }
     });
