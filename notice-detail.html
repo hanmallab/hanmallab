@@ -169,8 +169,7 @@
       <p class="text-muted text-xs">© 2026 이주배경한말연구소</p>
     </div>
     <div class="max-w-6xl mx-auto px-6 pt-5 mt-5 border-t border-border text-center">
-      <img src="https://visitor-badge.laobi.icu/badge?page_id=www.hanmallab.kr&left_color=grey&right_color=%230A0A0A&left_text=Visitors" alt="방문자 수" class="mx-auto h-5">
-      <p class="text-xs text-muted mt-1.5">오늘 방문자 / 누적 방문자</p>
+      <p class="text-xs text-muted">오늘 방문자 수 <strong id="v-today" class="text-ink font-semibold">—</strong><span class="mx-3">|</span>총 방문자 수 <strong id="v-total" class="text-ink font-semibold">—</strong></p>
     </div>
   </footer>
 
@@ -265,6 +264,20 @@
       iconOpen.classList.remove('hidden');
       iconClose.classList.add('hidden');
     }
+
+    // 방문자 카운터
+    fetch('https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fwww.hanmallab.kr')
+      .then(function(r){ return r.text(); })
+      .then(function(svg){
+        var m = svg.match(/(\d+)\s*\/\s*(\d+)/);
+        if (m) {
+          var t = document.getElementById('v-today');
+          var u = document.getElementById('v-total');
+          if (t) t.textContent = Number(m[1]).toLocaleString();
+          if (u) u.textContent = Number(m[2]).toLocaleString();
+        }
+      })
+      .catch(function(){});
   </script>
 
 </body>
