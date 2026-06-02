@@ -2,14 +2,26 @@ export const config = {
   matcher: ['/hanmaltok', '/hanmaltok/(.*)'],
 }
 
-const COOKIE = 'ht_auth'
+const COOKIE_NAME = 'ht_auth'
 const PASSWORD = process.env.ADMIN_PASSWORD || 'hanmaltok2025'
 
-export default function middleware(req) {
-  const cookie = req.cookies.get(COOKIE)
-  if (cookie?.value === PASSWORD) return
+function getCookie(request, name) {
+  const cookieHeader = request.headers.get('cookie') || ''
+  const cookies = Object.fromEntries(
+    cookieHeader.split(';').map(c => {
+      const [k, ...v] = c.trim().split('=')
+      return [k, v.join('=')]
+    })
+  )
+  return cookies[name]
+}
 
-  const loginUrl = new URL('/login.html', req.url)
-  loginUrl.searchParams.set('next', req.nextUrl?.pathname || '/hanmaltok')
+export default function middleware(request) {
+  const auth = getCookie(request, COOKIE_NAME)
+  if (auth === PASSWORD) return new Response(null, { status: 200 })
+
+  const url = new URL(request.url)
+  const loginUrl = new URL('/login.html', request.url)
+  loginUrl.searchParams.set('next', url.pathname)
   return Response.redirect(loginUrl)
 }
