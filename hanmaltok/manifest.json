@@ -1,0 +1,20 @@
+{
+  "name": "한말톡 AAC - 학교생활 의사소통",
+  "short_name": "한말톡",
+  "description": "이주배경학생을 위한 학교생활 AAC 앱",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#EEF5FF",
+  "theme_color": "#1565C0",
+  "lang": "ko",
+  "categories": ["education", "accessibility"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231565C0'/%3E%3Ctext x='50%25' y='55%25' font-size='300' text-anchor='middle' dominant-baseline='middle'%3E%F0%9F%97%A3%EF%B8%8F%3C/text%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

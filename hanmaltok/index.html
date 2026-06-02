@@ -1,0 +1,1345 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1565C0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="&#54620;&#47568;&#53397;">
+  <link rel="manifest" href="manifest.json">
+  <title>&#54620;&#47568;&#53397; AAC</title>
+  <style>
+    :root {
+      --primary:       #1565C0;
+      --primary-light: #42A5F5;
+      --primary-dark:  #0D47A1;
+      --bg:            #EEF5FF;
+      --card-bg:       #FFFFFF;
+      --text:          #1A1A2E;
+      --text-muted:    #6B7280;
+      --border:        #BBDEFB;
+      --strip-bg:      #0D2A52;
+      --radius-sm:     10px;
+      --radius:        16px;
+      --radius-lg:     24px;
+      --shadow:        0 2px 10px rgba(21,101,192,0.15);
+      --shadow-hover:  0 6px 20px rgba(21,101,192,0.30);
+      --nav-h:         60px;
+      --c-urgent:   #E53935;
+      --c-needs:    #2E7D32;
+      --c-response: #6A1B9A;
+      --c-feelings: #E65100;
+      --c-school:   #1565C0;
+      --c-places:   #00695C;
+      --c-things:   #4E342E;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    #app-header {
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+      z-index: 20;
+    }
+    #app-header h1 { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.3px; }
+    #app-header .right { display: flex; gap: 6px; }
+    .icon-btn {
+      background: rgba(255,255,255,.18);
+      border: none; color: #fff;
+      padding: 6px 11px; border-radius: 8px;
+      cursor: pointer; font-size: 0.82rem; font-weight: 600;
+      display: flex; align-items: center; gap: 4px;
+      transition: background .15s;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,.28); }
+
+    /* MAIN */
+    #main-content {
+      flex: 1; display: flex; flex-direction: column;
+      overflow: hidden; padding-bottom: var(--nav-h);
+    }
+
+    /* BOTTOM NAV */
+    #bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: #fff; border-top: 2px solid var(--border);
+      display: flex; z-index: 30;
+      box-shadow: 0 -2px 12px rgba(21,101,192,.1);
+    }
+    .nav-btn {
+      flex: 1; background: none; border: none; cursor: pointer;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 2px; font-size: .68rem; font-weight: 700;
+      color: var(--text-muted); transition: color .15s; padding: 6px 0;
+    }
+    .nav-icon { font-size: 1.4rem; line-height: 1; }
+    .nav-btn.active { color: var(--primary); }
+    .nav-btn.active .nav-icon { transform: scale(1.1); }
+    .nav-btn:hover { color: var(--primary); }
+
+    /* MODE PANELS */
+    .mode-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .mode-panel[hidden] { display: none !important; }
+
+    /* =====================
+       SOTONPAN MODE
+    ===================== */
+    #output-strip {
+      background: var(--strip-bg); padding: 8px 10px;
+      display: flex; align-items: center; gap: 8px;
+      min-height: 62px; flex-shrink: 0;
+    }
+    #output-words {
+      flex: 1; display: flex; flex-wrap: wrap;
+      gap: 5px; align-items: center; min-height: 38px;
+    }
+    .out-chip {
+      background: rgba(255,255,255,.15); color: #fff;
+      padding: 5px 10px; border-radius: 20px;
+      font-size: .95rem; font-weight: 700;
+      display: flex; align-items: center; gap: 4px;
+      cursor: pointer; transition: background .15s; user-select: none;
+    }
+    .out-chip:hover { background: rgba(255,255,255,.25); }
+    .chip-emoji { font-size: 1.1rem; }
+    .out-placeholder { color: rgba(255,255,255,.38); font-size: .85rem; }
+    .strip-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .strip-btn {
+      background: rgba(255,255,255,.12);
+      border: 2px solid rgba(255,255,255,.3); color: #fff;
+      width: 42px; height: 42px; border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 1.15rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s; flex-shrink: 0;
+    }
+    .strip-btn:hover { background: rgba(255,255,255,.22); }
+    .strip-btn.speak {
+      background: #1B5E20; border-color: #43A047; width: 54px; font-size: 1.4rem;
+    }
+    .strip-btn.speak:hover { background: #2E7D32; }
+    .strip-btn.speak.active {
+      background: #F57F17; border-color: #FBC02D;
+      animation: pulsate .7s ease-in-out infinite;
+    }
+    @keyframes pulsate {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:.75; transform:scale(.94); }
+    }
+
+    #cat-bar {
+      background: #fff; display: flex; gap: 0;
+      overflow-x: auto; scrollbar-width: none;
+      border-bottom: 2px solid var(--border); flex-shrink: 0;
+    }
+    #cat-bar::-webkit-scrollbar { display: none; }
+    .cat-tab {
+      background: none; border: none;
+      padding: 9px 14px; font-size: .8rem; font-weight: 700;
+      color: var(--text-muted); white-space: nowrap; cursor: pointer;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: color .15s, border-color .15s;
+    }
+    .cat-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .cat-tab:hover:not(.active) { color: var(--primary); background: var(--bg); }
+
+    #grid-wrap { flex: 1; overflow-y: auto; padding: 12px; -webkit-overflow-scrolling: touch; }
+    #symbol-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    @media (min-width:480px)  { #symbol-grid { grid-template-columns: repeat(4,1fr); } }
+    @media (min-width:640px)  { #symbol-grid { grid-template-columns: repeat(5,1fr); } }
+    @media (min-width:840px)  { #symbol-grid { grid-template-columns: repeat(6,1fr); } }
+    @media (min-width:1024px) { #symbol-grid { grid-template-columns: repeat(7,1fr); } }
+
+    .sym-card {
+      background: var(--card-bg); border: 2.5px solid var(--border);
+      border-radius: var(--radius); padding: 10px 6px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 5px; aspect-ratio: 1;
+      box-shadow: var(--shadow); position: relative; overflow: hidden;
+      transition: transform .12s, box-shadow .12s, border-color .12s;
+      user-select: none;
+    }
+    .sym-card::after {
+      content:''; position:absolute; inset:0; background:currentColor;
+      opacity:0; transition:opacity .12s; border-radius:inherit;
+    }
+    .sym-card:active::after { opacity:.08; }
+    .sym-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover); }
+    .sym-card:active { transform:scale(.93); }
+    .sym-card[data-cat="urgent"]   { border-color:#FFCDD2; }
+    .sym-card[data-cat="needs"]    { border-color:#C8E6C9; }
+    .sym-card[data-cat="response"] { border-color:#E1BEE7; }
+    .sym-card[data-cat="feelings"] { border-color:#FFE0B2; }
+    .sym-card[data-cat="school"]   { border-color:#BBDEFB; }
+    .sym-card[data-cat="places"]   { border-color:#B2DFDB; }
+    .sym-card[data-cat="things"]   { border-color:#D7CCC8; }
+    .sym-card:hover[data-cat="urgent"]   { border-color:var(--c-urgent);   box-shadow:0 6px 20px rgba(229,57,53,.25); }
+    .sym-card:hover[data-cat="needs"]    { border-color:var(--c-needs);    box-shadow:0 6px 20px rgba(46,125,50,.25); }
+    .sym-card:hover[data-cat="response"] { border-color:var(--c-response); box-shadow:0 6px 20px rgba(106,27,154,.25); }
+    .sym-card:hover[data-cat="feelings"] { border-color:var(--c-feelings); box-shadow:0 6px 20px rgba(230,81,0,.25); }
+    .sym-card:hover[data-cat="school"]   { border-color:var(--c-school);   box-shadow:0 6px 20px rgba(21,101,192,.25); }
+    .sym-card:hover[data-cat="places"]   { border-color:var(--c-places);   box-shadow:0 6px 20px rgba(0,105,92,.25); }
+    .sym-card:hover[data-cat="things"]   { border-color:var(--c-things);   box-shadow:0 6px 20px rgba(78,52,46,.25); }
+    .sym-icon { font-size:2.4rem; line-height:1; }
+    .sym-text { font-size:.75rem; font-weight:800; text-align:center; line-height:1.2; }
+    .sym-sub  { font-size:.6rem; color:var(--text-muted); text-align:center; line-height:1.2; }
+    .cat-label {
+      grid-column:1/-1; padding:4px 2px 6px;
+      font-size:.72rem; font-weight:800; letter-spacing:.4px;
+      text-transform:uppercase; display:flex; align-items:center; gap:6px;
+    }
+    .cat-label::after { content:''; flex:1; height:2px; background:var(--border); border-radius:2px; }
+    .cat-label[data-cat="urgent"]   { color:var(--c-urgent); }
+    .cat-label[data-cat="needs"]    { color:var(--c-needs); }
+    .cat-label[data-cat="response"] { color:var(--c-response); }
+    .cat-label[data-cat="feelings"] { color:var(--c-feelings); }
+    .cat-label[data-cat="school"]   { color:var(--c-school); }
+    .cat-label[data-cat="places"]   { color:var(--c-places); }
+    .cat-label[data-cat="things"]   { color:var(--c-things); }
+
+    /* =====================
+       HAKSUP MODE
+    ===================== */
+    #week-select {
+      flex: 1; overflow-y: auto; padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px; align-content: start;
+    }
+    #week-select.hidden { display: none; }
+    @media (min-width:600px) { #week-select { grid-template-columns: repeat(4,1fr); } }
+
+    .week-card {
+      background: var(--card-bg); border-radius: var(--radius-lg);
+      padding: 20px 14px; cursor: pointer; text-align: center;
+      box-shadow: var(--shadow); border: 3px solid transparent;
+      transition: transform .15s, box-shadow .15s, border-color .15s;
+      user-select: none;
+    }
+    .week-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover); }
+    .week-card:active { transform:scale(.95); }
+    .wk-icon  { font-size:2.8rem; margin-bottom:8px; }
+    .wk-num   { font-size:.8rem; font-weight:800; opacity:.7; }
+    .wk-title { font-size:.88rem; font-weight:800; line-height:1.3; margin-top:4px; }
+    .wk-words { font-size:.7rem; color:var(--text-muted); margin-top:6px; line-height:1.6; }
+    .week-card[data-week="1"] { border-color:#FFCDD2; }
+    .week-card[data-week="2"] { border-color:#C8E6C9; }
+    .week-card[data-week="3"] { border-color:#E1BEE7; }
+    .week-card[data-week="4"] { border-color:#BBDEFB; }
+    .week-card[data-week="1"]:hover { border-color:#E53935; }
+    .week-card[data-week="2"]:hover { border-color:#2E7D32; }
+    .week-card[data-week="3"]:hover { border-color:#6A1B9A; }
+    .week-card[data-week="4"]:hover { border-color:#1565C0; }
+
+    #lesson-view {
+      flex: 1; display: none; flex-direction: column; overflow: hidden;
+    }
+    #lesson-view.active { display: flex; }
+
+    .lesson-header {
+      background: var(--primary); color: #fff;
+      padding: 10px 14px;
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    .lesson-header[data-week="1"] { background:#C62828; }
+    .lesson-header[data-week="2"] { background:#1B5E20; }
+    .lesson-header[data-week="3"] { background:#4A148C; }
+    .lesson-header[data-week="4"] { background:#0D47A1; }
+    .back-btn {
+      background:rgba(255,255,255,.2); border:none; color:#fff;
+      width:34px; height:34px; border-radius:8px; cursor:pointer;
+      font-size:1.2rem; display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+    .back-btn:hover { background:rgba(255,255,255,.32); }
+    .lesson-hdr-text h2 { font-size:.98rem; font-weight:800; }
+    .lesson-hdr-text p  { font-size:.74rem; opacity:.8; margin-top:2px; }
+
+    .lesson-tabs {
+      background:#fff; display:flex;
+      border-bottom:2px solid var(--border); flex-shrink:0;
+    }
+    .lesson-tab {
+      flex:1; background:none; border:none; padding:10px 4px;
+      font-size:.72rem; font-weight:700; color:var(--text-muted);
+      cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px;
+      display:flex; flex-direction:column; align-items:center; gap:2px;
+      transition:color .15s;
+    }
+    .tab-icon { font-size:1.05rem; }
+    .lesson-tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+    .lesson-tab:hover:not(.active) { color:var(--primary); }
+
+    .tab-content { flex:1; overflow-y:auto; }
+    .tab-panel { display:none; padding:16px; }
+    .tab-panel.active { display:block; }
+
+    /* FLASHCARD */
+    .flashcard-nav {
+      display:flex; align-items:center; justify-content:center;
+      gap:12px; margin-bottom:14px;
+    }
+    .fc-counter { font-size:.85rem; font-weight:700; color:var(--text-muted); }
+    .fc-arr {
+      background:var(--primary); color:#fff; border:none;
+      width:38px; height:38px; border-radius:50%;
+      font-size:1.1rem; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:background .15s;
+    }
+    .fc-arr:hover { background:var(--primary-dark); }
+    .fc-arr:disabled { background:#ccc; cursor:default; }
+    .flashcard {
+      background:var(--card-bg); border-radius:var(--radius-lg);
+      padding:32px 24px; text-align:center; box-shadow:var(--shadow);
+      cursor:pointer; min-height:200px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:10px; margin-bottom:14px;
+      transition:transform .15s;
+    }
+    .flashcard:hover { transform:scale(1.02); }
+    .fc-emoji { font-size:4.5rem; line-height:1; }
+    .fc-word  { font-size:2rem; font-weight:900; color:var(--primary); }
+    .fc-trans { font-size:1rem; color:var(--text-muted); }
+    .fc-hint  { font-size:.75rem; color:var(--text-muted); margin-top:6px; }
+    .fc-speak-btn {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      background:var(--primary); color:#fff; border:none;
+      padding:12px 24px; border-radius:30px;
+      font-size:.9rem; font-weight:700; cursor:pointer;
+      width:100%; max-width:300px; margin:0 auto 20px;
+      transition:background .15s;
+    }
+    .fc-speak-btn:hover { background:var(--primary-dark); }
+    .vocab-list {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:10px;
+    }
+    .vocab-item {
+      background:var(--card-bg); border:2px solid var(--border);
+      border-radius:var(--radius); padding:10px 6px; text-align:center;
+      cursor:pointer; transition:border-color .15s, transform .12s;
+    }
+    .vocab-item:hover { border-color:var(--primary); transform:translateY(-2px); }
+    .vocab-item.active-fc { border-color:var(--primary); background:var(--bg); }
+    .vi-emoji { font-size:1.8rem; }
+    .vi-text  { font-size:.73rem; font-weight:800; margin-top:3px; }
+
+    /* DIALOGUE */
+    .dialogue-nav {
+      display:flex; gap:8px; margin-bottom:14px;
+      overflow-x:auto; scrollbar-width:none; padding-bottom:4px;
+    }
+    .dialogue-nav::-webkit-scrollbar { display:none; }
+    .dlg-nav-btn {
+      background:var(--bg); border:2px solid var(--border);
+      border-radius:20px; padding:6px 14px;
+      font-size:.78rem; font-weight:700; cursor:pointer;
+      white-space:nowrap; transition:border-color .15s, background .15s;
+    }
+    .dlg-nav-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .dlg-situation {
+      background:var(--primary); color:#fff;
+      padding:7px 14px; border-radius:8px;
+      font-size:.8rem; font-weight:700;
+      display:inline-block; margin-bottom:14px;
+    }
+    .dialogue-box { display:flex; flex-direction:column; gap:12px; }
+    .dlg-line { display:flex; gap:10px; align-items:flex-start; }
+    .dlg-line.teacher { flex-direction:row-reverse; }
+    .dlg-avatar {
+      width:36px; height:36px; border-radius:50%;
+      background:var(--primary);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem; flex-shrink:0;
+    }
+    .dlg-line.teacher .dlg-avatar { background:#C62828; }
+    .dlg-bubble {
+      background:var(--card-bg); border:2px solid var(--border);
+      border-radius:var(--radius); padding:11px 13px; max-width:78%;
+    }
+    .dlg-line.teacher .dlg-bubble { background:#FFF3F3; border-color:#FFCDD2; }
+    .dlg-text { font-size:.95rem; font-weight:700; margin-bottom:3px; }
+    .dlg-tr   { font-size:.78rem; color:var(--text-muted); margin-bottom:4px; }
+    .dlg-tts  {
+      background:none; border:1.5px solid var(--border);
+      border-radius:14px; padding:3px 10px;
+      font-size:.72rem; cursor:pointer; color:var(--primary); font-weight:700;
+    }
+    .dlg-tts:hover { background:var(--bg); }
+
+    /* SONG */
+    .song-banner {
+      background:linear-gradient(135deg,#1565C0,#42A5F5);
+      border-radius:var(--radius-lg); padding:24px 20px;
+      color:#fff; text-align:center; margin-bottom:14px;
+    }
+    .song-banner-icon  { font-size:3rem; margin-bottom:6px; }
+    .song-banner-title { font-size:1.2rem; font-weight:900; }
+    .song-banner-sub   { font-size:.82rem; opacity:.8; margin-top:4px; }
+    .audio-wrap {
+      background:var(--card-bg); border:2px solid var(--border);
+      border-radius:var(--radius); padding:16px; margin-bottom:14px;
+    }
+    .audio-wrap audio { width:100%; border-radius:8px; }
+    .audio-note {
+      text-align:center; padding:16px 8px;
+      color:var(--text-muted); font-size:.82rem; margin-top:8px;
+    }
+    .audio-path {
+      font-size:.7rem; font-family:monospace;
+      background:var(--bg); padding:4px 8px; border-radius:6px;
+      margin-top:6px; display:inline-block; color:var(--primary);
+    }
+    .lyrics-box {
+      background:var(--card-bg); border:2px solid var(--border);
+      border-radius:var(--radius); padding:20px;
+    }
+    .lyrics-box h3 { font-size:.82rem; color:var(--text-muted); margin-bottom:12px; font-weight:700; }
+    .lyrics-box pre {
+      font-family:inherit; font-size:.95rem; font-weight:700;
+      line-height:2.2; white-space:pre-wrap; color:var(--text);
+    }
+
+    /* GAME */
+    .game-topbar {
+      display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;
+    }
+    .game-topbar h3 { font-size:.95rem; font-weight:800; }
+    .game-restart {
+      background:var(--primary); color:#fff; border:none;
+      padding:7px 14px; border-radius:20px;
+      font-size:.78rem; font-weight:700; cursor:pointer;
+    }
+    .game-restart:hover { background:var(--primary-dark); }
+    .score-bar {
+      background:var(--card-bg); border:2px solid var(--border);
+      border-radius:var(--radius); padding:9px 14px;
+      display:flex; gap:20px; margin-bottom:12px;
+      font-size:.84rem; font-weight:700;
+    }
+    .score-bar span { color:var(--primary); }
+    .game-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+    }
+    @media (max-width:360px) { .game-grid { grid-template-columns:repeat(3,1fr); } }
+    .game-card {
+      aspect-ratio:1; cursor:pointer; border-radius:var(--radius);
+      position:relative;
+    }
+    .game-card.matched  { opacity:.45; cursor:default; pointer-events:none; }
+    .gc-front, .gc-back {
+      position:absolute; inset:0; border-radius:var(--radius);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; box-shadow:var(--shadow);
+      transition:opacity .25s;
+    }
+    .gc-front {
+      background:var(--primary); color:#fff; font-size:1.4rem;
+      opacity:1; z-index:2;
+    }
+    .gc-back {
+      background:var(--card-bg); border:2.5px solid var(--border);
+      padding:6px; text-align:center;
+      font-size:.85rem; line-height:1.3;
+      opacity:0; z-index:1;
+    }
+    .gc-back.is-emoji { font-size:2rem; }
+    .game-card.flipped .gc-front { opacity:0; z-index:1; }
+    .game-card.flipped .gc-back  { opacity:1; z-index:2; }
+    #game-result {
+      text-align:center; margin-top:18px;
+      font-size:1.1rem; font-weight:800; color:var(--primary);
+    }
+
+    /* TEACHER MODE */
+    #teacher-overlay {
+      display:none; position:fixed; inset:0;
+      background:#0D2A52; z-index:200;
+      flex-direction:column; align-items:center; justify-content:center; padding:20px;
+    }
+    #teacher-overlay.open { display:flex; }
+    .teacher-close {
+      position:absolute; top:14px; right:14px;
+      background:rgba(255,255,255,.15); border:none; color:#fff;
+      padding:7px 14px; border-radius:8px;
+      font-size:.82rem; font-weight:700; cursor:pointer;
+    }
+    .teacher-close:hover { background:rgba(255,255,255,.26); }
+    .teacher-label {
+      color:rgba(255,255,255,.5); font-size:.78rem; font-weight:700;
+      letter-spacing:1px; margin-bottom:18px;
+    }
+    #teacher-card {
+      background:#fff; border-radius:28px;
+      width:min(82vw,320px); aspect-ratio:1;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:14px;
+      box-shadow:0 20px 60px rgba(0,0,0,.5);
+      padding:20px;
+    }
+    .tc-emoji { font-size:5.5rem; line-height:1; }
+    .tc-text  { font-size:2.2rem; font-weight:900; color:var(--primary); text-align:center; }
+    .tc-trans { font-size:.95rem; color:var(--text-muted); text-align:center; }
+    .teacher-nav {
+      display:flex; align-items:center; gap:22px; margin-top:24px;
+    }
+    .t-arr {
+      background:rgba(255,255,255,.15); border:none; color:#fff;
+      width:52px; height:52px; border-radius:50%; font-size:1.4rem;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:background .15s;
+    }
+    .t-arr:hover { background:rgba(255,255,255,.28); }
+    .t-arr:disabled { opacity:.25; cursor:default; }
+    .teacher-counter {
+      color:rgba(255,255,255,.7); font-size:.9rem; font-weight:700;
+      min-width:56px; text-align:center;
+    }
+    .teacher-speak {
+      margin-top:14px; background:#1B5E20; border:none; color:#fff;
+      padding:11px 28px; border-radius:30px;
+      font-size:.9rem; font-weight:700; cursor:pointer;
+      transition:background .15s;
+    }
+    .teacher-speak:hover { background:#2E7D32; }
+
+    /* SETTINGS */
+    #settings-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,.5); z-index:100;
+      align-items:center; justify-content:center;
+    }
+    #settings-overlay.open { display:flex; }
+    #settings-box {
+      background:#fff; border-radius:var(--radius-lg);
+      padding:24px 22px; width:92%; max-width:420px;
+      max-height:85vh; overflow-y:auto;
+      box-shadow:0 16px 48px rgba(0,0,0,.25);
+    }
+    #settings-box h2 { font-size:1.1rem; color:var(--primary); margin-bottom:18px; }
+    .s-item { margin-bottom:18px; }
+    .s-item label { display:block; font-size:.85rem; font-weight:700; margin-bottom:6px; }
+    .s-item select, .s-item input[type="range"] { width:100%; }
+    .s-item select {
+      padding:8px 10px; border:2px solid var(--border);
+      border-radius:var(--radius-sm); font-size:.9rem; outline:none;
+    }
+    .s-item select:focus { border-color:var(--primary); }
+    .range-row { display:flex; align-items:center; gap:10px; }
+    .range-row input { flex:1; accent-color:var(--primary); }
+    .range-val { min-width:36px; text-align:right; font-size:.85rem; font-weight:700; color:var(--primary); }
+    .s-close {
+      display:block; width:100%; padding:13px;
+      background:var(--primary); color:#fff; border:none;
+      border-radius:var(--radius-sm); font-size:1rem; font-weight:700;
+      cursor:pointer; margin-top:6px;
+    }
+    .s-close:hover { background:var(--primary-dark); }
+
+    /* FONT SIZE */
+    body.font-large .sym-icon { font-size:3rem; }
+    body.font-large .sym-text { font-size:.88rem; }
+    body.font-small .sym-icon { font-size:1.8rem; }
+    body.font-small .sym-text { font-size:.65rem; }
+
+    /* RIPPLE */
+    .ripple {
+      position:absolute; border-radius:50%; transform:scale(0);
+      animation:ripple-anim .4s linear;
+      background:rgba(21,101,192,.2); pointer-events:none;
+    }
+    @keyframes ripple-anim { to { transform:scale(4); opacity:0; } }
+
+    /* TOAST */
+    #toast {
+      position:fixed; bottom:76px; left:50%;
+      transform:translateX(-50%) translateY(60px);
+      background:#323232; color:#fff;
+      padding:10px 20px; border-radius:24px;
+      font-size:.85rem; font-weight:600;
+      z-index:201; transition:transform .3s; pointer-events:none;
+    }
+    #toast.show { transform:translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="app-header">
+  <h1>&#128483; &#54620;&#47568;&#53397;</h1>
+  <div class="right">
+    <button class="icon-btn" id="installBtn" style="display:none">&#128242; &#49444;&#52824;</button>
+    <button class="icon-btn" onclick="openSettings()">&#9881; &#49444;&#51221;</button>
+  </div>
+</header>
+
+<div id="main-content">
+
+  <!-- ======= SOTONPAN ======= -->
+  <div id="mode-sotonpan" class="mode-panel">
+    <div id="output-strip">
+      <div id="output-words">
+        <span class="out-placeholder">&#45800;&#50612;&#47484; &#45588;&#47084; &#47928;&#51109;&#51012; &#47564;&#46300;&#49464;&#50836;</span>
+      </div>
+      <div class="strip-actions">
+        <button class="strip-btn" title="&#47560;&#51648;&#47561; &#49325;&#51228;" onclick="backspace()">&#9003;</button>
+        <button class="strip-btn" title="&#51204;&#52404; &#51648;&#50864;&#44592;" onclick="clearOutput()">&#128465;</button>
+        <button class="strip-btn speak" id="speakBtn" onclick="speakSentence()">&#9654;</button>
+      </div>
+    </div>
+
+    <div id="cat-bar">
+      <button class="cat-tab active" data-cat="all"      onclick="setCategory('all',this)">&#127775; &#51204;&#52404;</button>
+      <button class="cat-tab"        data-cat="urgent"   onclick="setCategory('urgent',this)">&#128680; &#44553;&#44553;</button>
+      <button class="cat-tab"        data-cat="needs"    onclick="setCategory('needs',this)">&#127860; &#54596;&#50836;</button>
+      <button class="cat-tab"        data-cat="response" onclick="setCategory('response',this)">&#128172; &#45824;&#45813;</button>
+      <button class="cat-tab"        data-cat="feelings" onclick="setCategory('feelings',this)">&#128512; &#44048;&#51221;</button>
+      <button class="cat-tab"        data-cat="school"   onclick="setCategory('school',this)">&#128218; &#49688;&#50629;</button>
+      <button class="cat-tab"        data-cat="places"   onclick="setCategory('places',this)">&#128205; &#51109;&#49548;</button>
+      <button class="cat-tab"        data-cat="things"   onclick="setCategory('things',this)">&#127890; &#47932;&#44148;/&#49324;&#46993;</button>
+    </div>
+
+    <div id="grid-wrap">
+      <div id="symbol-grid"></div>
+    </div>
+  </div>
+
+  <!-- ======= HAKSUP ======= -->
+  <div id="mode-haksup" class="mode-panel" hidden>
+
+    <div id="week-select"></div>
+
+    <div id="lesson-view">
+      <div class="lesson-header" id="lesson-header">
+        <button class="back-btn" onclick="backToWeeks()">&#8592;</button>
+        <div class="lesson-hdr-text">
+          <h2 id="lesson-title"></h2>
+          <p  id="lesson-sub"></p>
+        </div>
+      </div>
+
+      <div class="lesson-tabs">
+        <button class="lesson-tab active" data-tab="vocab"    onclick="setLessonTab('vocab',this)">
+          <span class="tab-icon">&#128214;</span>&#45800;&#50612;
+        </button>
+        <button class="lesson-tab" data-tab="dialogue" onclick="setLessonTab('dialogue',this)">
+          <span class="tab-icon">&#128172;</span>&#45824;&#54868;
+        </button>
+        <button class="lesson-tab" data-tab="song"     onclick="setLessonTab('song',this)">
+          <span class="tab-icon">&#127925;</span>&#45432;&#47000;
+        </button>
+        <button class="lesson-tab" data-tab="game"     onclick="setLessonTab('game',this)">
+          <span class="tab-icon">&#127918;</span>&#44172;&#51076;
+        </button>
+      </div>
+
+      <div class="tab-content">
+        <div id="tab-vocab"    class="tab-panel active"></div>
+        <div id="tab-dialogue" class="tab-panel"></div>
+        <div id="tab-song"     class="tab-panel"></div>
+        <div id="tab-game"     class="tab-panel"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /main-content -->
+
+<!-- BOTTOM NAV -->
+<nav id="bottom-nav">
+  <button class="nav-btn active" onclick="switchMode('sotonpan',this)">
+    <span class="nav-icon">&#128172;</span>&#49548;&#53685;&#54032;
+  </button>
+  <button class="nav-btn" onclick="switchMode('haksup',this)">
+    <span class="nav-icon">&#128218;</span>&#54617;&#49845;
+  </button>
+  <button class="nav-btn" onclick="openTeacherMode()">
+    <span class="nav-icon">&#128105;&#8205;&#127979;</span>&#49440;&#49373;&#45813;
+  </button>
+</nav>
+
+<!-- TEACHER OVERLAY -->
+<div id="teacher-overlay">
+  <button class="teacher-close" onclick="closeTeacherMode()">&#10005; &#45803;&#44592;</button>
+  <div class="teacher-label">&#128105;&#8205;&#127979; &#49440;&#49373;&#45813; &#47784;&#46300;</div>
+  <div id="teacher-card">
+    <div class="tc-emoji"></div>
+    <div class="tc-text"></div>
+    <div class="tc-trans"></div>
+  </div>
+  <div class="teacher-nav">
+    <button class="t-arr" id="t-prev" onclick="teacherNav(-1)">&#8592;</button>
+    <div class="teacher-counter" id="teacher-counter">1 / 24</div>
+    <button class="t-arr" id="t-next" onclick="teacherNav(1)">&#8594;</button>
+  </div>
+  <button class="teacher-speak" onclick="teacherSpeak()">&#128266; &#51169;&#44592;</button>
+</div>
+
+<!-- SETTINGS -->
+<div id="settings-overlay" onclick="overlayClick(event)">
+  <div id="settings-box">
+    <h2>&#9881;&#65039; &#49444;&#51221;</h2>
+    <div class="s-item">
+      <label>&#127760; &#48264;&#50669; &#50616;&#50612; (&#48512;&#51228;&#47785;)</label>
+      <select id="transLangSel" onchange="setTransLang(this.value)">
+        <option value="none">&#54364;&#49884; &#50504; &#54632;</option>
+        <option value="en">&#127468;&#127463; English</option>
+        <option value="vi" selected>&#127762;&#127475; Ti&#7871;ng Vi&#7879;t</option>
+        <option value="zh">&#127464;&#127475; &#20013;&#25991;</option>
+        <option value="mn">&#127474;&#127475; &#1052;&#1086;&#1085;&#1075;&#1086;&#1083;</option>
+        <option value="ru">&#127479;&#127482; &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
+        <option value="tl">&#127477;&#127469; Filipino</option>
+        <option value="th">&#127481;&#127469; &#3616;&#3634;&#3625;&#3634;&#3652;&#3607;&#3618;</option>
+      </select>
+    </div>
+    <div class="s-item">
+      <label>&#128266; &#47568;&#54616;&#44592; &#49549;&#46020;: <span class="range-val" id="rateDisplay">1.0</span>x</label>
+      <div class="range-row">
+        <span style="font-size:.8rem">&#45212;&#47532;&#44172;</span>
+        <input type="range" min="0.5" max="1.5" step="0.1" value="1.0" oninput="setRate(this.value)">
+        <span style="font-size:.8rem">&#48736;&#47476;&#44172;</span>
+      </div>
+    </div>
+    <div class="s-item">
+      <label>&#128064; &#44544;&#51088; &#53356;&#44592;</label>
+      <select onchange="setFontSize(this.value)">
+        <option value="small">&#51089;&#44172;</option>
+        <option value="medium" selected>&#48372;&#53685;</option>
+        <option value="large">&#53356;&#44172;</option>
+      </select>
+    </div>
+    <div class="s-item">
+      <label>&#128263; TTS &#51020;&#49457; &#50616;&#50612;</label>
+      <select id="voiceLangSel" onchange="setVoiceLang(this.value)">
+        <option value="ko-KR" selected>&#54620;&#44397;&#50612;</option>
+        <option value="en-US">English (US)</option>
+        <option value="vi-VN">Ti&#7871;ng Vi&#7879;t</option>
+        <option value="zh-CN">&#20013;&#25991; (&#31616;&#20307;)</option>
+        <option value="mn-MN">&#1052;&#1086;&#1085;&#1075;&#1086;&#1083;</option>
+        <option value="ru-RU">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
+        <option value="tl-PH">Filipino</option>
+        <option value="th-TH">&#3616;&#3634;&#3625;&#3634;&#3652;&#3607;&#3618;</option>
+      </select>
+    </div>
+    <button class="s-close" onclick="closeSettings()">&#10003; &#45803;&#44592;</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ============================================
+//  VOCAB DATA
+// ============================================
+const VOCAB = [
+  {id:1,  text:'\uc120\uc0dd\ub2d8',    emoji:'\ud83d\udc69\u200d\ud83c\udfeb', cat:'urgent',
+   tr:{en:'Teacher',vi:'Gi\xe1o vi\xean',zh:'\u8001\u5e08',mn:'\u0411\u0430\u0433\u0448',ru:'\u0423\u0447\u0438\u0442\u0435\u043b\u044c',tl:'Guro',th:'\u0e04\u0e23\u0e39'}},
+  {id:2,  text:'\ub3c4\uc640\uc8fc\uc138\uc694', emoji:'\ud83d\ude4b', cat:'urgent',
+   tr:{en:'Help me!',vi:'Gi\xfap t\xf4i!',zh:'\u5e2e\u5e2e\u6211!',mn:'\u0422\u0443\u0441\u0430\u0430\u0447!',ru:'\u041f\u043e\u043c\u043e\u0433\u0438\u0442\u0435!',tl:'Tulungan!',th:'\u0e0a\u0e48\u0e27\u0e22\u0e14\u0e49\u0e27\u0e22!'}},
+  {id:3,  text:'\uc544\ud30c\uc694',    emoji:'\ud83e\udd15', cat:'urgent',
+   tr:{en:"I'm hurt",vi:'T\xf4i \u0111au',zh:'\u6211\u75bc',mn:'\u04e8\u0432\u0434\u04e9\u0436 \u0431\u0430\u0439\u043d\u0430',ru:'\u041c\u043d\u0435 \u0431\u043e\u043b\u044c\u043d\u043e',tl:'Masakit',th:'\u0e40\u0e08\u0e47\u0e1a/\u0e1b\u0e48\u0e27\u0e22'}},
+
+  {id:4,  text:'\ubc25',        emoji:'\ud83c\udf71', cat:'needs',
+   tr:{en:'Food/Meal',vi:'C\u01a1m / B\u1eefa \u0103n',zh:'\u996d',mn:'\u0425\u043e\u043e\u043b',ru:'\u0415\u0434\u0430',tl:'Pagkain',th:'\u0e02\u0e49\u0e32\u0e27'}},
+  {id:5,  text:'\ubb3c',        emoji:'\ud83d\udca7', cat:'needs',
+   tr:{en:'Water',vi:'N\u01b0\u1edbc',zh:'\u6c34',mn:'\u0423\u0441',ru:'\u0412\u043e\u0434\u0430',tl:'Tubig',th:'\u0e19\u0e49\u0e33'}},
+  {id:6,  text:'\ud654\uc7a5\uc2e4', emoji:'\ud83d\udebb', cat:'needs',
+   tr:{en:'Bathroom',vi:'Nh\xe0 v\u1ec7 sinh',zh:'\u5395\u6240',mn:'\u0416\u043e\u0440\u043b\u043e\u043d',ru:'\u0422\u0443\u0430\u043b\u0435\u0442',tl:'CR / Banyo',th:'\u0e2b\u0e49\u0e2d\u0e07\u0e19\u0e49\u0e33'}},
+
+  {id:7,  text:'\ub124',        emoji:'\u2705', cat:'response',
+   tr:{en:'Yes',vi:'V\xe2ng / D\u1ea1',zh:'\u662f',mn:'\u0422\u0438\u0439\u043c',ru:'\u0414\u0430',tl:'Oo',th:'\u0e43\u0e0a\u0e48'}},
+  {id:8,  text:'\uc544\ub2c8\uc694', emoji:'\u274c', cat:'response',
+   tr:{en:'No',vi:'Kh\xf4ng',zh:'\u4e0d\u662f',mn:'\u04ae\u0433\u04af\u0439',ru:'\u041d\u0435\u0442',tl:'Hindi',th:'\u0e44\u0e21\u0e48\u0e43\u0e0a\u0e48'}},
+  {id:9,  text:'\uc548 \ub3fc\uc694',   emoji:'\ud83d\udeab', cat:'response',
+   tr:{en:'Not allowed',vi:'Kh\xf4ng \u0111\u01b0\u1ee3c',zh:'\u4e0d\u884c',mn:'\u0411\u043e\u043b\u043e\u0445\u0433\u04af\u0439',ru:'\u041d\u0435\u043b\u044c\u0437\u044f',tl:'Bawal',th:'\u0e2b\u0e49\u0e32\u0e21'}},
+  {id:10, text:'\ub6f0\uc9c0 \ub9c8\uc138\uc694', emoji:'\ud83d\udeb7', cat:'response',
+   tr:{en:"Don't run",vi:'Kh\xf4ng ch\u1ea1y',zh:'\u4e0d\u8981\u8dd1',mn:'\u0413\u04af\u0439\u0445\u0433\u04af\u0439',ru:'\u041d\u0435 \u0431\u0435\u0433\u0438\u0442\u0435',tl:'Huwag tumakbo',th:'\u0e2b\u0e49\u0e32\u0e21\u0e27\u0e34\u0e48\u0e07'}},
+
+  {id:11, text:'\uc880\uc544\uc694',   emoji:'\ud83d\udc4d', cat:'feelings',
+   tr:{en:'I like it',vi:'T\xf4i th\xedch',zh:'\u597d/\u559c\u6b22',mn:'\u0414\u0443\u0440\u0442\u0430\u0439',ru:'\u041d\u0440\u0430\u0432\u0438\u0442\u0441\u044f',tl:'Gusto ko',th:'\u0e0a\u0e2d\u0e1a'}},
+  {id:12, text:'\uc2eb\uc5b4\uc694',   emoji:'\ud83d\udc4e', cat:'feelings',
+   tr:{en:"I don't like",vi:'Kh\xf4ng th\xedch',zh:'\u4e0d\u559c\u6b22',mn:'\u0414\u0443\u0440\u0433\u04af\u0439',ru:'\u041d\u0435 \u043d\u0440\u0430\u0432\u0438\u0442\u0441\u044f',tl:'Ayoko',th:'\u0e44\u0e21\u0e48\u0e0a\u0e2d\u0e1a'}},
+  {id:13, text:'\ub354\uc6cc\uc694',   emoji:'\ud83e\udd75', cat:'feelings',
+   tr:{en:"I'm hot",vi:'N\xf3ng qu\xe1',zh:'\u6211\u70ed',mn:'\u0425\u0430\u043b\u0443\u0443\u043d \u0431\u0430\u0439\u043d\u0430',ru:'\u0416\u0430\u0440\u043a\u043e',tl:'Mainit',th:'\u0e23\u0e49\u0e2d\u0e19'}},
+  {id:14, text:'\ucd94\uc6cc\uc694',   emoji:'\ud83e\udd76', cat:'feelings',
+   tr:{en:"I'm cold",vi:'L\u1ea1nh qu\xe1',zh:'\u6211\u51b7',mn:'\u0425\u04af\u0439\u0442\u044d\u043d \u0431\u0430\u0439\u043d\u0430',ru:'\u0425\u043e\u043b\u043e\u0434\u043d\u043e',tl:'Malamig',th:'\u0e2b\u0e19\u0e32\u0e27'}},
+
+  {id:15, text:'\uc218\uc5c5 \uc2dc\uc791', emoji:'\ud83d\udcda', cat:'school',
+   tr:{en:'Class starts',vi:'B\u1eaft \u0111\u1ea7u h\u1ecdc',zh:'\u5f00\u59cb\u4e0a\u8bfe',mn:'\u0425\u0438\u0447\u044d\u044d\u043b \u044d\u0445\u044d\u043b\u0441\u044d\u043d',ru:'\u0423\u0440\u043e\u043a \u043d\u0430\u0447\u0430\u043b\u0441\u044f',tl:'Simula ng klase',th:'\u0e40\u0e23\u0e34\u0e48\u0e21\u0e40\u0e23\u0e35\u0e22\u0e19'}},
+  {id:16, text:'\uc218\uc5c5 \ub05d',   emoji:'\ud83d\udd14', cat:'school',
+   tr:{en:'Class ends',vi:'H\u1ebft gi\u1edd h\u1ecdc',zh:'\u4e0b\u8bfe\u4e86',mn:'\u0425\u0438\u0447\u044d\u044d\u043b \u0434\u0443\u0443\u0441\u0441\u0430\u043d',ru:'\u0423\u0440\u043e\u043a \u0437\u0430\u043a\u043e\u043d\u0447\u0438\u043b\u0441\u044f',tl:'Tapos na ang klase',th:'\u0e2b\u0e21\u0e14\u0e0a\u0e31\u0e48\u0e27\u0e42\u0e21\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'}},
+  {id:17, text:'\uc790\ub9ac',      emoji:'\ud83e\udea1', cat:'school',
+   tr:{en:'My seat',vi:'Ch\u1ed7 ng\u1ed3i',zh:'\u5ea7\u4f4d',mn:'\u0421\u0443\u0443\u0434\u0430\u043b',ru:'\u041c\u043e\u0451 \u043c\u0435\u0441\u0442\u043e',tl:'Upuan ko',th:'\u0e17\u0e35\u0e48\u0e19\u0e31\u0e48\u0e07'}},
+  {id:18, text:'\uac00\uc694',      emoji:'\ud83c\udfc3', cat:'school',
+   tr:{en:"I'm going",vi:'T\xf4i \u0111i',zh:'\u6211\u8d70\u4e86',mn:'\u042f\u0432\u043d\u0430',ru:'\u042f \u0438\u0434\u0443',tl:'Aalis na ako',th:'\u0e44\u0e1b'}},
+
+  {id:19, text:'\uc9d1',        emoji:'\ud83c\udfe0', cat:'places',
+   tr:{en:'Home',vi:'Nh\xe0',zh:'\u5bb6',mn:'\u0413\u044d\u0440',ru:'\u0414\u043e\u043c',tl:'Bahay',th:'\u0e1a\u0e49\u0e32\u0e19'}},
+  {id:20, text:'\ud559\uad50',      emoji:'\ud83c\udfeb', cat:'places',
+   tr:{en:'School',vi:'Tr\u01b0\u1eddng h\u1ecdc',zh:'\u5b66\u6821',mn:'\u0421\u0443\u0440\u0433\u0443\u0443\u043b\u044c',ru:'\u0428\u043a\u043e\u043b\u0430',tl:'Paaralan',th:'\u0e42\u0e23\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'}},
+  {id:21, text:'\uad50\uc2e4',      emoji:'\ud83d\udcbb', cat:'places',
+   tr:{en:'Classroom',vi:'L\u1edbp h\u1ecdc',zh:'\u6559\u5ba4',mn:'\u0410\u043d\u0433\u0438\u0439\u043d \u04e9\u0440\u04e9\u04e9',ru:'\u041a\u043b\u0430\u0441\u0441',tl:'Silid-aralan',th:'\u0e2b\u0e49\u0e2d\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'}},
+
+  {id:22, text:'\ucc45',        emoji:'\ud83d\udcd6', cat:'things',
+   tr:{en:'Book',vi:'S\xe1ch',zh:'\u4e66',mn:'\u041d\u043e\u043c',ru:'\u041a\u043d\u0438\u0433\u0430',tl:'Aklat',th:'\u0e2b\u0e19\u0e31\u0e07\u0e2a\u0e37\u0e2d'}},
+  {id:23, text:'\uc5f0\ud544',      emoji:'\u270f\ufe0f', cat:'things',
+   tr:{en:'Pencil',vi:'B\xfat ch\xec',zh:'\u94c5\u7b14',mn:'\u0425\u0430\u0440\u0430\u043d\u0434\u0430\u0430',ru:'\u041a\u0430\u0440\u0430\u043d\u0434\u0430\u0448',tl:'Lapis',th:'\u0e14\u0e34\u0e19\u0e2a\u0e2d'}},
+  {id:24, text:'\uce5c\uad6c',      emoji:'\ud83d\udc6b', cat:'things',
+   tr:{en:'Friend',vi:'B\u1ea1n b\xe8',zh:'\u670b\u53cb',mn:'\u041d\u0430\u0439\u0437',ru:'\u0414\u0440\u0443\u0433',tl:'Kaibigan',th:'\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e19'}},
+];
+
+const CATEGORIES = [
+  {id:'urgent',   label:'\uae34\uae09',     icon:'\ud83d\udea8'},
+  {id:'needs',    label:'\ud544\uc694',     icon:'\ud83c\udf71'},
+  {id:'response', label:'\ub300\ub2f5',     icon:'\ud83d\udcac'},
+  {id:'feelings', label:'\uac10\uc815/\uc0c1\ud0dc', icon:'\ud83d\ude0a'},
+  {id:'school',   label:'\uc218\uc5c5',     icon:'\ud83d\udcda'},
+  {id:'places',   label:'\uc7a5\uc18c',     icon:'\ud83c\udfeb'},
+  {id:'things',   label:'\ubb3c\uac74/\uc0ac\ub78c', icon:'\ud83c\udf92'},
+];
+
+// ============================================
+//  CURRICULUM DATA
+// ============================================
+const CURRICULUM = [
+  {
+    week:1, title:'1\uc8fc\ucc28', theme:'\ub3c4\uc6c0 \uc694\uccad\ud558\uae30', icon:'\ud83c\udd98',
+    vocabIds:[1,2,3],
+    dialogues:[
+      {title:'\uc544\ud50c \ub54c', lines:[
+        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \uc544\ud30c\uc694.',    tr:{en:"Teacher, I'm hurt.",   vi:'Gi\xe1o vi\xean, t\xf4i \u0111au.',   zh:'\u8001\u5e08\uff0c\u6211\u75bc\u3002'}},
+        {speaker:'teacher',text:'\uc5b4\ub514\uac00 \uc544\ud30c\uc694?',   tr:{en:'Where does it hurt?', vi:'\u0110au \u1edf \u0111\xe2u?',            zh:'\u54ea\u91cc\u75bc\uff1f'}},
+        {speaker:'student',text:'\uba38\ub9ac\uac00 \uc544\ud30c\uc694.',   tr:{en:'My head hurts.',      vi:'\u0110\u1ea7u t\xf4i \u0111au.',         zh:'\u6211\u5934\u75bc\u3002'}},
+        {speaker:'teacher',text:'\ubcf4\uac74\uc2e4\uc5d0 \uac00\uc694.',  tr:{en:"Let's go to the nurse's office.", vi:'\u0110\u1ebfn ph\xf2ng y t\u1ebf.', zh:'\u53bb\u4fdd\u5065\u5ba4\u5427\u3002'}},
+      ]},
+      {title:'\ub3c4\uc6c0 \uc694\uccad', lines:[
+        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \ub3c4\uc640\uc8fc\uc138\uc694.',tr:{en:'Teacher, help me!',   vi:'Gi\xe1o vi\xean, gi\xfap t\xf4i!', zh:'\u8001\u5e08\uff0c\u5e2e\u5e2e\u6211\uff01'}},
+        {speaker:'teacher',text:'\ubb34\uc2a8 \uc77c\uc774\uc5d0\uc694?',           tr:{en:"What's wrong?",       vi:'C\xf3 chuy\u1ec7n g\xec v\u1eady?',  zh:'\u600e\u4e48\u4e86\uff1f'}},
+        {speaker:'student',text:'\ubaa8\ub974\uac2a\uc5b4\uc694.',                  tr:{en:"I don't understand.", vi:'T\xf4i kh\xf4ng hi\u1ec3u.',          zh:'\u6211\u4e0d\u660e\u767d\u3002'}},
+        {speaker:'teacher',text:'\uac19\uc774 \ud574\ubd90\uc694.',                 tr:{en:"Let's try together.", vi:'H\xe3y th\u1eed c\xf9ng nhau.',        zh:'\u4e00\u8d77\u8bd5\u8bd5\u770b\u3002'}},
+      ]},
+    ],
+    song:{title:'\uc120\uc0dd\ub2d8 \ub178\ub798',file:'songs/week1_song.mp3',
+      lyrics:'\uc120\uc0dd\ub2d8, \uc120\uc0dd\ub2d8\n\uc548\ub155\ud558\uc138\uc694, \uc548\ub155\ud558\uc138\uc694\n\n\uc544\ud30c\uc694, \uc544\ud30c\uc694\n\ub3c4\uc640\uc8fc\uc138\uc694, \ub3c4\uc640\uc8fc\uc138\uc694\n\n\uc120\uc0dd\ub2d8, \uc120\uc0dd\ub2d8\n\uac10\uc0ac\ud569\ub2c8\ub2e4, \uac10\uc0ac\ud569\ub2c8\ub2e4'},
+  },
+  {
+    week:2, title:'2\uc8fc\ucc28', theme:'\uae30\ubcf8 \ud544\uc694 \ub9d0\ud558\uae30', icon:'\ud83c\udf71',
+    vocabIds:[4,5,6],
+    dialogues:[
+      {title:'\uae09\uc2dd \uc2dc\uac04', lines:[
+        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \ubc25 \uc8fc\uc138\uc694.',     tr:{en:'Teacher, food please.',     vi:'Gi\xe1o vi\xean, cho t\xf4i c\u01a1m.', zh:'\u8001\u5e08\uff0c\u7ed9\u6211\u996d\u3002'}},
+        {speaker:'teacher',text:'\uc5ec\uae30 \uc788\uc5b4\uc694.',                   tr:{en:'Here you go.',              vi:'\u0110\xe2y r\u1ed3i.',                  zh:'\u5728\u8fd9\u513f\u3002'}},
+        {speaker:'student',text:'\uac10\uc0ac\ud569\ub2c8\ub2e4.',                    tr:{en:'Thank you.',                vi:'C\u1ea3m \u01a1n.',                      zh:'\u8c22\u8c22\u3002'}},
+      ]},
+      {title:'\ubb3c/\ud654\uc7a5\uc2e4', lines:[
+        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \ubb3c \uc8fc\uc138\uc694.',         tr:{en:'Teacher, water please.',    vi:'Gi\xe1o vi\xean, cho t\xf4i n\u01b0\u1edbc.',zh:'\u8001\u5e08\uff0c\u7ed9\u6211\u6c34\u3002'}},
+        {speaker:'teacher',text:'\ub9c8\uc154\uc694.',                                    tr:{en:'Go ahead and drink.',        vi:'U\u1ed1ng \u0111i.',                    zh:'\u559d\u5427\u3002'}},
+        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \ud654\uc7a5\uc2e4 \uac00\uc694.',   tr:{en:'Teacher, may I use the bathroom?',vi:'Gi\xe1o vi\xean, t\xf4i \u0111i v\u1ec7 sinh.',zh:'\u8001\u5e08\uff0c\u6211\u53bb\u5395\u6240\u3002'}},
+        {speaker:'teacher',text:'\ub124, \ub2e4\ub140\uc624\uc138\uc694.',                tr:{en:'Yes, go ahead.',             vi:'V\xe2ng, \u0111i \u0111i.',             zh:'\u597d\u7684\uff0c\u53bb\u5427\u3002'}},
+      ]},
+    ],
+    song:{title:'\ubc25 \uba39\uc790 \ub178\ub798',file:'songs/week2_song.mp3',
+      lyrics:'\ubc25, \ubc25, \ubc25 \uba39\uc790\n\ub9db\uc788\ub294 \ubc25 \uba39\uc790\n\n\ubb3c, \ubb3c, \ubb3c \ub9c8\uc2dc\uc790\n\uc2dc\uc6d0\ud55c \ubb3c \ub9c8\uc2dc\uc790\n\n\ud654\uc7a5\uc2e4, \ud654\uc7a5\uc2e4\n\uc120\uc0dd\ub2d8, \uac00\ub3c4 \ub3fc\uc694?'},
+  },
+  {
+    week:3, title:'3\uc8fc\ucc28', theme:'\ub300\ub2f5 & \uac10\uc815 \ud45c\ud604', icon:'\ud83d\udcac',
+    vocabIds:[7,8,9,10,13,14],
+    dialogues:[
+      {title:'\uaddc\uce59 \uc774\uc57c\uae30', lines:[
+        {speaker:'teacher',text:'\ubcf5\ub3c4\uc5d0\uc11c \ub6f0\uc9c0 \ub9c8\uc138\uc694.',    tr:{en:"Don't run in the hallway.",  vi:'\u0110\u1eebng ch\u1ea1y \u1edf h\xe0nh lang.',zh:'\u5728\u8d70\u5ec8\u91cc\u4e0d\uc9c0\u8981\u8dd1\u3002'}},
+        {speaker:'student',text:'\ub124, \uc54c\uaca0\uc5b4\uc694.',                             tr:{en:'Yes, I understand.',        vi:'V\xe2ng, t\xf4i hi\u1ec3u.',           zh:'\u597d\u7684\uff0c\u6211\u660e\u767d\u4e86\u3002'}},
+        {speaker:'teacher',text:'\uad50\uc2e4\uc5d0\uc11c \uc548 \ub3fc\uc694.',                tr:{en:"That's not allowed in class.",vi:'Trong l\u1edbp kh\xf4ng \u0111\u01b0\u1ee3c.',zh:'\u5728\u6559\u5ba4\u91cc\u4e0d\u884c\u3002'}},
+        {speaker:'student',text:'\uc8c4\uc1a1\ud569\ub2c8\ub2e4.',                              tr:{en:"I'm sorry.",                vi:'Xin l\u1ed7i.',                        zh:'\u5bf9\u4e0d\u8d77\u3002'}},
+      ]},
+      {title:'\ub0a0\uc528/\uc628\ub3c4', lines:[
+        {speaker:'teacher',text:'\uc624\ub298 \ub354\uc6cc\uc694?',    tr:{en:'Is it hot today?',     vi:'H\xf4m nay n\xf3ng kh\xf4ng?', zh:'\u4eca\u5929\u70ed\u5417\uff1f'}},
+        {speaker:'student',text:'\ub124, \ub354\uc6cc\uc694.',         tr:{en:"Yes, it's hot.",       vi:'V\xe2ng, n\xf3ng.',             zh:'\u662f\u7684\uff0c\u5f88\u70ed\u3002'}},
+        {speaker:'teacher',text:'\ucc3d\ubb38 \uc5f4\uae4c\uc694?',   tr:{en:'Shall I open the window?',vi:'M\u1edf c\u1eeda s\u1ed5 nh\xe9?',zh:'\u8981\u5f00\u7a97\u5417\uff1f'}},
+        {speaker:'student',text:'\ub124, \uac10\uc0ac\ud574\uc694.',   tr:{en:'Yes, thank you.',      vi:'V\xe2ng, c\u1ea3m \u01a1n.',    zh:'\u597d\u7684\uff0c\u8c22\u8c22\u3002'}},
+      ]},
+    ],
+    song:{title:'\ub124 \uc544\ub2c8\uc694 \ub178\ub798',file:'songs/week3_song.mp3',
+      lyrics:'\ub124, \ub124, \ub124\n\uc54c\uaca0\uc5b4\uc694, \uc54c\uaca0\uc5b4\uc694\n\n\uc544\ub2c8\uc694, \uc544\ub2c8\uc694\n\uc548 \ub3fc\uc694, \uc548 \ub3fc\uc694\n\n\ub354\uc6cc\uc694, \ucd94\uc6cc\uc694\n\ub6f0\uc9c0 \ub9c8\uc138\uc694!'},
+  },
+  {
+    week:4, title:'4\uc8fc\ucc28', theme:'\ud559\uad50\uc0dd\ud65c \ud45c\ud604', icon:'\ud83c\udfeb',
+    vocabIds:[11,12,15,16,17,18,22,23,24],
+    dialogues:[
+      {title:'\uc218\uc5c5 \uc2dc\uac04', lines:[
+        {speaker:'teacher',text:'\uc218\uc5c5 \uc2dc\uc791\ud574\uc694.',      tr:{en:'Class is starting.',    vi:'B\u1eaft \u0111\u1ea7u h\u1ecdc.',     zh:'\u5f00\u59cb\u4e0a\u8bfe\u3002'}},
+        {speaker:'student',text:'\ub124, \uc120\uc0dd\ub2d8.',                 tr:{en:'Yes, teacher.',         vi:'V\xe2ng, th\u01b0a gi\xe1o vi\xean.',  zh:'\u597d\u7684\uff0c\u8001\u5e08\u3002'}},
+        {speaker:'teacher',text:'\ucc45 \ud3274\uc138\uc694.',                 tr:{en:'Open your book.',       vi:'M\u1edf s\xe1ch ra.',                  zh:'\u6253\u5f00\u4e66\u3002'}},
+        {speaker:'teacher',text:'\uc218\uc5c5 \ub05d\uc774\uc5d0\uc694.',     tr:{en:'Class is over.',        vi:'H\u1ebft gi\u1edd h\u1ecdc.',           zh:'\u4e0b\u8bfe\u4e86\u3002'}},
+      ]},
+      {title:'\uad50\uc2e4\uc5d0\uc11c', lines:[
+        {speaker:'teacher',text:'\uc790\ub9ac\uc5d0 \uc549\uc544\uc694.',      tr:{en:'Sit in your seat.',        vi:'Ng\u1ed3i v\xe0o ch\u1ed7.',           zh:'\u5750\u5230\u4f4d\u5b50\u4e0a\u3002'}},
+        {speaker:'student',text:'\uc81c \uc790\ub9ac\uac00 \uc5b4\ub514\uc608\uc694?',tr:{en:"Where's my seat?",   vi:'Ch\u1ed7 t\xf4i \u1edf \u0111\xe2u?',  zh:'\u6211\u7684\u5ea7\u4f4d\u5728\u54ea\u91cc\uff1f'}},
+        {speaker:'teacher',text:'\uc800\uae30\uc608\uc694.',                   tr:{en:'Over there.',              vi:'\u1edf \u0111\u1eb1ng kia.',            zh:'\u5728\u90a3\u91cc\u3002'}},
+        {speaker:'student',text:'\uc880\uc544\uc694, \uac10\uc0ac\ud569\ub2c8\ub2e4.',tr:{en:'Great, thank you.',vi:'\u0110\u01b0\u1ee3c r\u1ed3i, c\u1ea3m \u01a1n.',zh:'\u597d\u7684\uff0c\u8c22\u8c22\u3002'}},
+      ]},
+      {title:'\uce5c\uad6c \uc18c\uac1c', lines:[
+        {speaker:'teacher',text:'\uce5c\uad6c\uc5d0\uac8c \uc778\uc0ac\ud574\uc694.',   tr:{en:'Greet your friend.',         vi:'Ch\xe0o b\u1ea1n \u0111i.',                 zh:'\u548c\u670b\u53cb\u6253\u62db\u547c\u3002'}},
+        {speaker:'student',text:'\uc548\ub155, \uce5c\uad6c\uc57c.',                    tr:{en:'Hello, friend!',             vi:'Xin ch\xe0o, b\u1ea1n!',                   zh:'\u4f60\u597d\uff0c\u670b\u53cb\uff01'}},
+        {speaker:'teacher',text:'\ucc45\uc774\ub791 \uc5f0\ud544 \uc900\ube44\ud574\uc694.', tr:{en:'Prepare your book and pencil.', vi:'Chu\u1ea9n b\u1ecb s\xe1ch v\xe0 b\xfat ch\xec.', zh:'\u51c6\u5907\u4e66\u548c\u94c5\u7b14\u3002'}},
+      ]},
+    ],
+    song:{title:'\ud559\uad50 \uc0dd\ud65c \ub178\ub798',file:'songs/week4_song.mp3',
+      lyrics:'\ud559\uad50, \ud559\uad50, \uc6b0\ub9ac \ud559\uad50\n\uad50\uc2e4\uc5d0\uc11c \uacf5\ubd80\ud574\uc694\n\n\ucc45\uc774\ub791 \uc5f0\ud544\n\uce5c\uad6c\ub791 \ud568\uaf00\n\n\uc218\uc5c5 \uc2dc\uc791! \uc218\uc5c5 \ub05d!\n\uc9d1\uc5d0 \uac00\uc694, \uc548\ub155~'},
+  },
+];
+
+// ============================================
+//  STATE
+// ============================================
+let sentence   = [];
+let currentCat = 'all';
+let voiceLang  = 'ko-KR';
+let speechRate = 1.0;
+let transLang  = 'vi';
+let currentMode     = 'sotonpan';
+let currentWeek     = null;
+let currentLessonTab= 'vocab';
+let fcIndex         = 0;
+let currentDlgIdx   = 0;
+let teacherVocabList= [];
+let teacherIdx      = 0;
+// game state
+let gameCards = []; let flipped = []; let matched = 0; let moves = 0; let canFlip = true;
+
+// ============================================
+//  MODE SWITCH
+// ============================================
+function switchMode(mode, btn) {
+  currentMode = mode;
+  document.getElementById('mode-sotonpan').hidden = (mode !== 'sotonpan');
+  document.getElementById('mode-haksup').hidden   = (mode !== 'haksup');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (mode === 'haksup' && !currentWeek) renderWeekSelect();
+}
+
+// ============================================
+//  SOTONPAN
+// ============================================
+function renderGrid(cat) {
+  const grid = document.getElementById('symbol-grid');
+  let html = '';
+  if (cat === 'all') {
+    for (const c of CATEGORIES) {
+      html += `<div class="cat-label" data-cat="${c.id}">${c.icon} ${c.label}</div>`;
+      VOCAB.filter(v => v.cat === c.id).forEach(v => { html += cardHTML(v); });
+    }
+  } else {
+    VOCAB.filter(v => v.cat === cat).forEach(v => { html += cardHTML(v); });
+  }
+  grid.innerHTML = html;
+}
+
+function cardHTML(v) {
+  const sub = transLang !== 'none' && v.tr[transLang] ? v.tr[transLang] : '';
+  return `<div class="sym-card" data-id="${v.id}" data-cat="${v.cat}" onclick="handleCard(event,${v.id})">
+    <span class="sym-icon">${v.emoji}</span>
+    <span class="sym-text">${v.text}</span>
+    ${sub ? `<span class="sym-sub">${sub}</span>` : ''}
+  </div>`;
+}
+
+function renderOutput() {
+  const el = document.getElementById('output-words');
+  if (!sentence.length) {
+    el.innerHTML = '<span class="out-placeholder">\ub2e8\uc5b4\ub97c \ub180\ub7ec \ubb38\uc7a5\uc744 \ub9cc\ub4dc\uc138\uc694</span>';
+    return;
+  }
+  el.innerHTML = sentence.map((w,i) =>
+    `<span class="out-chip" onclick="removeWord(${i})"><span class="chip-emoji">${w.emoji}</span>${w.text}</span>`
+  ).join('');
+}
+
+function handleCard(evt, id) {
+  addRipple(evt);
+  const v = VOCAB.find(x => x.id === id);
+  if (!v) return;
+  sentence.push(v); renderOutput(); speakWord(v.text);
+}
+
+function addRipple(evt) {
+  const card = evt.currentTarget;
+  const r = document.createElement('span');
+  const rect = card.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  r.className = 'ripple';
+  r.style.cssText = `width:${size}px;height:${size}px;left:${evt.clientX-rect.left-size/2}px;top:${evt.clientY-rect.top-size/2}px;`;
+  card.appendChild(r);
+  r.addEventListener('animationend', () => r.remove());
+}
+
+function removeWord(idx) { sentence.splice(idx,1); renderOutput(); }
+function backspace()     { if (sentence.length) { sentence.pop(); renderOutput(); } }
+function clearOutput()   { sentence = []; renderOutput(); }
+
+function setCategory(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid(cat);
+  document.getElementById('grid-wrap').scrollTop = 0;
+}
+
+// ============================================
+//  HAKSUP — WEEK SELECT
+// ============================================
+function renderWeekSelect() {
+  const ws = document.getElementById('week-select');
+  ws.innerHTML = CURRICULUM.map(wk => {
+    const words = wk.vocabIds.map(id => VOCAB.find(v=>v.id===id)?.text).join(', ');
+    return `<div class="week-card" data-week="${wk.week}" onclick="selectWeek(${wk.week})">
+      <div class="wk-icon">${wk.icon}</div>
+      <div class="wk-num">${wk.title}</div>
+      <div class="wk-title">${wk.theme}</div>
+      <div class="wk-words">${words}</div>
+    </div>`;
+  }).join('');
+  ws.classList.remove('hidden');
+  document.getElementById('lesson-view').classList.remove('active');
+}
+
+function selectWeek(weekNum) {
+  currentWeek = CURRICULUM.find(w => w.week === weekNum);
+  fcIndex = 0; currentDlgIdx = 0;
+  document.getElementById('week-select').classList.add('hidden');
+  const hdr = document.getElementById('lesson-header');
+  hdr.setAttribute('data-week', weekNum);
+  document.getElementById('lesson-title').textContent = currentWeek.title + ' \u2014 ' + currentWeek.theme;
+  document.getElementById('lesson-sub').textContent   = currentWeek.vocabIds.length + '\uac1c \ub2e8\uc5b4 \u00b7 \ub300\ud654 \u00b7 \ub178\ub798 \u00b7 \uac8c\uc784';
+  document.getElementById('lesson-view').classList.add('active');
+  // reset to vocab tab
+  document.querySelectorAll('.lesson-tab').forEach((b,i) => b.classList.toggle('active', i===0));
+  document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', i===0));
+  renderVocabTab();
+}
+
+function backToWeeks() {
+  currentWeek = null;
+  renderWeekSelect();
+}
+
+function setLessonTab(tab, btn) {
+  currentLessonTab = tab;
+  document.querySelectorAll('.lesson-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else {
+    const idx = ['vocab','dialogue','song','game'].indexOf(tab);
+    const btns = document.querySelectorAll('.lesson-tab');
+    if (btns[idx]) btns[idx].classList.add('active');
+  }
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('tab-' + tab);
+  if (panel) panel.classList.add('active');
+  if (!currentWeek) return;
+  if (tab === 'vocab')    renderVocabTab();
+  if (tab === 'dialogue') renderDialogueTab();
+  if (tab === 'song')     renderSongTab();
+  if (tab === 'game')     renderGameTab();
+}
+
+// ============================================
+//  VOCAB TAB
+// ============================================
+function renderVocabTab() {
+  const items = currentWeek.vocabIds.map(id => VOCAB.find(v=>v.id===id));
+  const v = items[fcIndex];
+  const tr = transLang !== 'none' && v.tr[transLang] ? v.tr[transLang] : '';
+  const safeText = v.text.replace(/'/g,"\\'");
+
+  const miniCards = items.map((item,i) =>
+    `<div class="vocab-item ${i===fcIndex?'active-fc':''}" onclick="fcJump(${i})">
+      <div class="vi-emoji">${item.emoji}</div>
+      <div class="vi-text">${item.text}</div>
+    </div>`
+  ).join('');
+
+  document.getElementById('tab-vocab').innerHTML = `
+    <div class="flashcard-nav">
+      <button class="fc-arr" onclick="fcNav(-1)" ${fcIndex===0?'disabled':''}>&#8592;</button>
+      <span class="fc-counter">${fcIndex+1} / ${items.length}</span>
+      <button class="fc-arr" onclick="fcNav(1)" ${fcIndex===items.length-1?'disabled':''}>&#8594;</button>
+    </div>
+    <div class="flashcard" onclick="speakWord('${safeText}')">
+      <div class="fc-emoji">${v.emoji}</div>
+      <div class="fc-word">${v.text}</div>
+      ${tr ? `<div class="fc-trans">${tr}</div>` : ''}
+      <div class="fc-hint">&#128266; &#46088;&#46084;&#49436; &#48156;&#51020; &#46803;&#44592;</div>
+    </div>
+    <button class="fc-speak-btn" onclick="speakWord('${safeText}')">&#128266; ${v.text} &#51169;&#44592;</button>
+    <div class="vocab-list">${miniCards}</div>`;
+}
+
+function fcNav(dir) {
+  fcIndex = Math.max(0, Math.min(currentWeek.vocabIds.length-1, fcIndex+dir));
+  renderVocabTab();
+}
+function fcJump(i) { fcIndex = i; renderVocabTab(); }
+
+// ============================================
+//  DIALOGUE TAB
+// ============================================
+function renderDialogueTab() {
+  currentDlgIdx = 0;
+  renderDialogueContent();
+}
+
+function renderDialogueContent() {
+  const dlgs = currentWeek.dialogues;
+  const dlg  = dlgs[currentDlgIdx];
+  const navBtns = dlgs.map((d,i) =>
+    `<button class="dlg-nav-btn ${i===currentDlgIdx?'active':''}" onclick="switchDlg(${i})">${d.title}</button>`
+  ).join('');
+  const lines = dlg.lines.map(line => {
+    const isTeacher = line.speaker === 'teacher';
+    const trTxt = transLang !== 'none' && line.tr[transLang] ? line.tr[transLang] : (line.tr.en || '');
+    const safe  = line.text.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    return `<div class="dlg-line ${isTeacher?'teacher':''}">
+      <div class="dlg-avatar">${isTeacher?'&#128105;&#8205;&#127979;':'&#129306;'}</div>
+      <div class="dlg-bubble">
+        <div class="dlg-text">${line.text}</div>
+        ${trTxt ? `<div class="dlg-tr">${trTxt}</div>` : ''}
+        <button class="dlg-tts" onclick="speakWord('${safe}')">&#128266; &#46803;&#44592;</button>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('tab-dialogue').innerHTML = `
+    <div class="dialogue-nav">${navBtns}</div>
+    <div class="dlg-situation">${dlg.title}</div>
+    <div class="dialogue-box">${lines}</div>`;
+}
+
+function switchDlg(i) { currentDlgIdx = i; renderDialogueContent(); }
+
+// ============================================
+//  SONG TAB
+// ============================================
+function renderSongTab() {
+  const song = currentWeek.song;
+  document.getElementById('tab-song').innerHTML = `
+    <div class="song-banner">
+      <div class="song-banner-icon">&#127925;</div>
+      <div class="song-banner-title">${song.title}</div>
+      <div class="song-banner-sub">${currentWeek.title} &#54617;&#49845; &#45432;&#47000;</div>
+    </div>
+    <div class="audio-wrap">
+      <audio controls>
+        <source src="${song.file}" type="audio/mpeg">
+      </audio>
+      <div class="audio-note">
+        &#127926; &#45432;&#47000; &#54028;&#51068;&#51012; &#51456;&#48708; &#51473;&#51060;&#50836;<br>
+        <span class="audio-path">${song.file}</span>
+      </div>
+    </div>
+    <div class="lyrics-box">
+      <h3>&#128221; &#44032;&#49324;</h3>
+      <pre>${song.lyrics}</pre>
+    </div>`;
+}
+
+// ============================================
+//  GAME TAB
+// ============================================
+function renderGameTab() { initGame(); }
+
+function initGame() {
+  const items = currentWeek.vocabIds.slice(0,4).map(id => VOCAB.find(v=>v.id===id));
+  gameCards = []; matched = 0; moves = 0; flipped = []; canFlip = true;
+  items.forEach((v,i) => {
+    gameCards.push({id:i*2,   pairId:i, type:'emoji', content:v.emoji, word:v.text});
+    gameCards.push({id:i*2+1, pairId:i, type:'word',  content:v.text,  word:v.text});
+  });
+  for (let i = gameCards.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [gameCards[i], gameCards[j]] = [gameCards[j], gameCards[i]];
+  }
+  renderGameBoard();
+}
+
+function renderGameBoard() {
+  const total = gameCards.length/2;
+  const cards = gameCards.map((card,idx) =>
+    `<div class="game-card" data-idx="${idx}" onclick="flipCard(${idx})">
+      <div class="gc-front">?</div>
+      <div class="gc-back ${card.type==='emoji'?'is-emoji':''}">${card.content}</div>
+    </div>`
+  ).join('');
+  document.getElementById('tab-game').innerHTML = `
+    <div class="game-topbar">
+      <h3>&#127918; &#51937; &#47582;&#52628;&#44592;</h3>
+      <button class="game-restart" onclick="initGame()">&#8635; &#45796;&#49884;&#54616;&#44592;</button>
+    </div>
+    <div class="score-bar">
+      <div>&#49884;&#46020;: <span id="moves-count">${moves}</span></div>
+      <div>&#47582;&#52632;: <span id="matched-count">${matched}</span> / ${total}</div>
+    </div>
+    <div class="game-grid" id="game-grid">${cards}</div>
+    <div id="game-result"></div>`;
+}
+
+function flipCard(idx) {
+  if (!canFlip) return;
+  const el = document.querySelector(`.game-card[data-idx="${idx}"]`);
+  if (!el || el.classList.contains('flipped') || el.classList.contains('matched')) return;
+  el.classList.add('flipped');
+  flipped.push(idx);
+  speakWord(gameCards[idx].word);
+  if (flipped.length === 2) {
+    moves++;
+    document.getElementById('moves-count').textContent = moves;
+    canFlip = false;
+    const [a, b] = flipped;
+    const ga = gameCards[a], gb = gameCards[b];
+    if (ga.pairId === gb.pairId && ga.type !== gb.type) {
+      setTimeout(() => {
+        document.querySelector(`.game-card[data-idx="${a}"]`).classList.add('matched');
+        document.querySelector(`.game-card[data-idx="${b}"]`).classList.add('matched');
+        matched++;
+        document.getElementById('matched-count').textContent = matched;
+        flipped = []; canFlip = true;
+        if (matched === gameCards.length/2) {
+          document.getElementById('game-result').textContent = '\ud83c\udf89 \uc644\ub8cc! ' + moves + '\ubc88 \ub9cc\uc5d0 \ub9de\ucde4\uc5b4\uc694!';
+          showToast('\uc798\ud588\uc5b4\uc694! \ud83c\udf89');
+        }
+      }, 600);
+    } else {
+      setTimeout(() => {
+        document.querySelector(`.game-card[data-idx="${a}"]`).classList.remove('flipped');
+        document.querySelector(`.game-card[data-idx="${b}"]`).classList.remove('flipped');
+        flipped = []; canFlip = true;
+      }, 900);
+    }
+  }
+}
+
+// ============================================
+//  TEACHER MODE
+// ============================================
+function openTeacherMode() {
+  teacherVocabList = VOCAB;
+  teacherIdx = 0;
+  renderTeacherCard();
+  document.getElementById('teacher-overlay').classList.add('open');
+}
+function closeTeacherMode() {
+  document.getElementById('teacher-overlay').classList.remove('open');
+}
+function renderTeacherCard() {
+  const v = teacherVocabList[teacherIdx];
+  const tr = transLang !== 'none' && v.tr[transLang] ? v.tr[transLang] : (v.tr.en || '');
+  document.querySelector('#teacher-card .tc-emoji').textContent = v.emoji;
+  document.querySelector('#teacher-card .tc-text').textContent  = v.text;
+  document.querySelector('#teacher-card .tc-trans').textContent = tr;
+  document.getElementById('teacher-counter').textContent = `${teacherIdx+1} / ${teacherVocabList.length}`;
+  document.getElementById('t-prev').disabled = teacherIdx === 0;
+  document.getElementById('t-next').disabled = teacherIdx === teacherVocabList.length-1;
+}
+function teacherNav(dir) {
+  teacherIdx = Math.max(0, Math.min(teacherVocabList.length-1, teacherIdx+dir));
+  renderTeacherCard();
+}
+function teacherSpeak() { speakWord(teacherVocabList[teacherIdx].text); }
+
+// ============================================
+//  TTS
+// ============================================
+function speakWord(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = voiceLang; u.rate = speechRate;
+  window.speechSynthesis.speak(u);
+}
+function speakSentence() {
+  if (!sentence.length) { showToast('\uba3c\uc800 \ub2e8\uc5b4\ub97c \uc120\ud0dd\ud558\uc138\uc694'); return; }
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(sentence.map(w=>w.text).join(' '));
+  u.lang = voiceLang; u.rate = speechRate;
+  const btn = document.getElementById('speakBtn');
+  btn.classList.add('active');
+  u.onend = u.onerror = () => btn.classList.remove('active');
+  window.speechSynthesis.speak(u);
+}
+
+// ============================================
+//  SETTINGS
+// ============================================
+function openSettings()  { document.getElementById('settings-overlay').classList.add('open'); }
+function closeSettings() { document.getElementById('settings-overlay').classList.remove('open'); }
+function overlayClick(e) { if (e.target.id === 'settings-overlay') closeSettings(); }
+function setRate(val) { speechRate = parseFloat(val); document.getElementById('rateDisplay').textContent = parseFloat(val).toFixed(1); }
+function setVoiceLang(val) { voiceLang = val; }
+function setTransLang(val) {
+  transLang = val;
+  renderGrid(currentCat);
+  if (currentWeek) {
+    if (currentLessonTab === 'vocab')    renderVocabTab();
+    if (currentLessonTab === 'dialogue') renderDialogueContent();
+  }
+  if (document.getElementById('teacher-overlay').classList.contains('open')) renderTeacherCard();
+}
+function setFontSize(val) {
+  document.body.classList.remove('font-small','font-large');
+  if (val !== 'medium') document.body.classList.add('font-'+val);
+}
+
+// ============================================
+//  TOAST
+// ============================================
+let _tt;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ============================================
+//  PWA
+// ============================================
+let deferredInstall;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); deferredInstall = e;
+  document.getElementById('installBtn').style.display = 'flex';
+});
+document.getElementById('installBtn').addEventListener('click', async () => {
+  if (!deferredInstall) return;
+  deferredInstall.prompt();
+  const { outcome } = await deferredInstall.userChoice;
+  if (outcome === 'accepted') {
+    document.getElementById('installBtn').style.display = 'none';
+    showToast('\uc571\uc774 \uc124\uce58\ub418\uc5c8\uc2b5\ub2c8\ub2e4!');
+  }
+  deferredInstall = null;
+});
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+// ============================================
+//  INIT
+// ============================================
+renderGrid('all');
+renderOutput();
+renderWeekSelect();
+</script>
+</body>
+</html>
