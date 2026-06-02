@@ -18,7 +18,7 @@ function getCookie(request, name) {
 
 export default function middleware(request) {
   const auth = getCookie(request, COOKIE_NAME)
-  if (auth === PASSWORD) return new Response(null, { status: 200 })
+  if (auth === PASSWORD) return  // 통과 — Vercel이 정적 파일 그대로 서빙
 
   const url = new URL(request.url)
   const loginUrl = new URL('/login.html', request.url)
