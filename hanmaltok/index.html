@@ -164,9 +164,14 @@
 
     #grid-wrap { flex: 1; overflow-y: auto; padding: 8px; -webkit-overflow-scrolling: touch; }
     #symbol-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
-    @media (min-width:640px)  { #symbol-grid { grid-template-columns: repeat(5,1fr); } }
-    @media (min-width:840px)  { #symbol-grid { grid-template-columns: repeat(6,1fr); } }
-    @media (min-width:1024px) { #symbol-grid { grid-template-columns: repeat(7,1fr); } }
+    @media (min-width:640px) { #symbol-grid { grid-template-columns: repeat(5,1fr); } }
+    @media (min-width:840px) {
+      #symbol-grid { grid-template-columns: repeat(6,1fr); }
+      .sym-card { padding: 10px 6px; gap: 5px; }
+      .sym-icon { font-size: 2.85rem; }
+      .sym-text { font-size: 1.02rem; }
+      .sym-sub  { font-size: .83rem; }
+    }
 
     .sym-card {
       background: var(--card-bg); border: 2.5px solid var(--border);
