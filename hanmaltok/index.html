@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -168,9 +168,9 @@
     @media (min-width:840px) {
       #symbol-grid { grid-template-columns: repeat(6,1fr); }
       .sym-card { padding: 10px 6px; gap: 5px; }
-      .sym-icon { font-size: 2.85rem; }
-      .sym-text { font-size: 1.02rem; }
-      .sym-sub  { font-size: .83rem; }
+      .sym-icon { font-size: 3.5rem; }
+      .sym-text { font-size: 1.3rem; }
+      .sym-sub  { font-size: 1rem; }
     }
 
     .sym-card {
@@ -204,6 +204,7 @@
     .sym-card:hover[data-cat="places"]   { border-color:var(--c-places);   box-shadow:0 6px 20px rgba(0,105,92,.25); }
     .sym-card:hover[data-cat="things"]   { border-color:var(--c-things);   box-shadow:0 6px 20px rgba(78,52,46,.25); }
     .sym-icon { font-size:1.9rem; line-height:1; }
+    .emoji-icon-img { width:1em; height:1em; vertical-align:-0.12em; display:inline-block; }
     .sym-text { font-size:.68rem; font-weight:800; text-align:center; line-height:1.2; }
     .sym-sub  { font-size:.55rem; color:var(--text-muted); text-align:center; line-height:1.2; }
     .cat-label {
@@ -769,7 +770,7 @@ const VOCAB = [
   {id:6,  text:'\ud654\uc7a5\uc2e4', emoji:'\ud83d\udebb', cat:'needs',
    tr:{en:'Bathroom',vi:'Nh\xe0 v\u1ec7 sinh',zh:'\u5395\u6240',mn:'\u0416\u043e\u0440\u043b\u043e\u043d',ru:'\u0422\u0443\u0430\u043b\u0435\u0442',tl:'CR / Banyo',th:'\u0e2b\u0e49\u0e2d\u0e07\u0e19\u0e49\u0e33'}},
 
-  {id:7,  text:'\ub124',        emoji:'\u2705', cat:'response',
+  {id:7,  text:'\ub124',        emoji:'\u2b55', cat:'response',
    tr:{en:'Yes',vi:'V\xe2ng / D\u1ea1',zh:'\u662f',mn:'\u0422\u0438\u0439\u043c',ru:'\u0414\u0430',tl:'Oo',th:'\u0e43\u0e0a\u0e48'}},
   {id:8,  text:'\uc544\ub2c8\uc694', emoji:'\u274c', cat:'response',
    tr:{en:'No',vi:'Kh\xf4ng',zh:'\u4e0d\u662f',mn:'\u04ae\u0433\u04af\u0439',ru:'\u041d\u0435\u0442',tl:'Hindi',th:'\u0e44\u0e21\u0e48\u0e43\u0e0a\u0e48'}},
@@ -778,7 +779,7 @@ const VOCAB = [
   {id:10, text:'\ub6f0\uc9c0 \ub9c8\uc138\uc694', emoji:'\ud83d\udeb7', cat:'response',
    tr:{en:"Don't run",vi:'Kh\xf4ng ch\u1ea1y',zh:'\u4e0d\u8981\u8dd1',mn:'\u0413\u04af\u0439\u0445\u0433\u04af\u0439',ru:'\u041d\u0435 \u0431\u0435\u0433\u0438\u0442\u0435',tl:'Huwag tumakbo',th:'\u0e2b\u0e49\u0e32\u0e21\u0e27\u0e34\u0e48\u0e07'}},
 
-  {id:11, text:'\uc880\uc544\uc694',   emoji:'\ud83d\udc4d', cat:'feelings',
+  {id:11, text:'\uc88b\uc544\uc694',   emoji:'\ud83d\udc4d', cat:'feelings',
    tr:{en:'I like it',vi:'T\xf4i th\xedch',zh:'\u597d/\u559c\u6b22',mn:'\u0414\u0443\u0440\u0442\u0430\u0439',ru:'\u041d\u0440\u0430\u0432\u0438\u0442\u0441\u044f',tl:'Gusto ko',th:'\u0e0a\u0e2d\u0e1a'}},
   {id:12, text:'\uc2eb\uc5b4\uc694',   emoji:'\ud83d\udc4e', cat:'feelings',
    tr:{en:"I don't like",vi:'Kh\xf4ng th\xedch',zh:'\u4e0d\u559c\u6b22',mn:'\u0414\u0443\u0440\u0433\u04af\u0439',ru:'\u041d\u0435 \u043d\u0440\u0430\u0432\u0438\u0442\u0441\u044f',tl:'Ayoko',th:'\u0e44\u0e21\u0e48\u0e0a\u0e2d\u0e1a'}},
@@ -791,7 +792,7 @@ const VOCAB = [
    tr:{en:'Class starts',vi:'B\u1eaft \u0111\u1ea7u h\u1ecdc',zh:'\u5f00\u59cb\u4e0a\u8bfe',mn:'\u0425\u0438\u0447\u044d\u044d\u043b \u044d\u0445\u044d\u043b\u0441\u044d\u043d',ru:'\u0423\u0440\u043e\u043a \u043d\u0430\u0447\u0430\u043b\u0441\u044f',tl:'Simula ng klase',th:'\u0e40\u0e23\u0e34\u0e48\u0e21\u0e40\u0e23\u0e35\u0e22\u0e19'}},
   {id:16, text:'\uc218\uc5c5 \ub05d',   emoji:'\ud83d\udd14', cat:'school',
    tr:{en:'Class ends',vi:'H\u1ebft gi\u1edd h\u1ecdc',zh:'\u4e0b\u8bfe\u4e86',mn:'\u0425\u0438\u0447\u044d\u044d\u043b \u0434\u0443\u0443\u0441\u0441\u0430\u043d',ru:'\u0423\u0440\u043e\u043a \u0437\u0430\u043a\u043e\u043d\u0447\u0438\u043b\u0441\u044f',tl:'Tapos na ang klase',th:'\u0e2b\u0e21\u0e14\u0e0a\u0e31\u0e48\u0e27\u0e42\u0e21\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'}},
-  {id:17, text:'\uc790\ub9ac',      emoji:'\ud83e\udea1', cat:'school',
+  {id:17, text:'\uc790\ub9ac',      emoji:'<img class="emoji-icon-img" alt="desk-chair" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3QgeD0iMyIgeT0iOCIgd2lkdGg9IjkiIGhlaWdodD0iOSIgcng9IjEuNSIgZmlsbD0iIzc4NzE2YyIvPjxyZWN0IHg9IjMiIHk9IjE3IiB3aWR0aD0iOSIgaGVpZ2h0PSIyLjUiIHJ4PSIxIiBmaWxsPSIjNTc1MzRlIi8+PHJlY3QgeD0iNCIgeT0iMTkuNSIgd2lkdGg9IjEuNiIgaGVpZ2h0PSI4IiBmaWxsPSIjNDQ0MDNjIi8+PHJlY3QgeD0iOS40IiB5PSIxOS41IiB3aWR0aD0iMS42IiBoZWlnaHQ9IjgiIGZpbGw9IiM0NDQwM2MiLz48cmVjdCB4PSI4IiB5PSIxMiIgd2lkdGg9IjIyIiBoZWlnaHQ9IjQiIHJ4PSIxLjIiIGZpbGw9IiNjMjg4NGYiLz48cmVjdCB4PSIxMCIgeT0iMTYiIHdpZHRoPSIxLjgiIGhlaWdodD0iMTEiIGZpbGw9IiNhNTZhMzUiLz48cmVjdCB4PSIyNi4yIiB5PSIxNiIgd2lkdGg9IjEuOCIgaGVpZ2h0PSIxMSIgZmlsbD0iI2E1NmEzNSIvPjwvc3ZnPgo=">', cat:'school',
    tr:{en:'My seat',vi:'Ch\u1ed7 ng\u1ed3i',zh:'\u5ea7\u4f4d',mn:'\u0421\u0443\u0443\u0434\u0430\u043b',ru:'\u041c\u043e\u0451 \u043c\u0435\u0441\u0442\u043e',tl:'Upuan ko',th:'\u0e17\u0e35\u0e48\u0e19\u0e31\u0e48\u0e07'}},
   {id:18, text:'\uac00\uc694',      emoji:'\ud83c\udfc3', cat:'school',
    tr:{en:"I'm going",vi:'T\xf4i \u0111i',zh:'\u6211\u8d70\u4e86',mn:'\u042f\u0432\u043d\u0430',ru:'\u042f \u0438\u0434\u0443',tl:'Aalis na ako',th:'\u0e44\u0e1b'}},
@@ -1253,7 +1254,7 @@ function closeTeacherMode() {
 function renderTeacherCard() {
   const v = teacherVocabList[teacherIdx];
   const tr = transLang !== 'none' && v.tr[transLang] ? v.tr[transLang] : (v.tr.en || '');
-  document.querySelector('#teacher-card .tc-emoji').textContent = v.emoji;
+  document.querySelector('#teacher-card .tc-emoji').innerHTML = v.emoji;
   document.querySelector('#teacher-card .tc-text').textContent  = v.text;
   document.querySelector('#teacher-card .tc-trans').textContent = tr;
   document.getElementById('teacher-counter').textContent = `${teacherIdx+1} / ${teacherVocabList.length}`;
