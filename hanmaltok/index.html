@@ -255,6 +255,45 @@
     .week-card[data-week="3"]:hover { border-color:#6A1B9A; }
     .week-card[data-week="4"]:hover { border-color:#1565C0; }
 
+    /* DAY SELECT */
+    #day-select {
+      flex: 1; display: none; flex-direction: column; overflow: hidden;
+    }
+    #day-select.active { display: flex; }
+    .day-select-header {
+      background: var(--primary); color:#fff;
+      padding:10px 14px; display:flex; align-items:center; gap:10px; flex-shrink:0;
+    }
+    .day-select-header[data-week="1"] { background:#C62828; }
+    .day-select-header[data-week="2"] { background:#1B5E20; }
+    .day-select-header[data-week="3"] { background:#4A148C; }
+    .day-select-header[data-week="4"] { background:#0D47A1; }
+    .day-select-header h2 { font-size:.98rem; font-weight:800; }
+    #day-cards {
+      flex:1; overflow-y:auto; padding:16px;
+      display:grid; grid-template-columns:1fr; gap:12px; align-content:start;
+    }
+    @media (min-width:600px) { #day-cards { grid-template-columns:repeat(3,1fr); } }
+    .day-card {
+      background: var(--card-bg); border-radius: var(--radius-lg);
+      padding: 16px; cursor: pointer; text-align:left;
+      box-shadow: var(--shadow); border:3px solid var(--border);
+      transition: transform .15s, box-shadow .15s, border-color .15s;
+      user-select:none; display:flex; align-items:center; gap:12px;
+    }
+    .day-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover); border-color:var(--primary); }
+    .day-card:active { transform:scale(.97); }
+    .day-card.is-review { background:#FFF8E1; border-color:#FFE082; }
+    .day-card.is-review:hover { border-color:#F57F17; }
+    .dc-num {
+      width:42px; height:42px; border-radius:50%; background:var(--primary); color:#fff;
+      display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.05rem;
+      flex-shrink:0;
+    }
+    .day-card.is-review .dc-num { background:#F57F17; }
+    .dc-title { font-size:.92rem; font-weight:800; margin-bottom:3px; }
+    .dc-words { font-size:.72rem; color:var(--text-muted); line-height:1.5; }
+
     #lesson-view {
       flex: 1; display: none; flex-direction: column; overflow: hidden;
     }
@@ -633,9 +672,17 @@
 
     <div id="week-select"></div>
 
+    <div id="day-select">
+      <div class="day-select-header" id="day-select-header">
+        <button class="back-btn" onclick="backToWeeks()">&#8592;</button>
+        <h2 id="day-select-title"></h2>
+      </div>
+      <div id="day-cards"></div>
+    </div>
+
     <div id="lesson-view">
       <div class="lesson-header" id="lesson-header">
-        <button class="back-btn" onclick="backToWeeks()">&#8592;</button>
+        <button class="back-btn" onclick="backToDays()">&#8592;</button>
         <div class="lesson-hdr-text">
           <h2 id="lesson-title"></h2>
           <p  id="lesson-sub"></p>
@@ -827,90 +874,168 @@ const CATEGORIES = [
 // ============================================
 const CURRICULUM = [
   {
-    week:1, title:'1\uc8fc\ucc28', theme:'\ub3c4\uc6c0 \uc694\uccad\ud558\uae30', icon:'\ud83c\udd98',
-    vocabIds:[1,2,3],
-    dialogues:[
-      {title:'\uc544\ud50c \ub54c', lines:[
-        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \uc544\ud30c\uc694.',    tr:{en:"Teacher, I'm hurt.",   vi:'Gi\xe1o vi\xean, t\xf4i \u0111au.',   zh:'\u8001\u5e08\uff0c\u6211\u75bc\u3002'}},
-        {speaker:'teacher',text:'\uc5b4\ub514\uac00 \uc544\ud30c\uc694?',   tr:{en:'Where does it hurt?', vi:'\u0110au \u1edf \u0111\xe2u?',            zh:'\u54ea\u91cc\u75bc\uff1f'}},
-        {speaker:'student',text:'\uba38\ub9ac\uac00 \uc544\ud30c\uc694.',   tr:{en:'My head hurts.',      vi:'\u0110\u1ea7u t\xf4i \u0111au.',         zh:'\u6211\u5934\u75bc\u3002'}},
-        {speaker:'teacher',text:'\ubcf4\uac74\uc2e4\uc5d0 \uac00\uc694.',  tr:{en:"Let's go to the nurse's office.", vi:'\u0110\u1ebfn ph\xf2ng y t\u1ebf.', zh:'\u53bb\u4fdd\u5065\u5ba4\u5427\u3002'}},
-      ]},
-      {title:'\ub3c4\uc6c0 \uc694\uccad', lines:[
-        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \ub3c4\uc640\uc8fc\uc138\uc694.',tr:{en:'Teacher, help me!',   vi:'Gi\xe1o vi\xean, gi\xfap t\xf4i!', zh:'\u8001\u5e08\uff0c\u5e2e\u5e2e\u6211\uff01'}},
-        {speaker:'teacher',text:'\ubb34\uc2a8 \uc77c\uc774\uc5d0\uc694?',           tr:{en:"What's wrong?",       vi:'C\xf3 chuy\u1ec7n g\xec v\u1eady?',  zh:'\u600e\u4e48\u4e86\uff1f'}},
-        {speaker:'student',text:'\ubaa8\ub974\uac2a\uc5b4\uc694.',                  tr:{en:"I don't understand.", vi:'T\xf4i kh\xf4ng hi\u1ec3u.',          zh:'\u6211\u4e0d\u660e\u767d\u3002'}},
-        {speaker:'teacher',text:'\uac19\uc774 \ud574\ubd90\uc694.',                 tr:{en:"Let's try together.", vi:'H\xe3y th\u1eed c\xf9ng nhau.',        zh:'\u4e00\u8d77\u8bd5\u8bd5\u770b\u3002'}},
-      ]},
+    week:1, title:'1주차', theme:'도움 요청하기', icon:'🆘',
+    days:[
+      { day:1, title:'1일차', theme:'선생님 · 아파요 · 도와주세요', vocabIds:[1,3,2],
+        dialogues:[
+          {title:'아플 때', lines:[
+            {speaker:'student',text:'선생님, 아파요.',      tr:{en:"Teacher, I'm hurt.",   vi:'Giáo viên, tôi đau.',   zh:'老师，我疼。'}},
+            {speaker:'teacher',text:'어디가 아파요?',        tr:{en:'Where does it hurt?', vi:'Đau ở đâu?',            zh:'哪里疼？'}},
+            {speaker:'student',text:'머리가 아파요.',        tr:{en:'My head hurts.',      vi:'Đầu tôi đau.',          zh:'我头疼。'}},
+            {speaker:'teacher',text:'보건실에 가요.',        tr:{en:"Let's go to the nurse's office.", vi:'Đến phòng y tế.', zh:'去保健室吧。'}},
+          ]},
+          {title:'도움 요청', lines:[
+            {speaker:'student',text:'선생님, 도와주세요.',    tr:{en:'Teacher, help me!',   vi:'Giáo viên, giúp tôi!', zh:'老师，帮帮我！'}},
+            {speaker:'teacher',text:'무슨 일이에요?',         tr:{en:"What's wrong?",       vi:'Có chuyện gì vậy?',    zh:'怎么了？'}},
+            {speaker:'student',text:'모르겠어요.',            tr:{en:"I don't understand.", vi:'Tôi không hiểu.',      zh:'我不明白。'}},
+            {speaker:'teacher',text:'같이 해봐요.',           tr:{en:"Let's try together.", vi:'Hãy thử cùng nhau.',   zh:'一起试试看。'}},
+          ]},
+        ],
+      },
+      { day:2, title:'2일차', theme:'밥 · 물 · 화장실', vocabIds:[4,5,6],
+        dialogues:[
+          {title:'급식 시간', lines:[
+            {speaker:'student',text:'선생님, 밥 주세요.',   tr:{en:'Teacher, food please.', vi:'Giáo viên, cho tôi cơm.', zh:'老师，给我饭。'}},
+            {speaker:'teacher',text:'여기 있어요.',          tr:{en:'Here you go.',          vi:'Đây rồi.',                zh:'在这儿。'}},
+            {speaker:'student',text:'감사합니다.',           tr:{en:'Thank you.',            vi:'Cảm ơn.',                 zh:'谢谢。'}},
+          ]},
+          {title:'물 / 화장실', lines:[
+            {speaker:'student',text:'선생님, 물 주세요.',       tr:{en:'Teacher, water please.', vi:'Giáo viên, cho tôi nước.', zh:'老师，给我水。'}},
+            {speaker:'teacher',text:'마셔요.',                    tr:{en:'Go ahead and drink.',    vi:'Uống đi.',                 zh:'喝吧。'}},
+            {speaker:'student',text:'선생님, 화장실 가요.',     tr:{en:'Teacher, may I use the bathroom?', vi:'Giáo viên, tôi đi vệ sinh.', zh:'老师，我去厕所。'}},
+            {speaker:'teacher',text:'네, 다녀오세요.',           tr:{en:'Yes, go ahead.',          vi:'Vâng, đi đi.',             zh:'好的，去吧。'}},
+          ]},
+        ],
+      },
+      { day:3, title:'3일차', theme:'1주차 복습', isReview:true, vocabIds:[1,3,2,4,5,6], dialogues:[] },
     ],
-    song:{title:'\uc120\uc0dd\ub2d8 \ub178\ub798',file:'songs/week1_song.mp3',
-      lyrics:'\uc120\uc0dd\ub2d8, \uc120\uc0dd\ub2d8\n\uc548\ub155\ud558\uc138\uc694, \uc548\ub155\ud558\uc138\uc694\n\n\uc544\ud30c\uc694, \uc544\ud30c\uc694\n\ub3c4\uc640\uc8fc\uc138\uc694, \ub3c4\uc640\uc8fc\uc138\uc694\n\n\uc120\uc0dd\ub2d8, \uc120\uc0dd\ub2d8\n\uac10\uc0ac\ud569\ub2c8\ub2e4, \uac10\uc0ac\ud569\ub2c8\ub2e4'},
+    song:{title:'선생님 도와주세요', file:'songs/week1_song.mp3',
+      lyrics:'선생님 도와주세요 선생님 도와주세요\n선생님 아파요 선생님 아파요\n\n밥밥 물물 화장실\n밥밥 물물 화장실\n\n선생님 도와주세요 선생님 도와주세요\n선생님 아파요 선생님 아파요\n\n밥밥 물물 화장실\n밥밥 물물 화장실'},
   },
   {
-    week:2, title:'2\uc8fc\ucc28', theme:'\uae30\ubcf8 \ud544\uc694 \ub9d0\ud558\uae30', icon:'\ud83c\udf71',
-    vocabIds:[4,5,6],
-    dialogues:[
-      {title:'\uae09\uc2dd \uc2dc\uac04', lines:[
-        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \ubc25 \uc8fc\uc138\uc694.',     tr:{en:'Teacher, food please.',     vi:'Gi\xe1o vi\xean, cho t\xf4i c\u01a1m.', zh:'\u8001\u5e08\uff0c\u7ed9\u6211\u996d\u3002'}},
-        {speaker:'teacher',text:'\uc5ec\uae30 \uc788\uc5b4\uc694.',                   tr:{en:'Here you go.',              vi:'\u0110\xe2y r\u1ed3i.',                  zh:'\u5728\u8fd9\u513f\u3002'}},
-        {speaker:'student',text:'\uac10\uc0ac\ud569\ub2c8\ub2e4.',                    tr:{en:'Thank you.',                vi:'C\u1ea3m \u01a1n.',                      zh:'\u8c22\u8c22\u3002'}},
-      ]},
-      {title:'\ubb3c/\ud654\uc7a5\uc2e4', lines:[
-        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \ubb3c \uc8fc\uc138\uc694.',         tr:{en:'Teacher, water please.',    vi:'Gi\xe1o vi\xean, cho t\xf4i n\u01b0\u1edbc.',zh:'\u8001\u5e08\uff0c\u7ed9\u6211\u6c34\u3002'}},
-        {speaker:'teacher',text:'\ub9c8\uc154\uc694.',                                    tr:{en:'Go ahead and drink.',        vi:'U\u1ed1ng \u0111i.',                    zh:'\u559d\u5427\u3002'}},
-        {speaker:'student',text:'\uc120\uc0dd\ub2d8, \ud654\uc7a5\uc2e4 \uac00\uc694.',   tr:{en:'Teacher, may I use the bathroom?',vi:'Gi\xe1o vi\xean, t\xf4i \u0111i v\u1ec7 sinh.',zh:'\u8001\u5e08\uff0c\u6211\u53bb\u5395\u6240\u3002'}},
-        {speaker:'teacher',text:'\ub124, \ub2e4\ub140\uc624\uc138\uc694.',                tr:{en:'Yes, go ahead.',             vi:'V\xe2ng, \u0111i \u0111i.',             zh:'\u597d\u7684\uff0c\u53bb\u5427\u3002'}},
-      ]},
+    week:2, title:'2주차', theme:'규칙과 상태 표현', icon:'🚫',
+    days:[
+      { day:1, title:'1일차', theme:'안 돼요 · 뛰지 마세요 · 네 & 아니요', vocabIds:[9,10,7,8],
+        dialogues:[
+          {title:'교실 규칙', lines:[
+            {speaker:'teacher',text:'복도에서 뛰지 마세요.', tr:{en:"Don't run in the hallway.", vi:'Đừng chạy ở hành lang.', zh:'不要在走廊里跑。'}},
+            {speaker:'student',text:'네, 알겠어요.',          tr:{en:'Yes, I understand.',        vi:'Vâng, tôi hiểu.',        zh:'好的，我知道了。'}},
+            {speaker:'teacher',text:'여기서 놀면 안 돼요.',  tr:{en:"You can't play here.",      vi:'Ở đây không được chơi.', zh:'这里不能玩。'}},
+            {speaker:'student',text:'아니요, 안 놀게요.',     tr:{en:"No, I won't play.",         vi:'Không, tôi sẽ không chơi.', zh:'不，我不玩。'}},
+          ]},
+          {title:'약속하기', lines:[
+            {speaker:'teacher',text:'친구를 때리면 안 돼요.', tr:{en:"You mustn't hit your friend.", vi:'Không được đánh bạn.', zh:'不可以打朋友。'}},
+            {speaker:'student',text:'네, 알겠어요.',           tr:{en:'Yes, I understand.',           vi:'Vâng, tôi hiểu.',       zh:'好的，我知道了。'}},
+            {speaker:'teacher',text:'교실에서 뛰지 마세요.',  tr:{en:"Don't run in the classroom.",  vi:'Đừng chạy trong lớp.',  zh:'不要在教室里跑。'}},
+            {speaker:'student',text:'아니요, 안 뛸게요.',      tr:{en:"No, I won't run.",             vi:'Không, tôi sẽ không chạy.', zh:'不，我不跑。'}},
+          ]},
+        ],
+      },
+      { day:2, title:'2일차', theme:'더워요 & 추워요', vocabIds:[13,14],
+        dialogues:[
+          {title:'더울 때', lines:[
+            {speaker:'teacher',text:'오늘 더워요?',   tr:{en:'Is it hot today?',        vi:'Hôm nay nóng không?', zh:'今天热吗？'}},
+            {speaker:'student',text:'네, 더워요.',     tr:{en:"Yes, it's hot.",          vi:'Vâng, nóng.',          zh:'是的，很热。'}},
+            {speaker:'teacher',text:'창문 열까요?',    tr:{en:'Shall I open the window?', vi:'Mở cửa sổ nhé?',      zh:'要开窗吗？'}},
+            {speaker:'student',text:'네, 감사해요.',    tr:{en:'Yes, thank you.',          vi:'Vâng, cảm ơn.',       zh:'好的，谢谢。'}},
+          ]},
+          {title:'추울 때', lines:[
+            {speaker:'student',text:'선생님, 추워요.',   tr:{en:"Teacher, I'm cold.",       vi:'Giáo viên, tôi lạnh.', zh:'老师，我冷。'}},
+            {speaker:'teacher',text:'창문을 닫을까요?',   tr:{en:'Shall I close the window?', vi:'Đóng cửa sổ nhé?',     zh:'要关窗吗？'}},
+            {speaker:'student',text:'네, 감사해요.',       tr:{en:'Yes, thank you.',           vi:'Vâng, cảm ơn.',        zh:'好的，谢谢。'}},
+          ]},
+        ],
+      },
+      { day:3, title:'3일차', theme:'2주차 복습', isReview:true, vocabIds:[9,10,7,8,13,14], dialogues:[] },
     ],
-    song:{title:'\ubc25 \uba39\uc790 \ub178\ub798',file:'songs/week2_song.mp3',
-      lyrics:'\ubc25, \ubc25, \ubc25 \uba39\uc790\n\ub9db\uc788\ub294 \ubc25 \uba39\uc790\n\n\ubb3c, \ubb3c, \ubb3c \ub9c8\uc2dc\uc790\n\uc2dc\uc6d0\ud55c \ubb3c \ub9c8\uc2dc\uc790\n\n\ud654\uc7a5\uc2e4, \ud654\uc7a5\uc2e4\n\uc120\uc0dd\ub2d8, \uac00\ub3c4 \ub3fc\uc694?'},
+    song:{title:'선생님 더워요', file:'songs/week2_song.mp3',
+      lyrics:'선생님 더워요\n선생님 추워요\n안돼요 뛰지 마세요\n네네 아니요\n네네 아니요\n\n선생님 더워요\n선생님 추워요\n안돼요 뛰지 마세요\n네네 아니요\n네네 아니요'},
   },
   {
-    week:3, title:'3\uc8fc\ucc28', theme:'\ub300\ub2f5 & \uac10\uc815 \ud45c\ud604', icon:'\ud83d\udcac',
-    vocabIds:[7,8,9,10,13,14],
-    dialogues:[
-      {title:'\uaddc\uce59 \uc774\uc57c\uae30', lines:[
-        {speaker:'teacher',text:'\ubcf5\ub3c4\uc5d0\uc11c \ub6f0\uc9c0 \ub9c8\uc138\uc694.',    tr:{en:"Don't run in the hallway.",  vi:'\u0110\u1eebng ch\u1ea1y \u1edf h\xe0nh lang.',zh:'\u5728\u8d70\u5ec8\u91cc\u4e0d\uc9c0\u8981\u8dd1\u3002'}},
-        {speaker:'student',text:'\ub124, \uc54c\uaca0\uc5b4\uc694.',                             tr:{en:'Yes, I understand.',        vi:'V\xe2ng, t\xf4i hi\u1ec3u.',           zh:'\u597d\u7684\uff0c\u6211\u660e\u767d\u4e86\u3002'}},
-        {speaker:'teacher',text:'\uad50\uc2e4\uc5d0\uc11c \uc548 \ub3fc\uc694.',                tr:{en:"That's not allowed in class.",vi:'Trong l\u1edbp kh\xf4ng \u0111\u01b0\u1ee3c.',zh:'\u5728\u6559\u5ba4\u91cc\u4e0d\u884c\u3002'}},
-        {speaker:'student',text:'\uc8c4\uc1a1\ud569\ub2c8\ub2e4.',                              tr:{en:"I'm sorry.",                vi:'Xin l\u1ed7i.',                        zh:'\u5bf9\u4e0d\u8d77\u3002'}},
-      ]},
-      {title:'\ub0a0\uc528/\uc628\ub3c4', lines:[
-        {speaker:'teacher',text:'\uc624\ub298 \ub354\uc6cc\uc694?',    tr:{en:'Is it hot today?',     vi:'H\xf4m nay n\xf3ng kh\xf4ng?', zh:'\u4eca\u5929\u70ed\u5417\uff1f'}},
-        {speaker:'student',text:'\ub124, \ub354\uc6cc\uc694.',         tr:{en:"Yes, it's hot.",       vi:'V\xe2ng, n\xf3ng.',             zh:'\u662f\u7684\uff0c\u5f88\u70ed\u3002'}},
-        {speaker:'teacher',text:'\ucc3d\ubb38 \uc5f4\uae4c\uc694?',   tr:{en:'Shall I open the window?',vi:'M\u1edf c\u1eeda s\u1ed5 nh\xe9?',zh:'\u8981\u5f00\u7a97\u5417\uff1f'}},
-        {speaker:'student',text:'\ub124, \uac10\uc0ac\ud574\uc694.',   tr:{en:'Yes, thank you.',      vi:'V\xe2ng, c\u1ea3m \u01a1n.',    zh:'\u597d\u7684\uff0c\u8c22\u8c22\u3002'}},
-      ]},
+    week:3, title:'3주차', theme:'수업과 감정 표현', icon:'🔔',
+    days:[
+      { day:1, title:'1일차', theme:'수업 시작 & 수업 끝 · 좋아요 & 싫어요', vocabIds:[15,16,11,12],
+        dialogues:[
+          {title:'수업 시간', lines:[
+            {speaker:'teacher',text:'수업 시작해요.',      tr:{en:'Class is starting.',       vi:'Bắt đầu học.',        zh:'开始上课。'}},
+            {speaker:'student',text:'네, 선생님.',          tr:{en:'Yes, teacher.',            vi:'Vâng, thưa giáo viên.', zh:'好的，老师。'}},
+            {speaker:'teacher',text:'오늘 수업 끝이에요.', tr:{en:'Class is over for today.', vi:'Hết giờ học hôm nay.', zh:'今天下课了。'}},
+            {speaker:'student',text:'네, 알겠습니다.',      tr:{en:'Yes, okay.',               vi:'Vâng, tôi hiểu.',      zh:'好的。'}},
+          ]},
+          {title:'좋아요? 싫어요?', lines:[
+            {speaker:'teacher',text:'이 놀이 좋아요?',  tr:{en:'Do you like this game?', vi:'Bạn thích trò này không?', zh:'你喜欢这个游戏吗？'}},
+            {speaker:'student',text:'네, 좋아요!',       tr:{en:'Yes, I like it!',        vi:'Vâng, tôi thích!',          zh:'是的，我喜欢！'}},
+            {speaker:'teacher',text:'이거는 어때요?',    tr:{en:'What about this one?',   vi:'Cái này thì sao?',          zh:'这个怎么样？'}},
+            {speaker:'student',text:'싫어요.',            tr:{en:"I don't like it.",       vi:'Không thích.',              zh:'不喜欢。'}},
+          ]},
+        ],
+      },
+      { day:2, title:'2일차', theme:'자리 · 가요', vocabIds:[17,18],
+        dialogues:[
+          {title:'교실에서', lines:[
+            {speaker:'teacher',text:'자리에 앉아요.',      tr:{en:'Sit in your seat.', vi:'Ngồi vào chỗ.',      zh:'坐到位子上。'}},
+            {speaker:'student',text:'제 자리가 어디예요?', tr:{en:"Where's my seat?",  vi:'Chỗ tôi ở đâu?',     zh:'我的座位在哪里？'}},
+            {speaker:'teacher',text:'저기예요.',            tr:{en:'Over there.',       vi:'Ở đằng kia.',        zh:'在那里。'}},
+            {speaker:'student',text:'네, 알겠습니다.',       tr:{en:'Yes, okay.',        vi:'Vâng, tôi hiểu.',    zh:'好的。'}},
+          ]},
+          {title:'가요', lines:[
+            {speaker:'teacher',text:'이제 집에 가요.',    tr:{en:"Now let's go home.", vi:'Bây giờ về nhà nhé.', zh:'现在回家吧。'}},
+            {speaker:'student',text:'네, 가요!',            tr:{en:"Yes, let's go!",     vi:'Vâng, đi thôi!',      zh:'好，走吧！'}},
+            {speaker:'teacher',text:'내일 학교에 가요.',   tr:{en:'Go to school tomorrow.', vi:'Ngày mai đi học.', zh:'明天去学校。'}},
+            {speaker:'student',text:'네, 알겠어요.',        tr:{en:'Yes, okay.',          vi:'Vâng, tôi hiểu.',     zh:'好的。'}},
+          ]},
+        ],
+      },
+      { day:3, title:'3일차', theme:'3주차 복습', isReview:true, vocabIds:[15,16,11,12,17,18], dialogues:[] },
     ],
-    song:{title:'\ub124 \uc544\ub2c8\uc694 \ub178\ub798',file:'songs/week3_song.mp3',
-      lyrics:'\ub124, \ub124, \ub124\n\uc54c\uaca0\uc5b4\uc694, \uc54c\uaca0\uc5b4\uc694\n\n\uc544\ub2c8\uc694, \uc544\ub2c8\uc694\n\uc548 \ub3fc\uc694, \uc548 \ub3fc\uc694\n\n\ub354\uc6cc\uc694, \ucd94\uc6cc\uc694\n\ub6f0\uc9c0 \ub9c8\uc138\uc694!'},
+    song:{title:'수업 시작', file:'songs/week3_song.mp3',
+      lyrics:'수업시작 수업시작 자리 가요\n좋아요? 싫어요? 수업시작 좋아요!\n수업 끝 수업 끝 가요 가요\n\n좋아요? 싫어요? 수업 끝 싫어요!\n좋아요? 싫어요? 수업시작 자리 가요\n좋아요? 싫어요? 수업 끝 집 가요'},
   },
   {
-    week:4, title:'4\uc8fc\ucc28', theme:'\ud559\uad50\uc0dd\ud65c \ud45c\ud604', icon:'\ud83c\udfeb',
-    vocabIds:[11,12,15,16,17,18,22,23,24],
-    dialogues:[
-      {title:'\uc218\uc5c5 \uc2dc\uac04', lines:[
-        {speaker:'teacher',text:'\uc218\uc5c5 \uc2dc\uc791\ud574\uc694.',      tr:{en:'Class is starting.',    vi:'B\u1eaft \u0111\u1ea7u h\u1ecdc.',     zh:'\u5f00\u59cb\u4e0a\u8bfe\u3002'}},
-        {speaker:'student',text:'\ub124, \uc120\uc0dd\ub2d8.',                 tr:{en:'Yes, teacher.',         vi:'V\xe2ng, th\u01b0a gi\xe1o vi\xean.',  zh:'\u597d\u7684\uff0c\u8001\u5e08\u3002'}},
-        {speaker:'teacher',text:'\ucc45 \ud3274\uc138\uc694.',                 tr:{en:'Open your book.',       vi:'M\u1edf s\xe1ch ra.',                  zh:'\u6253\u5f00\u4e66\u3002'}},
-        {speaker:'teacher',text:'\uc218\uc5c5 \ub05d\uc774\uc5d0\uc694.',     tr:{en:'Class is over.',        vi:'H\u1ebft gi\u1edd h\u1ecdc.',           zh:'\u4e0b\u8bfe\u4e86\u3002'}},
-      ]},
-      {title:'\uad50\uc2e4\uc5d0\uc11c', lines:[
-        {speaker:'teacher',text:'\uc790\ub9ac\uc5d0 \uc549\uc544\uc694.',      tr:{en:'Sit in your seat.',        vi:'Ng\u1ed3i v\xe0o ch\u1ed7.',           zh:'\u5750\u5230\u4f4d\u5b50\u4e0a\u3002'}},
-        {speaker:'student',text:'\uc81c \uc790\ub9ac\uac00 \uc5b4\ub514\uc608\uc694?',tr:{en:"Where's my seat?",   vi:'Ch\u1ed7 t\xf4i \u1edf \u0111\xe2u?',  zh:'\u6211\u7684\u5ea7\u4f4d\u5728\u54ea\u91cc\uff1f'}},
-        {speaker:'teacher',text:'\uc800\uae30\uc608\uc694.',                   tr:{en:'Over there.',              vi:'\u1edf \u0111\u1eb1ng kia.',            zh:'\u5728\u90a3\u91cc\u3002'}},
-        {speaker:'student',text:'\uc880\uc544\uc694, \uac10\uc0ac\ud569\ub2c8\ub2e4.',tr:{en:'Great, thank you.',vi:'\u0110\u01b0\u1ee3c r\u1ed3i, c\u1ea3m \u01a1n.',zh:'\u597d\u7684\uff0c\u8c22\u8c22\u3002'}},
-      ]},
-      {title:'\uce5c\uad6c \uc18c\uac1c', lines:[
-        {speaker:'teacher',text:'\uce5c\uad6c\uc5d0\uac8c \uc778\uc0ac\ud574\uc694.',   tr:{en:'Greet your friend.',         vi:'Ch\xe0o b\u1ea1n \u0111i.',                 zh:'\u548c\u670b\u53cb\u6253\u62db\u547c\u3002'}},
-        {speaker:'student',text:'\uc548\ub155, \uce5c\uad6c\uc57c.',                    tr:{en:'Hello, friend!',             vi:'Xin ch\xe0o, b\u1ea1n!',                   zh:'\u4f60\u597d\uff0c\u670b\u53cb\uff01'}},
-        {speaker:'teacher',text:'\ucc45\uc774\ub791 \uc5f0\ud544 \uc900\ube44\ud574\uc694.', tr:{en:'Prepare your book and pencil.', vi:'Chu\u1ea9n b\u1ecb s\xe1ch v\xe0 b\xfat ch\xec.', zh:'\u51c6\u5907\u4e66\u548c\u94c5\u7b14\u3002'}},
-      ]},
+    week:4, title:'4주차', theme:'학교생활 표현', icon:'🏫',
+    days:[
+      { day:1, title:'1일차', theme:'집 · 학교 · 교실', vocabIds:[19,20,21],
+        dialogues:[
+          {title:'어디 가요?', lines:[
+            {speaker:'teacher',text:'집에 가요.',       tr:{en:'Go home.',            vi:'Về nhà.',       zh:'回家。'}},
+            {speaker:'student',text:'네, 집에 가요.',    tr:{en:'Yes, going home.',    vi:'Vâng, về nhà.', zh:'是，回家。'}},
+            {speaker:'teacher',text:'학교에 가요.',      tr:{en:'Go to school.',       vi:'Đi học.',        zh:'去学校。'}},
+            {speaker:'student',text:'네, 학교에 가요.',  tr:{en:'Yes, going to school.', vi:'Vâng, đi học.', zh:'是，去学校。'}},
+          ]},
+          {title:'교실 찾기', lines:[
+            {speaker:'student',text:'교실이 어디예요?',   tr:{en:'Where is the classroom?', vi:'Lớp học ở đâu?', zh:'教室在哪里？'}},
+            {speaker:'teacher',text:'저기 교실이에요.',    tr:{en:'The classroom is over there.', vi:'Lớp học ở đằng kia.', zh:'教室在那边。'}},
+            {speaker:'student',text:'감사합니다.',          tr:{en:'Thank you.',              vi:'Cảm ơn.',              zh:'谢谢。'}},
+          ]},
+        ],
+      },
+      { day:2, title:'2일차', theme:'책 · 연필 · 친구', vocabIds:[22,23,24],
+        dialogues:[
+          {title:'친구 소개', lines:[
+            {speaker:'teacher',text:'친구에게 인사해요.',     tr:{en:'Greet your friend.',            vi:'Chào bạn đi.',           zh:'和朋友打招呼。'}},
+            {speaker:'student',text:'안녕, 친구야.',           tr:{en:'Hello, friend!',                vi:'Xin chào, bạn!',         zh:'你好，朋友！'}},
+            {speaker:'teacher',text:'책이랑 연필 준비해요.',  tr:{en:'Prepare your book and pencil.', vi:'Chuẩn bị sách và bút chì.', zh:'准备好书和铅笔。'}},
+            {speaker:'student',text:'네, 준비했어요.',         tr:{en:"Yes, I'm ready.",               vi:'Vâng, tôi chuẩn bị rồi.', zh:'好的，准备好了。'}},
+          ]},
+          {title:'책이랑 연필', lines:[
+            {speaker:'teacher',text:'책 주세요.',       tr:{en:'Give me the book.',    vi:'Đưa sách cho tôi.', zh:'把书给我。'}},
+            {speaker:'student',text:'네, 여기요.',       tr:{en:'Here you go.',          vi:'Đây ạ.',             zh:'给你。'}},
+            {speaker:'teacher',text:'연필 있어요?',      tr:{en:'Do you have a pencil?', vi:'Có bút chì không?', zh:'有铅笔吗？'}},
+            {speaker:'student',text:'네, 있어요.',        tr:{en:'Yes, I have.',          vi:'Có, tôi có.',        zh:'有。'}},
+          ]},
+        ],
+      },
+      { day:3, title:'3일차', theme:'4주차 복습', isReview:true, vocabIds:[19,20,21,22,23,24], dialogues:[] },
     ],
-    song:{title:'\ud559\uad50 \uc0dd\ud65c \ub178\ub798',file:'songs/week4_song.mp3',
-      lyrics:'\ud559\uad50, \ud559\uad50, \uc6b0\ub9ac \ud559\uad50\n\uad50\uc2e4\uc5d0\uc11c \uacf5\ubd80\ud574\uc694\n\n\ucc45\uc774\ub791 \uc5f0\ud544\n\uce5c\uad6c\ub791 \ud568\uaf00\n\n\uc218\uc5c5 \uc2dc\uc791! \uc218\uc5c5 \ub05d!\n\uc9d1\uc5d0 \uac00\uc694, \uc548\ub155~'},
+    song:{title:'가요 가요', file:'songs/week4_song.mp3',
+      lyrics:'학교 가요\n교실 가요\n집 가요\n\n집집집 교실 학교\n집집집 교실 학교\n\n친구 좋아요\n연필 좋아요\n책 좋아요\n\n책책책 연필 친구\n책책책 연필 친구'},
   },
 ];
+
+CURRICULUM.forEach(wk => {
+  const review = wk.days.find(d => d.isReview);
+  if (review) review.dialogues = wk.days.filter(d => !d.isReview).flatMap(d => d.dialogues);
+});
 
 // ============================================
 //  STATE
@@ -922,6 +1047,7 @@ let speechRate = 1.0;
 let transLang  = 'vi';
 let currentMode     = 'sotonpan';
 let currentWeek     = null;
+let currentDay      = null;
 let currentLessonTab= 'vocab';
 let fcIndex         = 0;
 let currentDlgIdx   = 0;
@@ -1012,9 +1138,11 @@ function setCategory(cat, btn) {
 //  HAKSUP ? WEEK SELECT
 // ============================================
 function renderWeekSelect() {
+  currentWeek = null; currentDay = null;
   const ws = document.getElementById('week-select');
   ws.innerHTML = CURRICULUM.map(wk => {
-    const words = wk.vocabIds.map(id => VOCAB.find(v=>v.id===id)?.text).join(', ');
+    const words = wk.days.filter(d=>!d.isReview).flatMap(d=>d.vocabIds)
+      .map(id => VOCAB.find(v=>v.id===id)?.text).join(', ');
     return `<div class="week-card" data-week="${wk.week}" onclick="selectWeek(${wk.week})">
       <div class="wk-icon">${wk.icon}</div>
       <div class="wk-num">${wk.title}</div>
@@ -1023,27 +1151,62 @@ function renderWeekSelect() {
     </div>`;
   }).join('');
   ws.classList.remove('hidden');
+  document.getElementById('day-select').classList.remove('active');
   document.getElementById('lesson-view').classList.remove('active');
 }
 
 function selectWeek(weekNum) {
   currentWeek = CURRICULUM.find(w => w.week === weekNum);
-  fcIndex = 0; currentDlgIdx = 0;
+  currentDay = null;
+  renderDaySelect();
+}
+
+function renderDaySelect() {
+  const hdr = document.getElementById('day-select-header');
+  hdr.setAttribute('data-week', currentWeek.week);
+  document.getElementById('day-select-title').textContent = currentWeek.title + ' \u2014 ' + currentWeek.theme;
+  const dc = document.getElementById('day-cards');
+  dc.innerHTML = currentWeek.days.map(d => {
+    const words = d.vocabIds.map(id => VOCAB.find(v=>v.id===id)?.text).join(', ');
+    return `<div class="day-card ${d.isReview?'is-review':''}" onclick="selectDay(${d.day})">
+      <div class="dc-num">${d.isReview ? '\u2605' : d.day}</div>
+      <div>
+        <div class="dc-title">${d.title}</div>
+        <div class="dc-words">${words}</div>
+      </div>
+    </div>`;
+  }).join('');
   document.getElementById('week-select').classList.add('hidden');
+  document.getElementById('day-select').classList.add('active');
+  document.getElementById('lesson-view').classList.remove('active');
+}
+
+function backToWeeks() {
+  currentWeek = null; currentDay = null;
+  document.getElementById('day-select').classList.remove('active');
+  renderWeekSelect();
+}
+
+function selectDay(dayNum) {
+  currentDay = currentWeek.days.find(d => d.day === dayNum);
+  fcIndex = 0; currentDlgIdx = 0;
+  document.getElementById('day-select').classList.remove('active');
   const hdr = document.getElementById('lesson-header');
-  hdr.setAttribute('data-week', weekNum);
-  document.getElementById('lesson-title').textContent = currentWeek.title + ' \u2014 ' + currentWeek.theme;
-  document.getElementById('lesson-sub').textContent   = currentWeek.vocabIds.length + '\uac1c \ub2e8\uc5b4 \u00b7 \ub300\ud654 \u00b7 \ub178\ub798 \u00b7 \uac8c\uc784';
+  hdr.setAttribute('data-week', currentWeek.week);
+  document.getElementById('lesson-title').textContent = currentWeek.title + ' ' + currentDay.title + ' \u2014 ' + currentDay.theme;
+  document.getElementById('lesson-sub').textContent   = currentDay.vocabIds.length + '\uac1c \ub2e8\uc5b4 \u00b7 \ub300\ud654 \u00b7 \ub178\ub798 \u00b7 \uac8c\uc784';
   document.getElementById('lesson-view').classList.add('active');
+  currentLessonTab = 'vocab';
   // reset to vocab tab
   document.querySelectorAll('.lesson-tab').forEach((b,i) => b.classList.toggle('active', i===0));
   document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', i===0));
   renderVocabTab();
 }
 
-function backToWeeks() {
-  currentWeek = null;
-  renderWeekSelect();
+function backToDays() {
+  currentDay = null;
+  document.getElementById('lesson-view').classList.remove('active');
+  renderDaySelect();
 }
 
 function setLessonTab(tab, btn) {
@@ -1058,7 +1221,7 @@ function setLessonTab(tab, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   const panel = document.getElementById('tab-' + tab);
   if (panel) panel.classList.add('active');
-  if (!currentWeek) return;
+  if (!currentDay) return;
   if (tab === 'vocab')    renderVocabTab();
   if (tab === 'dialogue') renderDialogueTab();
   if (tab === 'song')     renderSongTab();
@@ -1069,7 +1232,7 @@ function setLessonTab(tab, btn) {
 //  VOCAB TAB
 // ============================================
 function renderVocabTab() {
-  const items = currentWeek.vocabIds.map(id => VOCAB.find(v=>v.id===id));
+  const items = currentDay.vocabIds.map(id => VOCAB.find(v=>v.id===id));
   const v = items[fcIndex];
   const tr = transLang !== 'none' && v.tr[transLang] ? v.tr[transLang] : '';
   const safeText = v.text.replace(/'/g,"\\'");
@@ -1098,7 +1261,7 @@ function renderVocabTab() {
 }
 
 function fcNav(dir) {
-  fcIndex = Math.max(0, Math.min(currentWeek.vocabIds.length-1, fcIndex+dir));
+  fcIndex = Math.max(0, Math.min(currentDay.vocabIds.length-1, fcIndex+dir));
   renderVocabTab();
 }
 function fcJump(i) { fcIndex = i; renderVocabTab(); }
@@ -1112,7 +1275,7 @@ function renderDialogueTab() {
 }
 
 function renderDialogueContent() {
-  const dlgs = currentWeek.dialogues;
+  const dlgs = currentDay.dialogues;
   const dlg  = dlgs[currentDlgIdx];
   const navBtns = dlgs.map((d,i) =>
     `<button class="dlg-nav-btn ${i===currentDlgIdx?'active':''}" onclick="switchDlg(${i})">${d.title}</button>`
@@ -1170,7 +1333,7 @@ function renderSongTab() {
 function renderGameTab() { initGame(); }
 
 function initGame() {
-  const items = currentWeek.vocabIds.slice(0,4).map(id => VOCAB.find(v=>v.id===id));
+  const items = currentDay.vocabIds.slice(0,4).map(id => VOCAB.find(v=>v.id===id));
   gameCards = []; matched = 0; moves = 0; flipped = []; canFlip = true;
   items.forEach((v,i) => {
     gameCards.push({id:i*2,   pairId:i, type:'emoji', content:v.emoji, word:v.text});
@@ -1300,7 +1463,7 @@ function setVoiceLang(val) { voiceLang = val; }
 function setTransLang(val) {
   transLang = val;
   renderGrid(currentCat);
-  if (currentWeek) {
+  if (currentDay) {
     if (currentLessonTab === 'vocab')    renderVocabTab();
     if (currentLessonTab === 'dialogue') renderDialogueContent();
   }

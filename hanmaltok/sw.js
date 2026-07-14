@@ -1,4 +1,4 @@
-const CACHE = 'hanmaltok-v1';
+const CACHE = 'hanmaltok-v2';
 const ASSETS = [
   './',
   './index.html',
