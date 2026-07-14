@@ -323,13 +323,13 @@
       border-bottom:2px solid var(--border); flex-shrink:0;
     }
     .lesson-tab {
-      flex:1; background:none; border:none; padding:10px 4px;
-      font-size:.72rem; font-weight:700; color:var(--text-muted);
+      flex:1; background:none; border:none; padding:8px 2px;
+      font-size:.64rem; font-weight:700; color:var(--text-muted);
       cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px;
       display:flex; flex-direction:column; align-items:center; gap:2px;
-      transition:color .15s;
+      transition:color .15s; white-space:nowrap;
     }
-    .tab-icon { font-size:1.05rem; }
+    .tab-icon { font-size:.95rem; }
     .lesson-tab.active { color:var(--primary); border-bottom-color:var(--primary); }
     .lesson-tab:hover:not(.active) { color:var(--primary); }
 
@@ -429,6 +429,31 @@
       font-size:.72rem; cursor:pointer; color:var(--primary); font-weight:700;
     }
     .dlg-tts:hover { background:var(--bg); }
+
+    /* SITUATION */
+    .situation-card {
+      background:var(--card-bg); border:2px solid var(--border);
+      border-radius:var(--radius-lg); padding:16px; margin-bottom:14px;
+      display:flex; gap:14px; align-items:flex-start;
+    }
+    .sit-emoji { font-size:2.4rem; flex-shrink:0; line-height:1; }
+    .sit-body  { flex:1; min-width:0; }
+    .sit-word  { font-size:1.05rem; font-weight:900; color:var(--primary); margin-bottom:5px; }
+    .sit-text  { font-size:.92rem; font-weight:600; margin-bottom:5px; line-height:1.4; }
+    .sit-tr    { font-size:.78rem; color:var(--text-muted); margin-bottom:9px; }
+
+    /* APPLY */
+    .apply-card {
+      background:var(--card-bg); border:2px solid var(--border);
+      border-radius:var(--radius-lg); padding:16px; margin-bottom:14px;
+    }
+    .apply-word {
+      display:inline-block; background:var(--primary); color:#fff;
+      font-size:.72rem; font-weight:700; padding:4px 11px;
+      border-radius:14px; margin-bottom:9px;
+    }
+    .apply-sentence { font-size:1.05rem; font-weight:800; margin-bottom:5px; line-height:1.4; }
+    .apply-tr       { font-size:.8rem; color:var(--text-muted); margin-bottom:9px; }
 
     /* SONG */
     .song-banner {
@@ -691,24 +716,32 @@
 
       <div class="lesson-tabs">
         <button class="lesson-tab active" data-tab="vocab"    onclick="setLessonTab('vocab',this)">
-          <span class="tab-icon">&#128214;</span>&#45800;&#50612;
+          <span class="tab-icon">&#128214;</span>발화
+        </button>
+        <button class="lesson-tab" data-tab="situation" onclick="setLessonTab('situation',this)">
+          <span class="tab-icon">&#128161;</span>상황
         </button>
         <button class="lesson-tab" data-tab="dialogue" onclick="setLessonTab('dialogue',this)">
-          <span class="tab-icon">&#128172;</span>&#45824;&#54868;
+          <span class="tab-icon">&#128172;</span>대화
+        </button>
+        <button class="lesson-tab" data-tab="apply" onclick="setLessonTab('apply',this)">
+          <span class="tab-icon">&#10024;</span>응용
         </button>
         <button class="lesson-tab" data-tab="song"     onclick="setLessonTab('song',this)">
-          <span class="tab-icon">&#127925;</span>&#45432;&#47000;
+          <span class="tab-icon">&#127925;</span>노래
         </button>
         <button class="lesson-tab" data-tab="game"     onclick="setLessonTab('game',this)">
-          <span class="tab-icon">&#127918;</span>&#44172;&#51076;
+          <span class="tab-icon">&#127918;</span>게임
         </button>
       </div>
 
       <div class="tab-content">
-        <div id="tab-vocab"    class="tab-panel active"></div>
-        <div id="tab-dialogue" class="tab-panel"></div>
-        <div id="tab-song"     class="tab-panel"></div>
-        <div id="tab-game"     class="tab-panel"></div>
+        <div id="tab-vocab"     class="tab-panel active"></div>
+        <div id="tab-situation" class="tab-panel"></div>
+        <div id="tab-dialogue"  class="tab-panel"></div>
+        <div id="tab-apply"     class="tab-panel"></div>
+        <div id="tab-song"      class="tab-panel"></div>
+        <div id="tab-game"      class="tab-panel"></div>
       </div>
     </div>
 
@@ -804,59 +837,107 @@
 // ============================================
 const VOCAB = [
   {id:1,  text:'\uc120\uc0dd\ub2d8',    emoji:'\ud83d\udc69\u200d\ud83c\udfeb', cat:'urgent',
-   tr:{en:'Teacher',vi:'Gi\xe1o vi\xean',zh:'\u8001\u5e08',mn:'\u0411\u0430\u0433\u0448',ru:'\u0423\u0447\u0438\u0442\u0435\u043b\u044c',tl:'Guro',th:'\u0e04\u0e23\u0e39'}},
+   tr:{en:'Teacher',vi:'Gi\xe1o vi\xean',zh:'\u8001\u5e08',mn:'\u0411\u0430\u0433\u0448',ru:'\u0423\u0447\u0438\u0442\u0435\u043b\u044c',tl:'Guro',th:'\u0e04\u0e23\u0e39'},
+   situation:{ko:'\uc120\uc0dd\ub2d8\uc744 \ubd80\ub974\uace0 \uc2f6\uc744 \ub54c \uc190\uc744 \ub4e4\uace0 \ub9d0\ud574\uc694.', en:'Raise your hand and say this when you want to call your teacher.', vi:'Gi\u01a1 tay v\u00e0 n\u00f3i c\u00e2u n\u00e0y khi mu\u1ed1n g\u1ecdi gi\u00e1o vi\u00ean.', zh:'\u60f3\u53eb\u8001\u5e08\u7684\u65f6\u5019\u4e3e\u624b\u8bf4\u8fd9\u53e5\u8bdd\u3002'},
+   apply:{ko:'\uc120\uc0dd\ub2d8, \uc800 \uc880 \ubd10 \uc8fc\uc138\uc694.', en:'Teacher, please look at me.', vi:'Gi\u00e1o vi\u00ean, xin h\u00e3y nh\u00ecn con.', zh:'\u8001\u5e08\uff0c\u8bf7\u770b\u770b\u6211\u3002'}},
   {id:2,  text:'\ub3c4\uc640\uc8fc\uc138\uc694', emoji:'\ud83d\ude4b', cat:'urgent',
-   tr:{en:'Help me!',vi:'Gi\xfap t\xf4i!',zh:'\u5e2e\u5e2e\u6211!',mn:'\u0422\u0443\u0441\u0430\u0430\u0447!',ru:'\u041f\u043e\u043c\u043e\u0433\u0438\u0442\u0435!',tl:'Tulungan!',th:'\u0e0a\u0e48\u0e27\u0e22\u0e14\u0e49\u0e27\u0e22!'}},
+   tr:{en:'Help me!',vi:'Gi\xfap t\xf4i!',zh:'\u5e2e\u5e2e\u6211!',mn:'\u0422\u0443\u0441\u0430\u0430\u0447!',ru:'\u041f\u043e\u043c\u043e\u0433\u0438\u0442\u0435!',tl:'Tulungan!',th:'\u0e0a\u0e48\u0e27\u0e22\u0e14\u0e49\u0e27\u0e22!'},
+   situation:{ko:'\ud63c\uc790 \ud558\uae30 \uc5b4\ub824\uc6b8 \ub54c \ub3c4\uc6c0\uc744 \uc694\uccad\ud574\uc694.', en:'Ask for help when something is too hard to do alone.', vi:'Nh\u1edd gi\u00fap \u0111\u1ee1 khi vi\u1ec7c g\u00ec \u0111\u00f3 kh\u00f3 l\u00e0m m\u1ed9t m\u00ecnh.', zh:'\u4e00\u4e2a\u4eba\u505a\u4e0d\u5230\u7684\u65f6\u5019\u8bf7\u6c42\u5e2e\u52a9\u3002'},
+   apply:{ko:'\uc120\uc0dd\ub2d8, \uc774\uac70 \uc5b4\ub5bb\uac8c \ud574\uc694? \ub3c4\uc640\uc8fc\uc138\uc694.', en:'Teacher, how do I do this? Please help me.', vi:'Gi\u00e1o vi\u00ean, l\u00e0m c\u00e1i n\u00e0y th\u1ebf n\u00e0o \u1ea1? Xin gi\u00fap con.', zh:'\u8001\u5e08\uff0c\u8fd9\u4e2a\u600e\u4e48\u505a\uff1f\u8bf7\u5e2e\u5e2e\u6211\u3002'}},
   {id:3,  text:'\uc544\ud30c\uc694',    emoji:'\ud83e\udd15', cat:'urgent',
-   tr:{en:"I'm hurt",vi:'T\xf4i \u0111au',zh:'\u6211\u75bc',mn:'\u04e8\u0432\u0434\u04e9\u0436 \u0431\u0430\u0439\u043d\u0430',ru:'\u041c\u043d\u0435 \u0431\u043e\u043b\u044c\u043d\u043e',tl:'Masakit',th:'\u0e40\u0e08\u0e47\u0e1a/\u0e1b\u0e48\u0e27\u0e22'}},
+   tr:{en:"I'm hurt",vi:'T\xf4i \u0111au',zh:'\u6211\u75bc',mn:'\u04e8\u0432\u0434\u04e9\u0436 \u0431\u0430\u0439\u043d\u0430',ru:'\u041c\u043d\u0435 \u0431\u043e\u043b\u044c\u043d\u043e',tl:'Masakit',th:'\u0e40\u0e08\u0e47\u0e1a/\u0e1b\u0e48\u0e27\u0e22'},
+   situation:{ko:'\ubab8\uc774 \uc544\ud50c \ub54c \uc120\uc0dd\ub2d8\uaed8 \uc54c\ub824\uc694.', en:'Tell your teacher when your body hurts.', vi:'N\u00f3i v\u1edbi gi\u00e1o vi\u00ean khi c\u01a1 th\u1ec3 b\u1ecb \u0111au.', zh:'\u8eab\u4f53\u4e0d\u8212\u670d\u65f6\u544a\u8bc9\u8001\u5e08\u3002'},
+   apply:{ko:'\ubc30\uac00 \uc544\ud30c\uc694. \ubcf4\uac74\uc2e4\uc5d0 \uac00\uace0 \uc2f6\uc5b4\uc694.', en:"My stomach hurts. I want to go to the nurse's office.", vi:'B\u1ee5ng con \u0111au. Con mu\u1ed1n \u0111\u1ebfn ph\u00f2ng y t\u1ebf.', zh:'\u6211\u809a\u5b50\u75bc\u3002\u6211\u60f3\u53bb\u4fdd\u5065\u5ba4\u3002'}},
 
   {id:4,  text:'\ubc25',        emoji:'\ud83c\udf71', cat:'needs',
-   tr:{en:'Food/Meal',vi:'C\u01a1m / B\u1eefa \u0103n',zh:'\u996d',mn:'\u0425\u043e\u043e\u043b',ru:'\u0415\u0434\u0430',tl:'Pagkain',th:'\u0e02\u0e49\u0e32\u0e27'}},
+   tr:{en:'Food/Meal',vi:'C\u01a1m / B\u1eefa \u0103n',zh:'\u996d',mn:'\u0425\u043e\u043e\u043b',ru:'\u0415\u0434\u0430',tl:'Pagkain',th:'\u0e02\u0e49\u0e32\u0e27'},
+   situation:{ko:'\uae09\uc2dd \uc2dc\uac04\uc5d0 \ubc25\uc774 \uba39\uace0 \uc2f6\uc744 \ub54c \ub9d0\ud574\uc694.', en:'Say this at mealtime when you want food.', vi:'N\u00f3i c\u00e2u n\u00e0y v\u00e0o gi\u1edd \u0103n khi mu\u1ed1n \u0103n c\u01a1m.', zh:'\u7528\u9910\u65f6\u95f4\u60f3\u5403\u996d\u65f6\u8bf4\u3002'},
+   apply:{ko:'\uc120\uc0dd\ub2d8, \ubc25 \ub354 \uc8fc\uc138\uc694.', en:'Teacher, more food please.', vi:'Gi\u00e1o vi\u00ean, cho con th\u00eam c\u01a1m.', zh:'\u8001\u5e08\uff0c\u8bf7\u518d\u7ed9\u6211\u4e00\u4e9b\u996d\u3002'}},
   {id:5,  text:'\ubb3c',        emoji:'\ud83d\udca7', cat:'needs',
-   tr:{en:'Water',vi:'N\u01b0\u1edbc',zh:'\u6c34',mn:'\u0423\u0441',ru:'\u0412\u043e\u0434\u0430',tl:'Tubig',th:'\u0e19\u0e49\u0e33'}},
+   tr:{en:'Water',vi:'N\u01b0\u1edbc',zh:'\u6c34',mn:'\u0423\u0441',ru:'\u0412\u043e\u0434\u0430',tl:'Tubig',th:'\u0e19\u0e49\u0e33'},
+   situation:{ko:'\ubaa9\uc774 \ub9c8\ub97c \ub54c \ubb3c\uc744 \ub2ec\ub77c\uace0 \ud574\uc694.', en:"Ask for water when you're thirsty.", vi:'Xin n\u01b0\u1edbc khi kh\u00e1t.', zh:'\u53e3\u6e34\u7684\u65f6\u5019\u8981\u6c34\u559d\u3002'},
+   apply:{ko:'\uc120\uc0dd\ub2d8, \ubb3c \ud55c \uc794 \uc8fc\uc138\uc694.', en:'Teacher, a glass of water please.', vi:'Gi\u00e1o vi\u00ean, cho con m\u1ed9t ly n\u01b0\u1edbc.', zh:'\u8001\u5e08\uff0c\u8bf7\u7ed9\u6211\u4e00\u676f\u6c34\u3002'}},
   {id:6,  text:'\ud654\uc7a5\uc2e4', emoji:'\ud83d\udebb', cat:'needs',
-   tr:{en:'Bathroom',vi:'Nh\xe0 v\u1ec7 sinh',zh:'\u5395\u6240',mn:'\u0416\u043e\u0440\u043b\u043e\u043d',ru:'\u0422\u0443\u0430\u043b\u0435\u0442',tl:'CR / Banyo',th:'\u0e2b\u0e49\u0e2d\u0e07\u0e19\u0e49\u0e33'}},
+   tr:{en:'Bathroom',vi:'Nh\xe0 v\u1ec7 sinh',zh:'\u5395\u6240',mn:'\u0416\u043e\u0440\u043b\u043e\u043d',ru:'\u0422\u0443\u0430\u043b\u0435\u0442',tl:'CR / Banyo',th:'\u0e2b\u0e49\u0e2d\u0e07\u0e19\u0e49\u0e33'},
+   situation:{ko:'\ud654\uc7a5\uc2e4\uc5d0 \uac00\uace0 \uc2f6\uc744 \ub54c \uc120\uc0dd\ub2d8\uaed8 \ub9d0\ud574\uc694.', en:'Tell your teacher when you need to use the bathroom.', vi:'N\u00f3i v\u1edbi gi\u00e1o vi\u00ean khi mu\u1ed1n \u0111i v\u1ec7 sinh.', zh:'\u60f3\u4e0a\u5395\u6240\u7684\u65f6\u5019\u544a\u8bc9\u8001\u5e08\u3002'},
+   apply:{ko:'\uc120\uc0dd\ub2d8, \ud654\uc7a5\uc2e4 \uac00\uace0 \uc2f6\uc5b4\uc694. \ub2e4\ub140\uc640\ub3c4 \ub3fc\uc694?', en:'Teacher, I want to go to the bathroom. May I go?', vi:'Gi\u00e1o vi\u00ean, con mu\u1ed1n \u0111i v\u1ec7 sinh. Con \u0111i \u0111\u01b0\u1ee3c kh\u00f4ng \u1ea1?', zh:'\u8001\u5e08\uff0c\u6211\u60f3\u4e0a\u5395\u6240\uff0c\u53ef\u4ee5\u53bb\u5417\uff1f'}},
 
   {id:7,  text:'\ub124',        emoji:'\u2b55', cat:'response',
-   tr:{en:'Yes',vi:'V\xe2ng / D\u1ea1',zh:'\u662f',mn:'\u0422\u0438\u0439\u043c',ru:'\u0414\u0430',tl:'Oo',th:'\u0e43\u0e0a\u0e48'}},
+   tr:{en:'Yes',vi:'V\xe2ng / D\u1ea1',zh:'\u662f',mn:'\u0422\u0438\u0439\u043c',ru:'\u0414\u0430',tl:'Oo',th:'\u0e43\u0e0a\u0e48'},
+   situation:{ko:'\ub9de\ub294 \ub9d0\uc774\uac70\ub098 \ub3d9\uc758\ud560 \ub54c \ub300\ub2f5\ud574\uc694.', en:'Answer this when something is correct or you agree.', vi:'Tr\u1ea3 l\u1eddi c\u00e2u n\u00e0y khi \u0111\u00fang ho\u1eb7c \u0111\u1ed3ng \u00fd.', zh:'\u6b63\u786e\u6216\u540c\u610f\u7684\u65f6\u5019\u8fd9\u6837\u56de\u7b54\u3002'},
+   apply:{ko:'\ub124, \uc54c\uaca0\uc2b5\ub2c8\ub2e4.', en:'Yes, I understand.', vi:'V\u00e2ng, con hi\u1ec3u r\u1ed3i.', zh:'\u662f\uff0c\u6211\u77e5\u9053\u4e86\u3002'}},
   {id:8,  text:'\uc544\ub2c8\uc694', emoji:'\u274c', cat:'response',
-   tr:{en:'No',vi:'Kh\xf4ng',zh:'\u4e0d\u662f',mn:'\u04ae\u0433\u04af\u0439',ru:'\u041d\u0435\u0442',tl:'Hindi',th:'\u0e44\u0e21\u0e48\u0e43\u0e0a\u0e48'}},
+   tr:{en:'No',vi:'Kh\xf4ng',zh:'\u4e0d\u662f',mn:'\u04ae\u0433\u04af\u0439',ru:'\u041d\u0435\u0442',tl:'Hindi',th:'\u0e44\u0e21\u0e48\u0e43\u0e0a\u0e48'},
+   situation:{ko:'\ud2c0\ub9ac\uac70\ub098 \uc6d0\ud558\uc9c0 \uc54a\uc744 \ub54c \ub300\ub2f5\ud574\uc694.', en:"Answer this when something is wrong or you don't want it.", vi:'Tr\u1ea3 l\u1eddi c\u00e2u n\u00e0y khi sai ho\u1eb7c kh\u00f4ng mu\u1ed1n.', zh:'\u4e0d\u5bf9\u6216\u4e0d\u60f3\u8981\u7684\u65f6\u5019\u8fd9\u6837\u56de\u7b54\u3002'},
+   apply:{ko:'\uc544\ub2c8\uc694, \uadf8\uac70 \uc81c \uac83\uc774 \uc544\ub2c8\uc5d0\uc694.', en:"No, that's not mine.", vi:'Kh\u00f4ng, c\u00e1i \u0111\u00f3 kh\u00f4ng ph\u1ea3i c\u1ee7a con.', zh:'\u4e0d\u662f\uff0c\u90a3\u4e0d\u662f\u6211\u7684\u3002'}},
   {id:9,  text:'\uc548 \ub3fc\uc694',   emoji:'\ud83d\udeab', cat:'response',
-   tr:{en:'Not allowed',vi:'Kh\xf4ng \u0111\u01b0\u1ee3c',zh:'\u4e0d\u884c',mn:'\u0411\u043e\u043b\u043e\u0445\u0433\u04af\u0439',ru:'\u041d\u0435\u043b\u044c\u0437\u044f',tl:'Bawal',th:'\u0e2b\u0e49\u0e32\u0e21'}},
+   tr:{en:'Not allowed',vi:'Kh\xf4ng \u0111\u01b0\u1ee3c',zh:'\u4e0d\u884c',mn:'\u0411\u043e\u043b\u043e\u0445\u0433\u04af\u0439',ru:'\u041d\u0435\u043b\u044c\u0437\u044f',tl:'Bawal',th:'\u0e2b\u0e49\u0e32\u0e21'},
+   situation:{ko:'\ud558\uba74 \uc548 \ub418\ub294 \ud589\ub3d9\uc744 \uc54c\ub824\uc904 \ub54c \uc368\uc694.', en:"Used to tell someone an action isn't allowed.", vi:'D\u00f9ng \u0111\u1ec3 n\u00f3i h\u00e0nh \u0111\u1ed9ng n\u00e0o \u0111\u00f3 kh\u00f4ng \u0111\u01b0\u1ee3c ph\u00e9p l\u00e0m.', zh:'\u7528\u6765\u544a\u8bc9\u522b\u4eba\u4e0d\u53ef\u4ee5\u505a\u67d0\u4e2a\u884c\u4e3a\u3002'},
+   apply:{ko:'\uc5ec\uae30\uc11c \ub6f0\uba74 \uc548 \ub3fc\uc694. \ub2e4\uce60 \uc218 \uc788\uc5b4\uc694.', en:"You can't run here. You might get hurt.", vi:'Kh\u00f4ng \u0111\u01b0\u1ee3c ch\u1ea1y \u1edf \u0111\u00e2y. C\u00f3 th\u1ec3 b\u1ecb th\u01b0\u01a1ng.', zh:'\u8fd9\u91cc\u4e0d\u53ef\u4ee5\u8dd1\u3002\u53ef\u80fd\u4f1a\u53d7\u4f24\u3002'}},
   {id:10, text:'\ub6f0\uc9c0 \ub9c8\uc138\uc694', emoji:'\ud83d\udeb7', cat:'response',
-   tr:{en:"Don't run",vi:'Kh\xf4ng ch\u1ea1y',zh:'\u4e0d\u8981\u8dd1',mn:'\u0413\u04af\u0439\u0445\u0433\u04af\u0439',ru:'\u041d\u0435 \u0431\u0435\u0433\u0438\u0442\u0435',tl:'Huwag tumakbo',th:'\u0e2b\u0e49\u0e32\u0e21\u0e27\u0e34\u0e48\u0e07'}},
+   tr:{en:"Don't run",vi:'Kh\xf4ng ch\u1ea1y',zh:'\u4e0d\u8981\u8dd1',mn:'\u0413\u04af\u0439\u0445\u0433\u04af\u0439',ru:'\u041d\u0435 \u0431\u0435\u0433\u0438\u0442\u0435',tl:'Huwag tumakbo',th:'\u0e2b\u0e49\u0e32\u0e21\u0e27\u0e34\u0e48\u0e07'},
+   situation:{ko:'\ubcf5\ub3c4\ub098 \uad50\uc2e4\uc5d0\uc11c \uc548\uc804\uc744 \uc704\ud574 \ub9d0\ud574\uc694.', en:'Said for safety in the hallway or classroom.', vi:'N\u00f3i v\u00ec an to\u00e0n \u1edf h\u00e0nh lang ho\u1eb7c l\u1edbp h\u1ecdc.', zh:'\u4e3a\u4e86\u5b89\u5168\u5728\u8d70\u5eca\u6216\u6559\u5ba4\u91cc\u8bf4\u3002'},
+   apply:{ko:'\ubcf5\ub3c4\uc5d0\uc11c \ub6f0\uc9c0 \ub9c8\uc138\uc694. \ucc9c\ucc9c\ud788 \uac78\uc5b4\uc694.', en:"Don't run in the hallway. Walk slowly.", vi:'\u0110\u1eebng ch\u1ea1y \u1edf h\u00e0nh lang. H\u00e3y \u0111i ch\u1eadm.', zh:'\u4e0d\u8981\u5728\u8d70\u5eca\u8dd1\u3002\u6162\u6162\u8d70\u3002'}},
 
   {id:11, text:'\uc88b\uc544\uc694',   emoji:'\ud83d\udc4d', cat:'feelings',
-   tr:{en:'I like it',vi:'T\xf4i th\xedch',zh:'\u597d/\u559c\u6b22',mn:'\u0414\u0443\u0440\u0442\u0430\u0439',ru:'\u041d\u0440\u0430\u0432\u0438\u0442\u0441\u044f',tl:'Gusto ko',th:'\u0e0a\u0e2d\u0e1a'}},
+   tr:{en:'I like it',vi:'T\xf4i th\xedch',zh:'\u597d/\u559c\u6b22',mn:'\u0414\u0443\u0440\u0442\u0430\u0439',ru:'\u041d\u0440\u0430\u0432\u0438\u0442\u0441\u044f',tl:'Gusto ko',th:'\u0e0a\u0e2d\u0e1a'},
+   situation:{ko:'\ub9c8\uc74c\uc5d0 \ub4e4 \ub54c \ud45c\ud604\ud574\uc694.', en:'Express this when you like something.', vi:'Th\u1ec3 hi\u1ec7n \u0111i\u1ec1u n\u00e0y khi th\u00edch c\u00e1i g\u00ec \u0111\u00f3.', zh:'\u559c\u6b22\u7684\u65f6\u5019\u8fd9\u6837\u8868\u8fbe\u3002'},
+   apply:{ko:'\uc774 \ub180\uc774 \uc815\ub9d0 \uc88b\uc544\uc694. \ub610 \ud558\uace0 \uc2f6\uc5b4\uc694.', en:'I really like this game. I want to play again.', vi:'Con r\u1ea5t th\u00edch tr\u00f2 ch\u01a1i n\u00e0y. Con mu\u1ed1n ch\u01a1i n\u1eefa.', zh:'\u6211\u5f88\u559c\u6b22\u8fd9\u4e2a\u6e38\u620f\uff0c\u8fd8\u60f3\u518d\u73a9\u3002'}},
   {id:12, text:'\uc2eb\uc5b4\uc694',   emoji:'\ud83d\udc4e', cat:'feelings',
-   tr:{en:"I don't like",vi:'Kh\xf4ng th\xedch',zh:'\u4e0d\u559c\u6b22',mn:'\u0414\u0443\u0440\u0433\u04af\u0439',ru:'\u041d\u0435 \u043d\u0440\u0430\u0432\u0438\u0442\u0441\u044f',tl:'Ayoko',th:'\u0e44\u0e21\u0e48\u0e0a\u0e2d\u0e1a'}},
+   tr:{en:"I don't like",vi:'Kh\xf4ng th\xedch',zh:'\u4e0d\u559c\u6b22',mn:'\u0414\u0443\u0440\u0433\u04af\u0439',ru:'\u041d\u0435 \u043d\u0440\u0430\u0432\u0438\u0442\u0441\u044f',tl:'Ayoko',th:'\u0e44\u0e21\u0e48\u0e0a\u0e2d\u0e1a'},
+   situation:{ko:'\ub9c8\uc74c\uc5d0 \ub4e4\uc9c0 \uc54a\uc744 \ub54c \ud45c\ud604\ud574\uc694.', en:"Express this when you don't like something.", vi:'Th\u1ec3 hi\u1ec7n \u0111i\u1ec1u n\u00e0y khi kh\u00f4ng th\u00edch c\u00e1i g\u00ec \u0111\u00f3.', zh:'\u4e0d\u559c\u6b22\u7684\u65f6\u5019\u8fd9\u6837\u8868\u8fbe\u3002'},
+   apply:{ko:'\uc774\uac74 \uc2eb\uc5b4\uc694. \ub2e4\ub978 \uac78\ub85c \ud560\ub798\uc694.', en:"I don't like this. I want to do something else.", vi:'Con kh\u00f4ng th\u00edch c\u00e1i n\u00e0y. Con mu\u1ed1n l\u00e0m c\u00e1i kh\u00e1c.', zh:'\u6211\u4e0d\u559c\u6b22\u8fd9\u4e2a\uff0c\u6211\u60f3\u505a\u522b\u7684\u3002'}},
   {id:13, text:'\ub354\uc6cc\uc694',   emoji:'\ud83e\udd75', cat:'feelings',
-   tr:{en:"I'm hot",vi:'N\xf3ng qu\xe1',zh:'\u6211\u70ed',mn:'\u0425\u0430\u043b\u0443\u0443\u043d \u0431\u0430\u0439\u043d\u0430',ru:'\u0416\u0430\u0440\u043a\u043e',tl:'Mainit',th:'\u0e23\u0e49\u0e2d\u0e19'}},
+   tr:{en:"I'm hot",vi:'N\xf3ng qu\xe1',zh:'\u6211\u70ed',mn:'\u0425\u0430\u043b\u0443\u0443\u043d \u0431\u0430\u0439\u043d\u0430',ru:'\u0416\u0430\u0440\u043a\u043e',tl:'Mainit',th:'\u0e23\u0e49\u0e2d\u0e19'},
+   situation:{ko:'\ub0a0\uc528\ub098 \ubab8\uc774 \ub354\uc6b8 \ub54c \ub9d0\ud574\uc694.', en:'Say this when the weather or your body feels hot.', vi:'N\u00f3i khi th\u1eddi ti\u1ebft ho\u1eb7c c\u01a1 th\u1ec3 n\u00f3ng.', zh:'\u5929\u6c14\u6216\u8eab\u4f53\u70ed\u7684\u65f6\u5019\u8bf4\u3002'},
+   apply:{ko:'\uad50\uc2e4\uc774 \ub354\uc6cc\uc694. \ucc3d\ubb38 \uc880 \uc5f4\uc5b4 \uc8fc\uc138\uc694.', en:'The classroom is hot. Please open the window.', vi:'L\u1edbp h\u1ecdc n\u00f3ng qu\u00e1. Xin m\u1edf c\u1eeda s\u1ed5 gi\u00fap con.', zh:'\u6559\u5ba4\u5f88\u70ed\uff0c\u8bf7\u5f00\u4e00\u4e0b\u7a97\u6237\u3002'}},
   {id:14, text:'\ucd94\uc6cc\uc694',   emoji:'\ud83e\udd76', cat:'feelings',
-   tr:{en:"I'm cold",vi:'L\u1ea1nh qu\xe1',zh:'\u6211\u51b7',mn:'\u0425\u04af\u0439\u0442\u044d\u043d \u0431\u0430\u0439\u043d\u0430',ru:'\u0425\u043e\u043b\u043e\u0434\u043d\u043e',tl:'Malamig',th:'\u0e2b\u0e19\u0e32\u0e27'}},
+   tr:{en:"I'm cold",vi:'L\u1ea1nh qu\xe1',zh:'\u6211\u51b7',mn:'\u0425\u04af\u0439\u0442\u044d\u043d \u0431\u0430\u0439\u043d\u0430',ru:'\u0425\u043e\u043b\u043e\u0434\u043d\u043e',tl:'Malamig',th:'\u0e2b\u0e19\u0e32\u0e27'},
+   situation:{ko:'\ub0a0\uc528\ub098 \ubab8\uc774 \ucd94\uc6b8 \ub54c \ub9d0\ud574\uc694.', en:'Say this when the weather or your body feels cold.', vi:'N\u00f3i khi th\u1eddi ti\u1ebft ho\u1eb7c c\u01a1 th\u1ec3 l\u1ea1nh.', zh:'\u5929\u6c14\u6216\u8eab\u4f53\u51b7\u7684\u65f6\u5019\u8bf4\u3002'},
+   apply:{ko:'\ubc16\uc774 \ucd94\uc6cc\uc694. \uac89\uc637\uc744 \uc785\uace0 \uc2f6\uc5b4\uc694.', en:'It\u2019s cold outside. I want to wear my jacket.', vi:'B\u00ean ngo\u00e0i l\u1ea1nh qu\u00e1. Con mu\u1ed1n m\u1eb7c \u00e1o kho\u00e1c.', zh:'\u5916\u9762\u5f88\u51b7\uff0c\u6211\u60f3\u7a7f\u5916\u5957\u3002'}},
 
   {id:15, text:'\uc218\uc5c5 \uc2dc\uc791', emoji:'\ud83d\udcda', cat:'school',
-   tr:{en:'Class starts',vi:'B\u1eaft \u0111\u1ea7u h\u1ecdc',zh:'\u5f00\u59cb\u4e0a\u8bfe',mn:'\u0425\u0438\u0447\u044d\u044d\u043b \u044d\u0445\u044d\u043b\u0441\u044d\u043d',ru:'\u0423\u0440\u043e\u043a \u043d\u0430\u0447\u0430\u043b\u0441\u044f',tl:'Simula ng klase',th:'\u0e40\u0e23\u0e34\u0e48\u0e21\u0e40\u0e23\u0e35\u0e22\u0e19'}},
+   tr:{en:'Class starts',vi:'B\u1eaft \u0111\u1ea7u h\u1ecdc',zh:'\u5f00\u59cb\u4e0a\u8bfe',mn:'\u0425\u0438\u0447\u044d\u044d\u043b \u044d\u0445\u044d\u043b\u0441\u044d\u043d',ru:'\u0423\u0440\u043e\u043a \u043d\u0430\u0447\u0430\u043b\u0441\u044f',tl:'Simula ng klase',th:'\u0e40\u0e23\u0e34\u0e48\u0e21\u0e40\u0e23\u0e35\u0e22\u0e19'},
+   situation:{ko:'\uc218\uc5c5\uc774 \uc2dc\uc791\ub420 \ub54c \uc120\uc0dd\ub2d8\uc774 \ub9d0\ud574\uc694.', en:'The teacher says this when class is beginning.', vi:'Gi\u00e1o vi\u00ean n\u00f3i c\u00e2u n\u00e0y khi gi\u1edd h\u1ecdc b\u1eaft \u0111\u1ea7u.', zh:'\u4e0a\u8bfe\u5f00\u59cb\u65f6\u8001\u5e08\u4f1a\u8bf4\u8fd9\u53e5\u8bdd\u3002'},
+   apply:{ko:'\uc790, \uc218\uc5c5 \uc2dc\uc791\ud574\uc694. \ucc45\uc744 \ud3b4\uc138\uc694.', en:'Okay, class is starting. Please open your books.', vi:'N\u00e0o, b\u1eaft \u0111\u1ea7u h\u1ecdc nh\u00e9. M\u1edf s\u00e1ch ra.', zh:'\u597d\uff0c\u5f00\u59cb\u4e0a\u8bfe\u4e86\uff0c\u8bf7\u6253\u5f00\u4e66\u672c\u3002'}},
   {id:16, text:'\uc218\uc5c5 \ub05d',   emoji:'\ud83d\udd14', cat:'school',
-   tr:{en:'Class ends',vi:'H\u1ebft gi\u1edd h\u1ecdc',zh:'\u4e0b\u8bfe\u4e86',mn:'\u0425\u0438\u0447\u044d\u044d\u043b \u0434\u0443\u0443\u0441\u0441\u0430\u043d',ru:'\u0423\u0440\u043e\u043a \u0437\u0430\u043a\u043e\u043d\u0447\u0438\u043b\u0441\u044f',tl:'Tapos na ang klase',th:'\u0e2b\u0e21\u0e14\u0e0a\u0e31\u0e48\u0e27\u0e42\u0e21\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'}},
+   tr:{en:'Class ends',vi:'H\u1ebft gi\u1edd h\u1ecdc',zh:'\u4e0b\u8bfe\u4e86',mn:'\u0425\u0438\u0447\u044d\u044d\u043b \u0434\u0443\u0443\u0441\u0441\u0430\u043d',ru:'\u0423\u0440\u043e\u043a \u0437\u0430\u043a\u043e\u043d\u0447\u0438\u043b\u0441\u044f',tl:'Tapos na ang klase',th:'\u0e2b\u0e21\u0e14\u0e0a\u0e31\u0e48\u0e27\u0e42\u0e21\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'},
+   situation:{ko:'\uc218\uc5c5\uc774 \ub05d\ub0a0 \ub54c \uc120\uc0dd\ub2d8\uc774 \ub9d0\ud574\uc694.', en:'The teacher says this when class is ending.', vi:'Gi\u00e1o vi\u00ean n\u00f3i c\u00e2u n\u00e0y khi gi\u1edd h\u1ecdc k\u1ebft th\u00fac.', zh:'\u4e0b\u8bfe\u65f6\u8001\u5e08\u4f1a\u8bf4\u8fd9\u53e5\u8bdd\u3002'},
+   apply:{ko:'\uc624\ub298 \uc218\uc5c5 \ub05d\uc774\uc5d0\uc694. \uc815\ub9ac\ud558\uace0 \uc9d1\uc5d0 \uac00\uc694.', en:"Class is over for today. Let's clean up and go home.", vi:'H\u00f4m nay h\u1ebft gi\u1edd h\u1ecdc r\u1ed3i. D\u1ecdn d\u1eb9p r\u1ed3i v\u1ec1 nh\u00e0 nh\u00e9.', zh:'\u4eca\u5929\u7684\u8bfe\u4e0a\u5b8c\u4e86\uff0c\u6536\u62fe\u4e00\u4e0b\u56de\u5bb6\u5427\u3002'}},
   {id:17, text:'\uc790\ub9ac',      emoji:'<img class="emoji-icon-img" alt="desk-chair" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3QgeD0iMyIgeT0iOCIgd2lkdGg9IjkiIGhlaWdodD0iOSIgcng9IjEuNSIgZmlsbD0iIzc4NzE2YyIvPjxyZWN0IHg9IjMiIHk9IjE3IiB3aWR0aD0iOSIgaGVpZ2h0PSIyLjUiIHJ4PSIxIiBmaWxsPSIjNTc1MzRlIi8+PHJlY3QgeD0iNCIgeT0iMTkuNSIgd2lkdGg9IjEuNiIgaGVpZ2h0PSI4IiBmaWxsPSIjNDQ0MDNjIi8+PHJlY3QgeD0iOS40IiB5PSIxOS41IiB3aWR0aD0iMS42IiBoZWlnaHQ9IjgiIGZpbGw9IiM0NDQwM2MiLz48cmVjdCB4PSI4IiB5PSIxMiIgd2lkdGg9IjIyIiBoZWlnaHQ9IjQiIHJ4PSIxLjIiIGZpbGw9IiNjMjg4NGYiLz48cmVjdCB4PSIxMCIgeT0iMTYiIHdpZHRoPSIxLjgiIGhlaWdodD0iMTEiIGZpbGw9IiNhNTZhMzUiLz48cmVjdCB4PSIyNi4yIiB5PSIxNiIgd2lkdGg9IjEuOCIgaGVpZ2h0PSIxMSIgZmlsbD0iI2E1NmEzNSIvPjwvc3ZnPgo=">', cat:'school',
-   tr:{en:'My seat',vi:'Ch\u1ed7 ng\u1ed3i',zh:'\u5ea7\u4f4d',mn:'\u0421\u0443\u0443\u0434\u0430\u043b',ru:'\u041c\u043e\u0451 \u043c\u0435\u0441\u0442\u043e',tl:'Upuan ko',th:'\u0e17\u0e35\u0e48\u0e19\u0e31\u0e48\u0e07'}},
+   tr:{en:'My seat',vi:'Ch\u1ed7 ng\u1ed3i',zh:'\u5ea7\u4f4d',mn:'\u0421\u0443\u0443\u0434\u0430\u043b',ru:'\u041c\u043e\u0451 \u043c\u0435\u0441\u0442\u043e',tl:'Upuan ko',th:'\u0e17\u0e35\u0e48\u0e19\u0e31\u0e48\u0e07'},
+   situation:{ko:'\uc549\uc744 \uacf3\uc744 \ucc3e\uac70\ub098 \ubb3c\uc744 \ub54c \uc368\uc694.', en:'Used when finding or asking about your seat.', vi:'D\u00f9ng khi t\u00ecm ho\u1eb7c h\u1ecfi v\u1ec1 ch\u1ed7 ng\u1ed3i.', zh:'\u627e\u5ea7\u4f4d\u6216\u8be2\u95ee\u5ea7\u4f4d\u65f6\u4f7f\u7528\u3002'},
+   apply:{ko:'\uc81c \uc790\ub9ac\uac00 \uc5b4\ub514\uc608\uc694? \uc5ec\uae30 \uc549\uc544\ub3c4 \ub3fc\uc694?', en:'Where is my seat? May I sit here?', vi:'Ch\u1ed7 ng\u1ed3i c\u1ee7a con \u1edf \u0111\u00e2u \u1ea1? Con ng\u1ed3i \u0111\u00e2y \u0111\u01b0\u1ee3c kh\u00f4ng?', zh:'\u6211\u7684\u5ea7\u4f4d\u5728\u54ea\u91cc\uff1f\u6211\u53ef\u4ee5\u5750\u8fd9\u91cc\u5417\uff1f'}},
   {id:18, text:'\uac00\uc694',      emoji:'\ud83c\udfc3', cat:'school',
-   tr:{en:"I'm going",vi:'T\xf4i \u0111i',zh:'\u6211\u8d70\u4e86',mn:'\u042f\u0432\u043d\u0430',ru:'\u042f \u0438\u0434\u0443',tl:'Aalis na ako',th:'\u0e44\u0e1b'}},
+   tr:{en:"I'm going",vi:'T\xf4i \u0111i',zh:'\u6211\u8d70\u4e86',mn:'\u042f\u0432\u043d\u0430',ru:'\u042f \u0438\u0434\u0443',tl:'Aalis na ako',th:'\u0e44\u0e1b'},
+   situation:{ko:'\uc5b4\ub518\uac00\ub85c \uc774\ub3d9\ud560 \ub54c \ub9d0\ud574\uc694.', en:'Say this when moving somewhere.', vi:'N\u00f3i khi di chuy\u1ec3n \u0111\u1ebfn \u0111\u00e2u \u0111\u00f3.', zh:'\u8981\u53bb\u67d0\u4e2a\u5730\u65b9\u65f6\u8bf4\u3002'},
+   apply:{ko:'\uc800\ub294 \uc774\uc81c \ud654\uc7a5\uc2e4\uc5d0 \uac00\uc694. \uae08\ubc29 \uc62c\uac8c\uc694.', en:"I'm going to the bathroom now. I'll be right back.", vi:'B\u00e2y gi\u1edd con \u0111i v\u1ec7 sinh. Con s\u1ebd quay l\u1ea1i ngay.', zh:'\u6211\u73b0\u5728\u8981\u53bb\u5395\u6240\uff0c\u9a6c\u4e0a\u56de\u6765\u3002'}},
 
   {id:19, text:'\uc9d1',        emoji:'\ud83c\udfe0', cat:'places',
-   tr:{en:'Home',vi:'Nh\xe0',zh:'\u5bb6',mn:'\u0413\u044d\u0440',ru:'\u0414\u043e\u043c',tl:'Bahay',th:'\u0e1a\u0e49\u0e32\u0e19'}},
+   tr:{en:'Home',vi:'Nh\xe0',zh:'\u5bb6',mn:'\u0413\u044d\u0440',ru:'\u0414\u043e\u043c',tl:'Bahay',th:'\u0e1a\u0e49\u0e32\u0e19'},
+   situation:{ko:'\uc9d1\uc5d0 \ub300\ud574 \uc774\uc57c\uae30\ud558\uac70\ub098 \uc9d1\uc73c\ub85c \uac08 \ub54c \uc368\uc694.', en:'Used when talking about home or going home.', vi:'D\u00f9ng khi n\u00f3i v\u1ec1 nh\u00e0 ho\u1eb7c mu\u1ed1n v\u1ec1 nh\u00e0.', zh:'\u8c08\u8bba\u5bb6\u6216\u8981\u56de\u5bb6\u65f6\u4f7f\u7528\u3002'},
+   apply:{ko:'\uc800\ub294 \uc9d1\uc5d0 \uac00\uace0 \uc2f6\uc5b4\uc694. \uc5c4\ub9c8\uac00 \uae30\ub2e4\ub824\uc694.', en:'I want to go home. My mom is waiting.', vi:'Con mu\u1ed1n v\u1ec1 nh\u00e0. M\u1eb9 \u0111ang \u0111\u1ee3i con.', zh:'\u6211\u60f3\u56de\u5bb6\uff0c\u5988\u5988\u5728\u7b49\u6211\u3002'}},
   {id:20, text:'\ud559\uad50',      emoji:'\ud83c\udfeb', cat:'places',
-   tr:{en:'School',vi:'Tr\u01b0\u1eddng h\u1ecdc',zh:'\u5b66\u6821',mn:'\u0421\u0443\u0440\u0433\u0443\u0443\u043b\u044c',ru:'\u0428\u043a\u043e\u043b\u0430',tl:'Paaralan',th:'\u0e42\u0e23\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'}},
+   tr:{en:'School',vi:'Tr\u01b0\u1eddng h\u1ecdc',zh:'\u5b66\u6821',mn:'\u0421\u0443\u0440\u0433\u0443\u0443\u043b\u044c',ru:'\u0428\u043a\u043e\u043b\u0430',tl:'Paaralan',th:'\u0e42\u0e23\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'},
+   situation:{ko:'\ud559\uad50\uc5d0 \ub300\ud574 \ub9d0\ud558\uac70\ub098 \ud559\uad50\ub85c \uac08 \ub54c \uc368\uc694.', en:'Used when talking about school or going to school.', vi:'D\u00f9ng khi n\u00f3i v\u1ec1 tr\u01b0\u1eddng h\u1ecdc ho\u1eb7c \u0111i h\u1ecdc.', zh:'\u8c08\u8bba\u5b66\u6821\u6216\u8981\u53bb\u5b66\u6821\u65f6\u4f7f\u7528\u3002'},
+   apply:{ko:'\uc800\ub294 \ub9e4\uc77c \ud559\uad50\uc5d0 \uac00\uc694. \ud559\uad50\uac00 \uc88b\uc544\uc694.', en:'I go to school every day. I like school.', vi:'Con \u0111i h\u1ecdc m\u1ed7i ng\u00e0y. Con th\u00edch tr\u01b0\u1eddng h\u1ecdc.', zh:'\u6211\u6bcf\u5929\u53bb\u5b66\u6821\uff0c\u6211\u559c\u6b22\u5b66\u6821\u3002'}},
   {id:21, text:'\uad50\uc2e4',      emoji:'\ud83d\udcbb', cat:'places',
-   tr:{en:'Classroom',vi:'L\u1edbp h\u1ecdc',zh:'\u6559\u5ba4',mn:'\u0410\u043d\u0433\u0438\u0439\u043d \u04e9\u0440\u04e9\u04e9',ru:'\u041a\u043b\u0430\u0441\u0441',tl:'Silid-aralan',th:'\u0e2b\u0e49\u0e2d\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'}},
+   tr:{en:'Classroom',vi:'L\u1edbp h\u1ecdc',zh:'\u6559\u5ba4',mn:'\u0410\u043d\u0433\u0438\u0439\u043d \u04e9\u0440\u04e9\u04e9',ru:'\u041a\u043b\u0430\u0441\u0441',tl:'Silid-aralan',th:'\u0e2b\u0e49\u0e2d\u0e07\u0e40\u0e23\u0e35\u0e22\u0e19'},
+   situation:{ko:'\uad50\uc2e4\uc744 \ucc3e\uac70\ub098 \uc548\ub0b4\ud560 \ub54c \uc368\uc694.', en:'Used when finding or pointing out the classroom.', vi:'D\u00f9ng khi t\u00ecm ho\u1eb7c ch\u1ec9 \u0111\u01b0\u1eddng \u0111\u1ebfn l\u1edbp h\u1ecdc.', zh:'\u627e\u6559\u5ba4\u6216\u6307\u8def\u65f6\u4f7f\u7528\u3002'},
+   apply:{ko:'\uc6b0\ub9ac \uad50\uc2e4\uc774 \uc5b4\ub514\uc608\uc694? \uc800\uae30 \uad50\uc2e4\uc774 \ubcf4\uc5ec\uc694.', en:'Where is our classroom? I see the classroom over there.', vi:'L\u1edbp h\u1ecdc c\u1ee7a ch\u00fang ta \u1edf \u0111\u00e2u? Con th\u1ea5y l\u1edbp h\u1ecdc \u1edf \u0111\u1eb1ng kia.', zh:'\u6211\u4eec\u7684\u6559\u5ba4\u5728\u54ea\u91cc\uff1f\u6211\u770b\u5230\u6559\u5ba4\u5728\u90a3\u8fb9\u4e86\u3002'}},
 
   {id:22, text:'\ucc45',        emoji:'\ud83d\udcd6', cat:'things',
-   tr:{en:'Book',vi:'S\xe1ch',zh:'\u4e66',mn:'\u041d\u043e\u043c',ru:'\u041a\u043d\u0438\u0433\u0430',tl:'Aklat',th:'\u0e2b\u0e19\u0e31\u0e07\u0e2a\u0e37\u0e2d'}},
+   tr:{en:'Book',vi:'S\xe1ch',zh:'\u4e66',mn:'\u041d\u043e\u043c',ru:'\u041a\u043d\u0438\u0433\u0430',tl:'Aklat',th:'\u0e2b\u0e19\u0e31\u0e07\u0e2a\u0e37\u0e2d'},
+   situation:{ko:'\ucc45\uc774 \ud544\uc694\ud558\uac70\ub098 \ucc45 \uc774\uc57c\uae30\ub97c \ud560 \ub54c \uc368\uc694.', en:'Used when you need a book or talk about books.', vi:'D\u00f9ng khi c\u1ea7n s\u00e1ch ho\u1eb7c n\u00f3i v\u1ec1 s\u00e1ch.', zh:'\u9700\u8981\u4e66\u6216\u8c08\u8bba\u4e66\u7684\u65f6\u5019\u4f7f\u7528\u3002'},
+   apply:{ko:'\ucc45\uc744 \uac00\uc838\uc654\uc5b4\uc694. \uac19\uc774 \uc77d\uc5b4\uc694.', en:'I brought my book. Let\u2019s read together.', vi:'Con mang s\u00e1ch r\u1ed3i. Ch\u00fang ta c\u00f9ng \u0111\u1ecdc nh\u00e9.', zh:'\u6211\u5e26\u4e66\u6765\u4e86\uff0c\u6211\u4eec\u4e00\u8d77\u8bfb\u5427\u3002'}},
   {id:23, text:'\uc5f0\ud544',      emoji:'\u270f\ufe0f', cat:'things',
-   tr:{en:'Pencil',vi:'B\xfat ch\xec',zh:'\u94c5\u7b14',mn:'\u0425\u0430\u0440\u0430\u043d\u0434\u0430\u0430',ru:'\u041a\u0430\u0440\u0430\u043d\u0434\u0430\u0448',tl:'Lapis',th:'\u0e14\u0e34\u0e19\u0e2a\u0e2d'}},
+   tr:{en:'Pencil',vi:'B\xfat ch\xec',zh:'\u94c5\u7b14',mn:'\u0425\u0430\u0440\u0430\u043d\u0434\u0430\u0430',ru:'\u041a\u0430\u0440\u0430\u043d\u0434\u0430\u0448',tl:'Lapis',th:'\u0e14\u0e34\u0e19\u0e2a\u0e2d'},
+   situation:{ko:'\uc5f0\ud544\uc774 \ud544\uc694\ud558\uac70\ub098 \ube4c\ub9b4 \ub54c \uc368\uc694.', en:'Used when you need or want to borrow a pencil.', vi:'D\u00f9ng khi c\u1ea7n ho\u1eb7c mu\u1ed1n m\u01b0\u1ee3n b\u00fat ch\u00ec.', zh:'\u9700\u8981\u6216\u60f3\u501f\u94c5\u7b14\u7684\u65f6\u5019\u4f7f\u7528\u3002'},
+   apply:{ko:'\uc5f0\ud544\uc774 \uc5c6\uc5b4\uc694. \uc5f0\ud544 \uc880 \ube4c\ub824\uc8fc\uc138\uc694.', en:"I don't have a pencil. Could I borrow one?", vi:'Con kh\u00f4ng c\u00f3 b\u00fat ch\u00ec. Cho con m\u01b0\u1ee3n b\u00fat ch\u00ec \u0111\u01b0\u1ee3c kh\u00f4ng?', zh:'\u6211\u6ca1\u6709\u94c5\u7b14\uff0c\u53ef\u4ee5\u501f\u6211\u4e00\u652f\u5417\uff1f'}},
   {id:24, text:'\uce5c\uad6c',      emoji:'\ud83d\udc6b', cat:'things',
-   tr:{en:'Friend',vi:'B\u1ea1n b\xe8',zh:'\u670b\u53cb',mn:'\u041d\u0430\u0439\u0437',ru:'\u0414\u0440\u0443\u0433',tl:'Kaibigan',th:'\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e19'}},
+   tr:{en:'Friend',vi:'B\u1ea1n b\xe8',zh:'\u670b\u53cb',mn:'\u041d\u0430\u0439\u0437',ru:'\u0414\u0440\u0443\u0433',tl:'Kaibigan',th:'\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e19'},
+   situation:{ko:'\uce5c\uad6c\ub97c \uc18c\uac1c\ud558\uac70\ub098 \uce5c\uad6c\uc640 \ub180 \ub54c \uc368\uc694.', en:'Used when introducing a friend or playing with friends.', vi:'D\u00f9ng khi gi\u1edbi thi\u1ec7u b\u1ea1n ho\u1eb7c ch\u01a1i c\u00f9ng b\u1ea1n.', zh:'\u4ecb\u7ecd\u670b\u53cb\u6216\u548c\u670b\u53cb\u73a9\u800d\u65f6\u4f7f\u7528\u3002'},
+   apply:{ko:'\uc774 \uce5c\uad6c\ub294 \uc81c \uce5c\uad6c\uc608\uc694. \uac19\uc774 \ub180\uc544\uc694.', en:'This is my friend. Let\u2019s play together.', vi:'\u0110\u00e2y l\u00e0 b\u1ea1n c\u1ee7a con. Ch\u00fang ta c\u00f9ng ch\u01a1i nh\u00e9.', zh:'\u8fd9\u662f\u6211\u7684\u670b\u53cb\uff0c\u6211\u4eec\u4e00\u8d77\u73a9\u5427\u3002'}},
 ];
 
 const CATEGORIES = [
@@ -1194,7 +1275,7 @@ function selectDay(dayNum) {
   const hdr = document.getElementById('lesson-header');
   hdr.setAttribute('data-week', currentWeek.week);
   document.getElementById('lesson-title').textContent = currentWeek.title + ' ' + currentDay.title + ' \u2014 ' + currentDay.theme;
-  document.getElementById('lesson-sub').textContent   = currentDay.vocabIds.length + '\uac1c \ub2e8\uc5b4 \u00b7 \ub300\ud654 \u00b7 \ub178\ub798 \u00b7 \uac8c\uc784';
+  document.getElementById('lesson-sub').textContent   = currentDay.vocabIds.length + '\uac1c \ud45c\ud604 \u00b7 \ubc1c\ud654 \u00b7 \uc0c1\ud669 \u00b7 \ub300\ud654 \u00b7 \uc751\uc6a9 \u00b7 \ub178\ub798 \u00b7 \uac8c\uc784';
   document.getElementById('lesson-view').classList.add('active');
   currentLessonTab = 'vocab';
   // reset to vocab tab
@@ -1214,7 +1295,7 @@ function setLessonTab(tab, btn) {
   document.querySelectorAll('.lesson-tab').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   else {
-    const idx = ['vocab','dialogue','song','game'].indexOf(tab);
+    const idx = ['vocab','situation','dialogue','apply','song','game'].indexOf(tab);
     const btns = document.querySelectorAll('.lesson-tab');
     if (btns[idx]) btns[idx].classList.add('active');
   }
@@ -1222,10 +1303,12 @@ function setLessonTab(tab, btn) {
   const panel = document.getElementById('tab-' + tab);
   if (panel) panel.classList.add('active');
   if (!currentDay) return;
-  if (tab === 'vocab')    renderVocabTab();
-  if (tab === 'dialogue') renderDialogueTab();
-  if (tab === 'song')     renderSongTab();
-  if (tab === 'game')     renderGameTab();
+  if (tab === 'vocab')     renderVocabTab();
+  if (tab === 'situation') renderSituationTab();
+  if (tab === 'dialogue')  renderDialogueTab();
+  if (tab === 'apply')     renderApplyTab();
+  if (tab === 'song')      renderSongTab();
+  if (tab === 'game')      renderGameTab();
 }
 
 // ============================================
@@ -1267,6 +1350,31 @@ function fcNav(dir) {
 function fcJump(i) { fcIndex = i; renderVocabTab(); }
 
 // ============================================
+//  SITUATION TAB (상황학습)
+// ============================================
+function renderSituationTab() {
+  const items = currentDay.vocabIds.map(id => VOCAB.find(v=>v.id===id));
+  const cards = items.map(v => {
+    const sit = v.situation;
+    if (!sit) return '';
+    const tr = transLang !== 'none' && sit[transLang] ? sit[transLang] : (sit.en || '');
+    const safe = v.text.replace(/'/g,"\\'");
+    return `<div class="situation-card">
+      <div class="sit-emoji">${v.emoji}</div>
+      <div class="sit-body">
+        <div class="sit-word">${v.text}</div>
+        <div class="sit-text">${sit.ko}</div>
+        ${tr ? `<div class="sit-tr">${tr}</div>` : ''}
+        <button class="dlg-tts" onclick="speakWord('${safe}')">&#128266; 듣기</button>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('tab-situation').innerHTML = `
+    <div class="dlg-situation">언제 이 말을 쓰나요?</div>
+    ${cards}`;
+}
+
+// ============================================
 //  DIALOGUE TAB
 // ============================================
 function renderDialogueTab() {
@@ -1300,6 +1408,28 @@ function renderDialogueContent() {
 }
 
 function switchDlg(i) { currentDlgIdx = i; renderDialogueContent(); }
+
+// ============================================
+//  APPLY TAB (응용학습)
+// ============================================
+function renderApplyTab() {
+  const items = currentDay.vocabIds.map(id => VOCAB.find(v=>v.id===id));
+  const cards = items.map(v => {
+    const ap = v.apply;
+    if (!ap) return '';
+    const tr = transLang !== 'none' && ap[transLang] ? ap[transLang] : (ap.en || '');
+    const safe = ap.ko.replace(/'/g,"\\'");
+    return `<div class="apply-card">
+      <div class="apply-word">${v.text}</div>
+      <div class="apply-sentence">${ap.ko}</div>
+      ${tr ? `<div class="apply-tr">${tr}</div>` : ''}
+      <button class="dlg-tts" onclick="speakWord('${safe}')">&#128266; 듣기</button>
+    </div>`;
+  }).join('');
+  document.getElementById('tab-apply').innerHTML = `
+    <div class="dlg-situation">더 길게 말해 보아요</div>
+    ${cards}`;
+}
 
 // ============================================
 //  SONG TAB
@@ -1464,8 +1594,10 @@ function setTransLang(val) {
   transLang = val;
   renderGrid(currentCat);
   if (currentDay) {
-    if (currentLessonTab === 'vocab')    renderVocabTab();
-    if (currentLessonTab === 'dialogue') renderDialogueContent();
+    if (currentLessonTab === 'vocab')     renderVocabTab();
+    if (currentLessonTab === 'situation') renderSituationTab();
+    if (currentLessonTab === 'dialogue')  renderDialogueContent();
+    if (currentLessonTab === 'apply')     renderApplyTab();
   }
   if (document.getElementById('teacher-overlay').classList.contains('open')) renderTeacherCard();
 }
