@@ -878,32 +878,28 @@ const CURRICULUM = [
     days:[
       { day:1, title:'1일차', theme:'선생님 · 아파요 · 도와주세요', vocabIds:[1,3,2],
         dialogues:[
-          {title:'아플 때', lines:[
-            {speaker:'student',text:'선생님, 아파요.',      tr:{en:"Teacher, I'm hurt.",   vi:'Giáo viên, tôi đau.',   zh:'老师，我疼。'}},
-            {speaker:'teacher',text:'어디가 아파요?',        tr:{en:'Where does it hurt?', vi:'Đau ở đâu?',            zh:'哪里疼？'}},
-            {speaker:'student',text:'머리가 아파요.',        tr:{en:'My head hurts.',      vi:'Đầu tôi đau.',          zh:'我头疼。'}},
-            {speaker:'teacher',text:'보건실에 가요.',        tr:{en:"Let's go to the nurse's office.", vi:'Đến phòng y tế.', zh:'去保健室吧。'}},
+          {title:'선생님 부르기', lines:[
+            {speaker:'student',text:'선생님.',      tr:{en:'Teacher.',   vi:'Giáo viên.',   zh:'老师。'}},
+            {speaker:'teacher',text:'네, 선생님이에요.', tr:{en:"Yes, I'm your teacher.", vi:'Vâng, tôi là giáo viên.', zh:'是的，我是老师。'}},
+          ]},
+          {title:'아파요', lines:[
+            {speaker:'student',text:'아파요.', tr:{en:"I'm hurt.", vi:'Con đau.', zh:'我疼。'}},
           ]},
           {title:'도움 요청', lines:[
-            {speaker:'student',text:'선생님, 도와주세요.',    tr:{en:'Teacher, help me!',   vi:'Giáo viên, giúp tôi!', zh:'老师，帮帮我！'}},
-            {speaker:'teacher',text:'무슨 일이에요?',         tr:{en:"What's wrong?",       vi:'Có chuyện gì vậy?',    zh:'怎么了？'}},
-            {speaker:'student',text:'모르겠어요.',            tr:{en:"I don't understand.", vi:'Tôi không hiểu.',      zh:'我不明白。'}},
-            {speaker:'teacher',text:'같이 해봐요.',           tr:{en:"Let's try together.", vi:'Hãy thử cùng nhau.',   zh:'一起试试看。'}},
+            {speaker:'student',text:'도와주세요.', tr:{en:'Help me!', vi:'Giúp con!', zh:'帮帮我！'}},
           ]},
         ],
       },
       { day:2, title:'2일차', theme:'밥 · 물 · 화장실', vocabIds:[4,5,6],
         dialogues:[
           {title:'급식 시간', lines:[
-            {speaker:'student',text:'선생님, 밥 주세요.',   tr:{en:'Teacher, food please.', vi:'Giáo viên, cho tôi cơm.', zh:'老师，给我饭。'}},
-            {speaker:'teacher',text:'여기 있어요.',          tr:{en:'Here you go.',          vi:'Đây rồi.',                zh:'在这儿。'}},
-            {speaker:'student',text:'감사합니다.',           tr:{en:'Thank you.',            vi:'Cảm ơn.',                 zh:'谢谢。'}},
+            {speaker:'student',text:'밥.', tr:{en:'Food.', vi:'Cơm.', zh:'饭。'}},
           ]},
-          {title:'물 / 화장실', lines:[
-            {speaker:'student',text:'선생님, 물 주세요.',       tr:{en:'Teacher, water please.', vi:'Giáo viên, cho tôi nước.', zh:'老师，给我水。'}},
-            {speaker:'teacher',text:'마셔요.',                    tr:{en:'Go ahead and drink.',    vi:'Uống đi.',                 zh:'喝吧。'}},
-            {speaker:'student',text:'선생님, 화장실 가요.',     tr:{en:'Teacher, may I use the bathroom?', vi:'Giáo viên, tôi đi vệ sinh.', zh:'老师，我去厕所。'}},
-            {speaker:'teacher',text:'네, 다녀오세요.',           tr:{en:'Yes, go ahead.',          vi:'Vâng, đi đi.',             zh:'好的，去吧。'}},
+          {title:'물 마시기', lines:[
+            {speaker:'student',text:'물.', tr:{en:'Water.', vi:'Nước.', zh:'水。'}},
+          ]},
+          {title:'화장실 가기', lines:[
+            {speaker:'student',text:'화장실.', tr:{en:'Bathroom.', vi:'Nhà vệ sinh.', zh:'厕所。'}},
           ]},
         ],
       },
@@ -917,32 +913,29 @@ const CURRICULUM = [
     days:[
       { day:1, title:'1일차', theme:'안 돼요 · 뛰지 마세요 · 네 & 아니요', vocabIds:[9,10,7,8],
         dialogues:[
-          {title:'교실 규칙', lines:[
-            {speaker:'teacher',text:'복도에서 뛰지 마세요.', tr:{en:"Don't run in the hallway.", vi:'Đừng chạy ở hành lang.', zh:'不要在走廊里跑。'}},
-            {speaker:'student',text:'네, 알겠어요.',          tr:{en:'Yes, I understand.',        vi:'Vâng, tôi hiểu.',        zh:'好的，我知道了。'}},
-            {speaker:'teacher',text:'여기서 놀면 안 돼요.',  tr:{en:"You can't play here.",      vi:'Ở đây không được chơi.', zh:'这里不能玩。'}},
-            {speaker:'student',text:'아니요, 안 놀게요.',     tr:{en:"No, I won't play.",         vi:'Không, tôi sẽ không chơi.', zh:'不，我不玩。'}},
+          {title:'안 돼요', lines:[
+            {speaker:'teacher',text:'안 돼요.', tr:{en:'Not allowed.', vi:'Không được.', zh:'不行。'}},
           ]},
-          {title:'약속하기', lines:[
-            {speaker:'teacher',text:'친구를 때리면 안 돼요.', tr:{en:"You mustn't hit your friend.", vi:'Không được đánh bạn.', zh:'不可以打朋友。'}},
-            {speaker:'student',text:'네, 알겠어요.',           tr:{en:'Yes, I understand.',           vi:'Vâng, tôi hiểu.',       zh:'好的，我知道了。'}},
-            {speaker:'teacher',text:'교실에서 뛰지 마세요.',  tr:{en:"Don't run in the classroom.",  vi:'Đừng chạy trong lớp.',  zh:'不要在教室里跑。'}},
-            {speaker:'student',text:'아니요, 안 뛸게요.',      tr:{en:"No, I won't run.",             vi:'Không, tôi sẽ không chạy.', zh:'不，我不跑。'}},
+          {title:'뛰지 마세요', lines:[
+            {speaker:'teacher',text:'뛰지 마세요.', tr:{en:"Don't run.", vi:'Đừng chạy.', zh:'不要跑。'}},
+          ]},
+          {title:'네 (맞아요)', lines:[
+            {speaker:'teacher',text:'이게 너의 가방이니?', tr:{en:'Is this your bag?', vi:'Đây có phải cặp của con không?', zh:'这是你的书包吗？'}},
+            {speaker:'student',text:'네.', tr:{en:'Yes.', vi:'Vâng.', zh:'是。'}},
+          ]},
+          {title:'아니요', lines:[
+            {speaker:'teacher',text:'이거 네 거야?', tr:{en:'Is this yours?', vi:'Cái này của con à?', zh:'这是你的吗？'}},
+            {speaker:'student',text:'아니요.', tr:{en:'No.', vi:'Không.', zh:'不是。'}},
           ]},
         ],
       },
       { day:2, title:'2일차', theme:'더워요 & 추워요', vocabIds:[13,14],
         dialogues:[
           {title:'더울 때', lines:[
-            {speaker:'teacher',text:'오늘 더워요?',   tr:{en:'Is it hot today?',        vi:'Hôm nay nóng không?', zh:'今天热吗？'}},
-            {speaker:'student',text:'네, 더워요.',     tr:{en:"Yes, it's hot.",          vi:'Vâng, nóng.',          zh:'是的，很热。'}},
-            {speaker:'teacher',text:'창문 열까요?',    tr:{en:'Shall I open the window?', vi:'Mở cửa sổ nhé?',      zh:'要开窗吗？'}},
-            {speaker:'student',text:'네, 감사해요.',    tr:{en:'Yes, thank you.',          vi:'Vâng, cảm ơn.',       zh:'好的，谢谢。'}},
+            {speaker:'student',text:'더워요.', tr:{en:"I'm hot.", vi:'Con nóng.', zh:'我热。'}},
           ]},
           {title:'추울 때', lines:[
-            {speaker:'student',text:'선생님, 추워요.',   tr:{en:"Teacher, I'm cold.",       vi:'Giáo viên, tôi lạnh.', zh:'老师，我冷。'}},
-            {speaker:'teacher',text:'창문을 닫을까요?',   tr:{en:'Shall I close the window?', vi:'Đóng cửa sổ nhé?',     zh:'要关窗吗？'}},
-            {speaker:'student',text:'네, 감사해요.',       tr:{en:'Yes, thank you.',           vi:'Vâng, cảm ơn.',        zh:'好的，谢谢。'}},
+            {speaker:'student',text:'추워요.', tr:{en:"I'm cold.", vi:'Con lạnh.', zh:'我冷。'}},
           ]},
         ],
       },
@@ -956,33 +949,28 @@ const CURRICULUM = [
     days:[
       { day:1, title:'1일차', theme:'수업 시작 & 수업 끝 · 좋아요 & 싫어요', vocabIds:[15,16,11,12],
         dialogues:[
-          {title:'수업 시간', lines:[
-            {speaker:'teacher',text:'수업 시작해요.',      tr:{en:'Class is starting.',       vi:'Bắt đầu học.',        zh:'开始上课。'}},
-            {speaker:'student',text:'네, 선생님.',          tr:{en:'Yes, teacher.',            vi:'Vâng, thưa giáo viên.', zh:'好的，老师。'}},
-            {speaker:'teacher',text:'오늘 수업 끝이에요.', tr:{en:'Class is over for today.', vi:'Hết giờ học hôm nay.', zh:'今天下课了。'}},
-            {speaker:'student',text:'네, 알겠습니다.',      tr:{en:'Yes, okay.',               vi:'Vâng, tôi hiểu.',      zh:'好的。'}},
+          {title:'수업 시작', lines:[
+            {speaker:'teacher',text:'수업 시작.', tr:{en:'Class starts.', vi:'Bắt đầu học.', zh:'开始上课。'}},
           ]},
-          {title:'좋아요? 싫어요?', lines:[
-            {speaker:'teacher',text:'이 놀이 좋아요?',  tr:{en:'Do you like this game?', vi:'Bạn thích trò này không?', zh:'你喜欢这个游戏吗？'}},
-            {speaker:'student',text:'네, 좋아요!',       tr:{en:'Yes, I like it!',        vi:'Vâng, tôi thích!',          zh:'是的，我喜欢！'}},
-            {speaker:'teacher',text:'이거는 어때요?',    tr:{en:'What about this one?',   vi:'Cái này thì sao?',          zh:'这个怎么样？'}},
-            {speaker:'student',text:'싫어요.',            tr:{en:"I don't like it.",       vi:'Không thích.',              zh:'不喜欢。'}},
+          {title:'수업 끝', lines:[
+            {speaker:'teacher',text:'수업 끝.', tr:{en:'Class is over.', vi:'Hết giờ học.', zh:'下课了。'}},
+          ]},
+          {title:'좋아요 / 싫어요', lines:[
+            {speaker:'teacher',text:'좋아요?',  tr:{en:'Do you like it?', vi:'Con có thích không?', zh:'你喜欢吗？'}},
+            {speaker:'student',text:'좋아요.',   tr:{en:'I like it.',      vi:'Con thích.',           zh:'我喜欢。'}},
+            {speaker:'teacher',text:'싫어요?',   tr:{en:"Don't you like it?", vi:'Con không thích à?', zh:'你不喜欢吗？'}},
+            {speaker:'student',text:'싫어요.',    tr:{en:"I don't like it.", vi:'Con không thích.',    zh:'我不喜欢。'}},
           ]},
         ],
       },
       { day:2, title:'2일차', theme:'자리 · 가요', vocabIds:[17,18],
         dialogues:[
-          {title:'교실에서', lines:[
-            {speaker:'teacher',text:'자리에 앉아요.',      tr:{en:'Sit in your seat.', vi:'Ngồi vào chỗ.',      zh:'坐到位子上。'}},
-            {speaker:'student',text:'제 자리가 어디예요?', tr:{en:"Where's my seat?",  vi:'Chỗ tôi ở đâu?',     zh:'我的座位在哪里？'}},
-            {speaker:'teacher',text:'저기예요.',            tr:{en:'Over there.',       vi:'Ở đằng kia.',        zh:'在那里。'}},
-            {speaker:'student',text:'네, 알겠습니다.',       tr:{en:'Yes, okay.',        vi:'Vâng, tôi hiểu.',    zh:'好的。'}},
+          {title:'자리에 앉기', lines:[
+            {speaker:'teacher',text:'자리.', tr:{en:'Your seat.', vi:'Chỗ ngồi.', zh:'座位。'}},
           ]},
           {title:'가요', lines:[
-            {speaker:'teacher',text:'이제 집에 가요.',    tr:{en:"Now let's go home.", vi:'Bây giờ về nhà nhé.', zh:'现在回家吧。'}},
-            {speaker:'student',text:'네, 가요!',            tr:{en:"Yes, let's go!",     vi:'Vâng, đi thôi!',      zh:'好，走吧！'}},
-            {speaker:'teacher',text:'내일 학교에 가요.',   tr:{en:'Go to school tomorrow.', vi:'Ngày mai đi học.', zh:'明天去学校。'}},
-            {speaker:'student',text:'네, 알겠어요.',        tr:{en:'Yes, okay.',          vi:'Vâng, tôi hiểu.',     zh:'好的。'}},
+            {speaker:'student',text:'화장실.', tr:{en:'Bathroom.', vi:'Nhà vệ sinh.', zh:'厕所。'}},
+            {speaker:'teacher',text:'가요.',    tr:{en:'Go ahead.', vi:'Đi đi.',        zh:'去吧。'}},
           ]},
         ],
       },
@@ -996,32 +984,27 @@ const CURRICULUM = [
     days:[
       { day:1, title:'1일차', theme:'집 · 학교 · 교실', vocabIds:[19,20,21],
         dialogues:[
-          {title:'어디 가요?', lines:[
-            {speaker:'teacher',text:'집에 가요.',       tr:{en:'Go home.',            vi:'Về nhà.',       zh:'回家。'}},
-            {speaker:'student',text:'네, 집에 가요.',    tr:{en:'Yes, going home.',    vi:'Vâng, về nhà.', zh:'是，回家。'}},
-            {speaker:'teacher',text:'학교에 가요.',      tr:{en:'Go to school.',       vi:'Đi học.',        zh:'去学校。'}},
-            {speaker:'student',text:'네, 학교에 가요.',  tr:{en:'Yes, going to school.', vi:'Vâng, đi học.', zh:'是，去学校。'}},
+          {title:'집 가요', lines:[
+            {speaker:'teacher',text:'집 가요.', tr:{en:'Go home.', vi:'Về nhà.', zh:'回家。'}},
           ]},
-          {title:'교실 찾기', lines:[
-            {speaker:'student',text:'교실이 어디예요?',   tr:{en:'Where is the classroom?', vi:'Lớp học ở đâu?', zh:'教室在哪里？'}},
-            {speaker:'teacher',text:'저기 교실이에요.',    tr:{en:'The classroom is over there.', vi:'Lớp học ở đằng kia.', zh:'教室在那边。'}},
-            {speaker:'student',text:'감사합니다.',          tr:{en:'Thank you.',              vi:'Cảm ơn.',              zh:'谢谢。'}},
+          {title:'학교 가요', lines:[
+            {speaker:'teacher',text:'학교 가요.', tr:{en:'Go to school.', vi:'Đi học.', zh:'去学校。'}},
+          ]},
+          {title:'교실 가요', lines:[
+            {speaker:'teacher',text:'교실 가요.', tr:{en:'Go to the classroom.', vi:'Vào lớp.', zh:'去教室。'}},
           ]},
         ],
       },
       { day:2, title:'2일차', theme:'책 · 연필 · 친구', vocabIds:[22,23,24],
         dialogues:[
-          {title:'친구 소개', lines:[
-            {speaker:'teacher',text:'친구에게 인사해요.',     tr:{en:'Greet your friend.',            vi:'Chào bạn đi.',           zh:'和朋友打招呼。'}},
-            {speaker:'student',text:'안녕, 친구야.',           tr:{en:'Hello, friend!',                vi:'Xin chào, bạn!',         zh:'你好，朋友！'}},
-            {speaker:'teacher',text:'책이랑 연필 준비해요.',  tr:{en:'Prepare your book and pencil.', vi:'Chuẩn bị sách và bút chì.', zh:'准备好书和铅笔。'}},
-            {speaker:'student',text:'네, 준비했어요.',         tr:{en:"Yes, I'm ready.",               vi:'Vâng, tôi chuẩn bị rồi.', zh:'好的，准备好了。'}},
+          {title:'책 보여주기', lines:[
+            {speaker:'teacher',text:'책.', tr:{en:'Book.', vi:'Sách.', zh:'书。'}},
           ]},
-          {title:'책이랑 연필', lines:[
-            {speaker:'teacher',text:'책 주세요.',       tr:{en:'Give me the book.',    vi:'Đưa sách cho tôi.', zh:'把书给我。'}},
-            {speaker:'student',text:'네, 여기요.',       tr:{en:'Here you go.',          vi:'Đây ạ.',             zh:'给你。'}},
-            {speaker:'teacher',text:'연필 있어요?',      tr:{en:'Do you have a pencil?', vi:'Có bút chì không?', zh:'有铅笔吗？'}},
-            {speaker:'student',text:'네, 있어요.',        tr:{en:'Yes, I have.',          vi:'Có, tôi có.',        zh:'有。'}},
+          {title:'연필 보여주기', lines:[
+            {speaker:'teacher',text:'연필.', tr:{en:'Pencil.', vi:'Bút chì.', zh:'铅笔。'}},
+          ]},
+          {title:'친구 가리키기', lines:[
+            {speaker:'teacher',text:'친구.', tr:{en:'Friend.', vi:'Bạn.', zh:'朋友。'}},
           ]},
         ],
       },
